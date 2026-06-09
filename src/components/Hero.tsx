@@ -68,7 +68,7 @@ export function Hero() {
                 <Eyebrow className="h-3.5 w-3.5" />
                 <span className="text-[11px] font-bold tracking-[0.2em]">{s.eyebrow.text}</span>
               </div>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.05]">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-black leading-[1.05]">
                 {s.title}
                 <span className="block text-brand-red">{s.titleAccent}</span>
               </h1>
