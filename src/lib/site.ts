@@ -1,14 +1,17 @@
 export const SITE = {
-  name: "Fujitomo Electronics",
-  tagline: "Your Trusted Partner for Fiber Optic Solutions",
-  phone: "+91 98765 43210",
-  phoneRaw: "919876543210",
-  email: "info@fujitomoelectronics.in",
-  address: "Hyderabad, Telangana, India",
-  founded: 2023,
+  name: "Satya Power Technology's",
+  tagline: "Service first, Sales next",
+  phone: "+91 95428 40444",
+  phoneAlt: "+91 86881 51526",
+  phoneRaw: "919542840444",
+  email: "satyapowertechnologys@gmail.com",
+  address:
+    "House No. 49/50, Vayushakthi Nagar Road No.1, Dammaiguda, Hyderabad - 500083, Telangana, India",
+  gstin: "37BILPL7684K1ZD",
+  founded: 2013,
   ceo: "Mr. Deepak Singh",
-  website: "www.fujitomoelectronics.in",
-  whatsappMsg: "Hello Fujitomo, I'd like a quote.",
+  website: "www.satyapowertechnologys.in",
+  whatsappMsg: "Hello Satya Power Technology's, I'd like a quote.",
 };
 
 export const whatsappLink = (msg = SITE.whatsappMsg) =>

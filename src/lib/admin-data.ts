@@ -21,27 +21,57 @@ export function isFirebaseConfigured() {
 }
 
 /* ------------- Auth ------------- */
+export const DEMO_CREDENTIALS = {
+  email: "admin@satyapowertechnologys.in",
+  password: "satya@2013",
+};
+const DEMO_SESSION_KEY = "spt_demo_admin";
+
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fb = getFirebase();
-    if (!fb) { setLoading(false); return; }
+    if (!fb || !isFirebaseConfigured()) {
+      // demo mode: restore session from localStorage
+      if (typeof window !== "undefined") {
+        const saved = window.localStorage.getItem(DEMO_SESSION_KEY);
+        if (saved) setUser({ email: saved } as User);
+      }
+      setLoading(false);
+      return;
+    }
     return onAuthStateChanged(fb.auth, (u) => { setUser(u); setLoading(false); });
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
     const fb = getFirebase();
     if (!fb || !isFirebaseConfigured()) {
-      throw new Error("Firebase is not configured. Add real credentials in src/lib/firebase.ts");
+      // Demo mode authentication
+      if (
+        email.trim().toLowerCase() === DEMO_CREDENTIALS.email &&
+        password === DEMO_CREDENTIALS.password
+      ) {
+        if (typeof window !== "undefined")
+          window.localStorage.setItem(DEMO_SESSION_KEY, email);
+        setUser({ email } as User);
+        return;
+      }
+      throw new Error("Invalid demo credentials. Use the credentials shown below.");
     }
     await signInWithEmailAndPassword(fb.auth, email, password);
   }, []);
 
   const logout = useCallback(async () => {
     const fb = getFirebase();
-    if (fb) await signOut(fb.auth);
+    if (fb && isFirebaseConfigured()) {
+      await signOut(fb.auth);
+      return;
+    }
+    if (typeof window !== "undefined")
+      window.localStorage.removeItem(DEMO_SESSION_KEY);
+    setUser(null);
   }, []);
 
   return { user, loading, login, logout };

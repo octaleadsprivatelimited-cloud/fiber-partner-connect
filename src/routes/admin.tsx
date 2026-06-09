@@ -9,12 +9,14 @@ import {
 import { Logo } from "@/components/Logo";
 import {
   useAuth, useProducts, useInquiries, isFirebaseConfigured, getSettings, saveSettings,
+  DEMO_CREDENTIALS,
   type Inquiry,
 } from "@/lib/admin-data";
 import { CATEGORIES, BRANDS, type Product, type Category, type Brand } from "@/lib/products";
+import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/admin")({
-  head: () => ({ meta: [{ title: "Admin — Fujitomo Electronics" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: `Admin — ${SITE.name}` }, { name: "robots", content: "noindex" }] }),
   component: AdminPage,
 });
 
@@ -43,8 +45,14 @@ function LoginScreen({ onLogin }: { onLogin: (e: string, p: string) => Promise<v
           <div className="mt-5 bg-brand-red/10 border border-brand-red p-4 flex gap-3">
             <AlertCircle className="h-5 w-5 text-brand-red shrink-0 mt-0.5" />
             <div className="text-sm">
-              <div className="font-bold text-brand-red">Firebase not configured</div>
-              <div className="text-muted-foreground mt-1">Replace the placeholder values in <code className="font-mono text-xs bg-muted px-1">src/lib/firebase.ts</code> with your real credentials to enable login.</div>
+              <div className="font-bold text-brand-red">Demo mode</div>
+              <div className="text-muted-foreground mt-1">
+                Sign in with the demo credentials below. Changes won't persist until Firebase keys are added in <code className="font-mono text-xs bg-muted px-1">src/lib/firebase.ts</code>.
+              </div>
+              <div className="mt-3 bg-white border border-brand-red/30 p-3 font-mono text-xs space-y-1">
+                <div><span className="text-muted-foreground">Email:</span> <span className="font-bold text-brand-black select-all">{DEMO_CREDENTIALS.email}</span></div>
+                <div><span className="text-muted-foreground">Password:</span> <span className="font-bold text-brand-black select-all">{DEMO_CREDENTIALS.password}</span></div>
+              </div>
             </div>
           </div>
         )}
