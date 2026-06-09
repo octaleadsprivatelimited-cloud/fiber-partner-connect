@@ -15,7 +15,7 @@ export function WhyChoose() {
     <section className="py-20 bg-muted/30">
       <div className="mx-auto max-w-7xl container-px">
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">WHY FUJITOMO</div>
+          <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">WHY SATYA POWER TECHNOLOGY'S</div>
           <h2 className="text-3xl md:text-5xl font-black text-brand-black">Built for engineers. Trusted by professionals.</h2>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border">

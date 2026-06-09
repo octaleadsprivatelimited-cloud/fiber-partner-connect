@@ -1,5 +1,5 @@
 // Canvas-based image watermark utility.
-// Draws "FUJITOMO" + phone number as a translucent overlay onto a product image.
+// Draws "SATYA POWER TECHNOLOGY'S" + phone number as a translucent overlay onto a product image.
 export interface WatermarkOpts {
   text?: string;
   phone?: string;
@@ -8,7 +8,7 @@ export interface WatermarkOpts {
 
 export async function watermarkImage(
   src: string,
-  { text = "FUJITOMO", phone = "+91 98765 43210", opacity = 0.85 }: WatermarkOpts = {}
+  { text = "SATYA POWER TECHNOLOGY'S", phone = "+91 98765 43210", opacity = 0.85 }: WatermarkOpts = {}
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     const img = new Image();

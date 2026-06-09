@@ -5,7 +5,7 @@ export function Logo({ className = "" }: { className?: string }) {
         F
       </div>
       <div className="leading-none">
-        <div className="font-black tracking-tight text-brand-black text-base">FUJITOMO</div>
+        <div className="font-black tracking-tight text-brand-black text-base">SATYA POWER TECHNOLOGY'S</div>
         <div className="text-[10px] font-semibold tracking-[0.18em] text-brand-red">ELECTRONICS</div>
       </div>
     </div>
