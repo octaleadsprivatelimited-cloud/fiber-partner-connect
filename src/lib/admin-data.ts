@@ -16,8 +16,7 @@ import { PRODUCTS as SEED_PRODUCTS, type Product } from "./products";
 export function isFirebaseConfigured() {
   const fb = getFirebase();
   if (!fb) return false;
-  // @ts-expect-error read options
-  const key = fb.app.options.apiKey as string;
+  const key = (fb.app.options as { apiKey?: string }).apiKey ?? "";
   return !!key && !key.startsWith("REPLACE");
 }
 
