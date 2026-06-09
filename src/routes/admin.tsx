@@ -1,10 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, Legend,
+} from "recharts";
+import {
   LayoutDashboard, Package, MessageSquare, Tag as TagIcon, Settings as SettingsIcon,
   LogOut, Plus, Pencil, Trash2, Upload, AlertCircle, CheckCircle2, X, Mail, Phone,
+  TrendingUp, TrendingDown, Search, Bell, ShoppingBag, Users, Eye,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import {
