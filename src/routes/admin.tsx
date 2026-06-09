@@ -104,7 +104,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
   const active = tabs.find((t) => t.id === tab);
 
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-[#f4f5f9]">
       {!isFirebaseConfigured() && (
         <div className="bg-brand-red text-white text-xs text-center py-2 px-4">
           <AlertCircle className="inline h-3.5 w-3.5 mr-1" />
@@ -112,62 +112,96 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
         </div>
       )}
 
-      {/* Top bar */}
-      <header className="sticky top-0 z-30 bg-white border-b border-border">
-        <div className="mx-auto max-w-7xl container-px h-16 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 min-w-0">
-            <Logo />
-            <span className="hidden sm:inline-block text-[10px] font-bold tracking-[0.2em] text-white bg-brand-red px-2 py-1">ADMIN</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:block text-right leading-tight">
-              <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Signed in</div>
-              <div className="text-xs font-bold text-brand-black truncate max-w-[200px]">{email || "Demo user"}</div>
-            </div>
-            <button onClick={onLogout} className="inline-flex items-center gap-2 border border-border px-3 py-2 text-xs font-bold hover:border-brand-red hover:text-brand-red transition">
-              <LogOut className="h-3.5 w-3.5" /> Sign out
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="mx-auto max-w-7xl container-px py-6 lg:py-8 grid lg:grid-cols-[220px_1fr] gap-6 lg:gap-8">
+      <div className="grid lg:grid-cols-[260px_1fr] min-h-screen">
         {/* Sidebar */}
-        <aside className="lg:sticky lg:top-20 self-start">
-          <nav className="bg-white border border-border flex lg:flex-col overflow-x-auto lg:overflow-visible">
+        <aside className="hidden lg:flex flex-col bg-white border-r border-border">
+          <div className="h-16 flex items-center px-6 border-b border-border">
+            <Logo />
+          </div>
+          <div className="p-5 flex items-center gap-3 border-b border-border">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-fuchsia-500 to-violet-600 text-white grid place-items-center font-black">
+              {(email || "A")[0].toUpperCase()}
+            </div>
+            <div className="min-w-0">
+              <div className="text-sm font-bold text-brand-black truncate">{email || "Admin"}</div>
+              <div className="text-[11px] text-muted-foreground">Administrator</div>
+            </div>
+          </div>
+          <nav className="flex-1 py-4">
             {tabs.map((t) => {
               const isActive = tab === t.id;
               return (
                 <button
                   key={t.id}
                   onClick={() => setTab(t.id)}
-                  className={`relative flex items-center gap-3 px-4 py-3 text-sm font-semibold transition whitespace-nowrap border-l-2 ${
+                  className={`w-full flex items-center gap-3 px-6 py-3 text-sm font-semibold transition ${
                     isActive
-                      ? "bg-brand-red/5 text-brand-red border-brand-red"
-                      : "text-brand-black border-transparent hover:bg-muted hover:border-border"
+                      ? "bg-gradient-to-r from-violet-50 to-transparent text-violet-700 border-l-[3px] border-violet-600"
+                      : "text-brand-black/70 border-l-[3px] border-transparent hover:bg-muted/60 hover:text-brand-black"
                   }`}
                 >
-                  <t.icon className="h-4 w-4 shrink-0" />
+                  <t.icon className={`h-4 w-4 shrink-0 ${isActive ? "text-violet-600" : ""}`} />
                   <span>{t.label}</span>
                 </button>
               );
             })}
           </nav>
+          <div className="p-5 border-t border-border">
+            <button onClick={onLogout} className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white font-bold py-2.5 rounded-md hover:opacity-90 transition">
+              <LogOut className="h-3.5 w-3.5" /> Sign out
+            </button>
+          </div>
         </aside>
 
-        {/* Main */}
-        <section className="min-w-0">
-          <div className="mb-6 flex items-center gap-2 text-xs text-muted-foreground">
-            <span>Admin</span>
-            <span>/</span>
-            <span className="font-bold text-brand-black uppercase tracking-wider">{active?.label}</span>
-          </div>
-          {tab === "dashboard" && <DashboardOverview products={products} inquiries={inquiries} onTab={setTab} />}
-          {tab === "products" && <ProductsManager products={products} save={save} remove={remove} uploadImage={uploadImage} />}
-          {tab === "inquiries" && <InquiriesManager inquiries={inquiries} updateStatus={updateStatus} remove={removeInquiry} />}
-          {tab === "brands" && <BrandsManager />}
-          {tab === "settings" && <SettingsManager />}
-        </section>
+        {/* Right column */}
+        <div className="flex flex-col min-w-0">
+          {/* Top bar */}
+          <header className="sticky top-0 z-30 bg-white border-b border-border">
+            <div className="h-16 px-4 sm:px-6 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3 flex-1 max-w-md">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <input placeholder="Search products, inquiries…" className="w-full bg-muted/50 border border-transparent focus:bg-white focus:border-violet-300 focus:outline-none rounded-md pl-9 pr-3 py-2 text-sm transition" />
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <button className="relative p-2 rounded-md hover:bg-muted text-muted-foreground">
+                  <Bell className="h-5 w-5" />
+                  <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-brand-red" />
+                </button>
+                <span className="hidden sm:inline-block text-[10px] font-bold tracking-[0.2em] text-white bg-gradient-to-r from-violet-600 to-fuchsia-500 px-2 py-1 rounded">ADMIN</span>
+                <button onClick={onLogout} className="lg:hidden inline-flex items-center gap-2 border border-border px-3 py-2 text-xs font-bold hover:border-brand-red hover:text-brand-red transition rounded-md">
+                  <LogOut className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+            {/* Mobile tab strip */}
+            <nav className="lg:hidden flex overflow-x-auto border-t border-border">
+              {tabs.map((t) => {
+                const isActive = tab === t.id;
+                return (
+                  <button key={t.id} onClick={() => setTab(t.id)}
+                    className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold whitespace-nowrap border-b-2 ${isActive ? "text-violet-700 border-violet-600" : "text-muted-foreground border-transparent"}`}>
+                    <t.icon className="h-3.5 w-3.5" />{t.label}
+                  </button>
+                );
+              })}
+            </nav>
+          </header>
+
+          <section className="p-4 sm:p-6 lg:p-8 min-w-0">
+            <div className="mb-6 flex items-center gap-2 text-xs text-muted-foreground">
+              <span>Admin</span>
+              <span>/</span>
+              <span className="font-bold text-brand-black uppercase tracking-wider">{active?.label}</span>
+            </div>
+            {tab === "dashboard" && <DashboardOverview products={products} inquiries={inquiries} onTab={setTab} />}
+            {tab === "products" && <ProductsManager products={products} save={save} remove={remove} uploadImage={uploadImage} />}
+            {tab === "inquiries" && <InquiriesManager inquiries={inquiries} updateStatus={updateStatus} remove={removeInquiry} />}
+            {tab === "brands" && <BrandsManager />}
+            {tab === "settings" && <SettingsManager />}
+          </section>
+        </div>
       </div>
     </div>
   );
@@ -176,28 +210,149 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
 /* ============ Overview ============ */
 function DashboardOverview({ products, inquiries, onTab }: { products: Product[]; inquiries: Inquiry[]; onTab: (t: Tab) => void }) {
   const unread = inquiries.filter((i) => i.status === "new").length;
+  const resolved = inquiries.filter((i) => i.status === "resolved").length;
+
   const stats = [
-    { label: "Total Products", value: products.length, tab: "products" as const },
-    { label: "Featured", value: products.filter((p) => p.featured).length, tab: "products" as const },
-    { label: "Inquiries", value: inquiries.length, tab: "inquiries" as const },
-    { label: "Unread Inquiries", value: unread, tab: "inquiries" as const, accent: true },
+    {
+      label: "Total Products", value: products.length, icon: ShoppingBag,
+      gradient: "from-[#ff6a88] via-[#ff8e72] to-[#ffb37b]",
+      delta: "+12%", up: true, tab: "products" as const,
+    },
+    {
+      label: "Inquiries", value: inquiries.length, icon: MessageSquare,
+      gradient: "from-[#5b8def] via-[#5f9bff] to-[#6ad2ff]",
+      delta: "+8%", up: true, tab: "inquiries" as const,
+    },
+    {
+      label: "Unread", value: unread, icon: Eye,
+      gradient: "from-[#28d4a8] via-[#38e0b2] to-[#7ef0c8]",
+      delta: unread > 0 ? "new" : "0", up: unread > 0, tab: "inquiries" as const,
+    },
+    {
+      label: "Featured", value: products.filter((p) => p.featured).length, icon: Users,
+      gradient: "from-[#a78bfa] via-[#c084fc] to-[#e879f9]",
+      delta: "live", up: true, tab: "products" as const,
+    },
   ];
+
+  // Category distribution for bar chart
+  const chartData = useMemo(() => {
+    const byCat = new Map<string, number>();
+    products.forEach((p) => byCat.set(p.category, (byCat.get(p.category) ?? 0) + 1));
+    return Array.from(byCat.entries()).map(([name, count]) => ({
+      name: name.length > 10 ? name.slice(0, 10) + "…" : name,
+      products: count,
+      featured: products.filter((p) => p.category === name && p.featured).length,
+    }));
+  }, [products]);
+
+  // Inquiry status donut
+  const pieData = [
+    { name: "New", value: unread, color: "#ff6a88" },
+    { name: "Read", value: inquiries.filter((i) => i.status === "read").length, color: "#5b8def" },
+    { name: "Resolved", value: resolved, color: "#28d4a8" },
+  ].filter((d) => d.value > 0);
+  const pieFallback = pieData.length === 0 ? [{ name: "No data", value: 1, color: "#e5e7eb" }] : pieData;
+
   return (
-    <div className="space-y-8">
-      <h1 className="text-3xl font-black text-brand-black">Dashboard</h1>
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-black text-brand-black">Dashboard</h1>
+          <p className="text-sm text-muted-foreground mt-1">Welcome back — here's what's happening with your store.</p>
+        </div>
+      </div>
+
+      {/* Stat cards */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((s) => (
-          <button key={s.label} onClick={() => onTab(s.tab)} className={`text-left p-6 border transition ${s.accent ? "bg-brand-red text-white border-brand-red" : "bg-white border-border hover:border-brand-red"}`}>
-            <div className={`text-xs font-bold tracking-[0.2em] uppercase ${s.accent ? "text-white/80" : "text-muted-foreground"}`}>{s.label}</div>
-            <div className="text-4xl font-black mt-2">{s.value}</div>
+          <button
+            key={s.label}
+            onClick={() => onTab(s.tab)}
+            className={`text-left rounded-xl p-5 text-white bg-gradient-to-br ${s.gradient} shadow-lg shadow-black/5 hover:shadow-xl hover:-translate-y-0.5 transition relative overflow-hidden`}
+          >
+            <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10" />
+            <div className="absolute -right-10 bottom-0 h-20 w-20 rounded-full bg-white/10" />
+            <div className="relative flex items-start justify-between">
+              <div>
+                <div className="text-xs font-semibold tracking-wider uppercase text-white/85">{s.label}</div>
+                <div className="text-4xl font-black mt-2 tabular-nums">{s.value}</div>
+              </div>
+              <s.icon className="h-6 w-6 text-white/80" />
+            </div>
+            <div className="relative mt-4 flex items-center gap-1 text-xs font-semibold text-white/90">
+              {s.up ? <TrendingUp className="h-3.5 w-3.5" /> : <TrendingDown className="h-3.5 w-3.5" />}
+              <span>{s.delta}</span>
+              <span className="text-white/70">this month</span>
+            </div>
           </button>
         ))}
       </div>
 
-      <div className="bg-white border border-border">
+      {/* Charts row */}
+      <div className="grid lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2 bg-white rounded-xl border border-border p-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="font-black text-brand-black">Products by Category</h2>
+              <p className="text-xs text-muted-foreground mt-1">Distribution across your catalog</p>
+            </div>
+            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-violet-500" /> Products</span>
+              <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-fuchsia-400" /> Featured</span>
+            </div>
+          </div>
+          <div className="h-72 mt-4">
+            {chartData.length === 0 ? (
+              <div className="h-full flex items-center justify-center text-sm text-muted-foreground">No product data yet.</div>
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData} barGap={6}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eef0f4" />
+                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={false} tickLine={false} />
+                  <Tooltip cursor={{ fill: "rgba(139,92,246,0.06)" }} contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb", fontSize: 12 }} />
+                  <Bar dataKey="products" fill="#8b5cf6" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="featured" fill="#e879f9" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl border border-border p-5">
+          <h2 className="font-black text-brand-black">Inquiry Status</h2>
+          <p className="text-xs text-muted-foreground mt-1">Breakdown of customer messages</p>
+          <div className="h-56 mt-2">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={pieFallback} dataKey="value" innerRadius={50} outerRadius={78} paddingAngle={2}>
+                  {pieFallback.map((d) => <Cell key={d.name} fill={d.color} />)}
+                </Pie>
+                <Tooltip contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb", fontSize: 12 }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          <ul className="space-y-2 mt-2">
+            {[
+              { name: "New", value: unread, color: "#ff6a88" },
+              { name: "Read", value: inquiries.filter((i) => i.status === "read").length, color: "#5b8def" },
+              { name: "Resolved", value: resolved, color: "#28d4a8" },
+            ].map((d) => (
+              <li key={d.name} className="flex items-center justify-between text-sm">
+                <span className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full" style={{ background: d.color }} /> {d.name}</span>
+                <span className="font-bold tabular-nums">{d.value}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Recent messages */}
+      <div className="bg-white rounded-xl border border-border">
         <div className="p-5 border-b border-border flex items-center justify-between">
           <h2 className="font-black text-brand-black">Recent Messages</h2>
-          <button onClick={() => onTab("inquiries")} className="text-sm font-bold text-brand-red hover:underline">View all →</button>
+          <button onClick={() => onTab("inquiries")} className="text-sm font-bold text-violet-700 hover:underline">View all →</button>
         </div>
         {inquiries.length === 0 ? (
           <div className="p-10 text-center text-muted-foreground text-sm">No inquiries yet. Submissions from the contact form will appear here.</div>
@@ -205,11 +360,14 @@ function DashboardOverview({ products, inquiries, onTab }: { products: Product[]
           <ul className="divide-y divide-border">
             {inquiries.slice(0, 5).map((i) => (
               <li key={i.id} className="p-5 flex items-start gap-4">
-                <div className={`h-2 w-2 mt-2 rounded-full ${i.status === "new" ? "bg-brand-red" : "bg-muted-foreground/40"}`} />
+                <div className={`h-9 w-9 rounded-full grid place-items-center text-white text-xs font-black bg-gradient-to-br ${i.status === "new" ? "from-rose-400 to-pink-500" : i.status === "resolved" ? "from-emerald-400 to-teal-500" : "from-sky-400 to-indigo-500"}`}>
+                  {i.name?.[0]?.toUpperCase() ?? "?"}
+                </div>
                 <div className="flex-1 min-w-0">
                   <div className="font-bold text-brand-black">{i.name} <span className="font-normal text-xs text-muted-foreground">— {i.phone}</span></div>
                   <div className="text-sm text-muted-foreground line-clamp-1">{i.message}</div>
                 </div>
+                <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded ${i.status === "new" ? "bg-rose-100 text-rose-700" : i.status === "resolved" ? "bg-emerald-100 text-emerald-700" : "bg-sky-100 text-sky-700"}`}>{i.status ?? "new"}</span>
               </li>
             ))}
           </ul>
