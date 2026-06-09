@@ -9,7 +9,7 @@ import {
 import {
   LayoutDashboard, Package, MessageSquare, Tag as TagIcon, Settings as SettingsIcon,
   LogOut, Plus, Pencil, Trash2, Upload, AlertCircle, CheckCircle2, X, Mail, Phone,
-  TrendingUp, TrendingDown, Search, Bell, ShoppingBag, Users, Eye,
+  TrendingUp, TrendingDown, ShoppingBag, Users, Eye,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import {
@@ -155,39 +155,18 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
 
         {/* Right column */}
         <div className="flex flex-col min-w-0">
-          {/* Top bar */}
-          <header className="sticky top-0 z-30 bg-white border-b border-border">
-            <div className="h-16 px-4 sm:px-6 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3 flex-1 max-w-md">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <input placeholder="Search products, inquiries…" className="w-full bg-muted/50 border border-transparent focus:bg-white focus:border-violet-300 focus:outline-none rounded-md pl-9 pr-3 py-2 text-sm transition" />
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <button className="relative p-2 rounded-md hover:bg-muted text-muted-foreground">
-                  <Bell className="h-5 w-5" />
-                  <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-brand-red" />
+          {/* Mobile tab strip */}
+          <nav className="lg:hidden flex overflow-x-auto bg-white border-b border-border sticky top-0 z-30">
+            {tabs.map((t) => {
+              const isActive = tab === t.id;
+              return (
+                <button key={t.id} onClick={() => setTab(t.id)}
+                  className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold whitespace-nowrap border-b-2 ${isActive ? "text-violet-700 border-violet-600" : "text-muted-foreground border-transparent"}`}>
+                  <t.icon className="h-3.5 w-3.5" />{t.label}
                 </button>
-                <span className="hidden sm:inline-block text-[10px] font-bold tracking-[0.2em] text-white bg-gradient-to-r from-violet-600 to-fuchsia-500 px-2 py-1 rounded">ADMIN</span>
-                <button onClick={onLogout} className="lg:hidden inline-flex items-center gap-2 border border-border px-3 py-2 text-xs font-bold hover:border-brand-red hover:text-brand-red transition rounded-md">
-                  <LogOut className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            </div>
-            {/* Mobile tab strip */}
-            <nav className="lg:hidden flex overflow-x-auto border-t border-border">
-              {tabs.map((t) => {
-                const isActive = tab === t.id;
-                return (
-                  <button key={t.id} onClick={() => setTab(t.id)}
-                    className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold whitespace-nowrap border-b-2 ${isActive ? "text-violet-700 border-violet-600" : "text-muted-foreground border-transparent"}`}>
-                    <t.icon className="h-3.5 w-3.5" />{t.label}
-                  </button>
-                );
-              })}
-            </nav>
-          </header>
+              );
+            })}
+          </nav>
 
           <section className="p-4 sm:p-6 lg:p-8 min-w-0">
             <div className="mb-6 flex items-center gap-2 text-xs text-muted-foreground">
