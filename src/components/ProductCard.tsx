@@ -21,7 +21,7 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
         <div className="absolute inset-x-0 bottom-0 bg-brand-black/85 backdrop-blur-sm">
           <div className="flex items-center gap-2 px-3 py-2 border-l-4 border-brand-red">
             <div className="text-white">
-              <div className="font-black text-xs leading-none">FUJITOMO</div>
+              <div className="font-black text-xs leading-none">SATYA POWER TECHNOLOGY'S</div>
               <div className="text-brand-red text-[10px] font-semibold flex items-center gap-1 mt-0.5">
                 <Phone className="h-2.5 w-2.5" />{SITE.phone}
               </div>

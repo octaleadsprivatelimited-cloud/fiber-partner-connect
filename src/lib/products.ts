@@ -37,7 +37,7 @@ export const CATEGORIES: Category[] = [
   "Splicer Spare Parts",
 ];
 
-export const BRANDS = ["INNO", "Fujikura", "Sumitomo", "Grandway", "EXFO", "VIAVI", "Fiberfox", "Fujitomo", "SKL"] as const;
+export const BRANDS = ["INNO", "Fujikura", "Sumitomo", "Grandway", "EXFO", "VIAVI", "Fiberfox", "SATYA POWER TECHNOLOGY'S", "SKL"] as const;
 export type Brand = (typeof BRANDS)[number];
 
 export interface Product {
@@ -69,18 +69,18 @@ export const PRODUCTS: Product[] = [
     description: "High-precision optical power meter with USB data logging." },
   { id: "skl-cleaver", name: "SKL-6C High-Precision Cleaver", category: "Cleavers", brand: "SKL", image: cleaver, featured: true,
     description: "16-position 48,000-cleave blade life precision fiber cleaver." },
-  { id: "fe-cleaver", name: "FE-23A Optical Fiber Cleaver", category: "Cleavers", brand: "Fujitomo", image: cleaver,
+  { id: "fe-cleaver", name: "FE-23A Optical Fiber Cleaver", category: "Cleavers", brand: "SATYA POWER TECHNOLOGY'S", image: cleaver,
     description: "Reliable cleaver designed for field splicing operations." },
-  { id: "vfl-30", name: "VFL-30 Visual Fault Locator", category: "Visual Fault Locators", brand: "Fujitomo", image: vfl, featured: true,
+  { id: "vfl-30", name: "VFL-30 Visual Fault Locator", category: "Visual Fault Locators", brand: "SATYA POWER TECHNOLOGY'S", image: vfl, featured: true,
     description: "30mW red-laser fault locator with 30km range." },
-  { id: "cleaning-kit", name: "Fiber Cleaning Kit (Pro)", category: "Cleaning Kits", brand: "Fujitomo", image: cleaning,
+  { id: "cleaning-kit", name: "Fiber Cleaning Kit (Pro)", category: "Cleaning Kits", brand: "SATYA POWER TECHNOLOGY'S", image: cleaning,
     description: "Complete cleaning kit: swabs, fluid, one-click cleaners, wipes." },
-  { id: "toolkit-pro", name: "Professional Fiber Optic Toolkit", category: "Toolkits", brand: "Fujitomo", image: toolkit, featured: true,
+  { id: "toolkit-pro", name: "Professional Fiber Optic Toolkit", category: "Toolkits", brand: "SATYA POWER TECHNOLOGY'S", image: toolkit, featured: true,
     description: "30+ piece kit with strippers, scissors, cleaver and case." },
-  { id: "connectors-set", name: "SC/LC Connectors & Adaptors", category: "Connectors & Adaptors", brand: "Fujitomo", image: connectors,
+  { id: "connectors-set", name: "SC/LC Connectors & Adaptors", category: "Connectors & Adaptors", brand: "SATYA POWER TECHNOLOGY'S", image: connectors,
     description: "Assorted connectors and adaptors for FTTH and datacom." },
   { id: "electrodes", name: "Splicer Spare Electrodes (Pair)", category: "Spare Electrodes", brand: "INNO", image: electrodes,
     description: "Genuine replacement electrodes for INNO/Fujikura/Sumitomo splicers." },
-  { id: "cleaver-blade", name: "Cleaver Replacement Blade", category: "Spare Cleaver Blades", brand: "Fujitomo", image: cleaver,
+  { id: "cleaver-blade", name: "Cleaver Replacement Blade", category: "Spare Cleaver Blades", brand: "SATYA POWER TECHNOLOGY'S", image: cleaver,
     description: "Long-life replacement blade for precision cleavers." },
 ];
