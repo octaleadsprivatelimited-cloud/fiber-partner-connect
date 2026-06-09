@@ -9,7 +9,7 @@ import { submitInquiry } from "@/lib/admin-data";
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Services — Satya Power Technology's | Fusion Splicer Repair & OTDR Calibration" },
+      { title: "Services — SATYA POWER TECHNOLOGY'S | Fusion Splicer Repair & OTDR Calibration" },
       { name: "description", content: "Authorized service center for fiber optic equipment across AP & Telangana — splicer repair, OTDR calibration, on-site support and genuine spares." },
     ],
   }),

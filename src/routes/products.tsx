@@ -7,7 +7,7 @@ import { PRODUCTS, CATEGORIES, BRANDS } from "@/lib/products";
 export const Route = createFileRoute("/products")({
   head: () => ({
     meta: [
-      { title: "Products — Satya Power Technology's" },
+      { title: "Products — SATYA POWER TECHNOLOGY'S" },
       { name: "description", content: "Fusion splicers, OTDRs, power meters, cleavers, VFLs, toolkits and genuine spare parts from INNO, Fujikura, Sumitomo and more." },
     ],
   }),
