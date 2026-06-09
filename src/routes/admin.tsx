@@ -96,6 +96,8 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
     { id: "settings", label: "Settings", icon: SettingsIcon },
   ];
 
+  const active = tabs.find((t) => t.id === tab);
+
   return (
     <div className="min-h-screen bg-muted/30">
       {!isFirebaseConfigured() && (
@@ -104,29 +106,57 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
           Demo mode — Firebase isn't configured, changes won't persist. Update <code className="font-mono bg-black/20 px-1">src/lib/firebase.ts</code> to go live.
         </div>
       )}
-      <div className="mx-auto max-w-7xl container-px py-8 grid lg:grid-cols-[240px_1fr] gap-8">
-        <aside className="bg-white border border-border self-start">
-          <div className="p-5 border-b border-border">
-            <div className="text-[10px] font-bold tracking-[0.2em] text-brand-red">ADMIN</div>
-            <div className="text-sm font-bold text-brand-black truncate mt-1">{email || "Demo user"}</div>
+
+      {/* Top bar */}
+      <header className="sticky top-0 z-30 bg-white border-b border-border">
+        <div className="mx-auto max-w-7xl container-px h-16 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <Logo />
+            <span className="hidden sm:inline-block text-[10px] font-bold tracking-[0.2em] text-white bg-brand-red px-2 py-1">ADMIN</span>
           </div>
-          <nav className="flex lg:flex-col overflow-x-auto">
-            {tabs.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => setTab(t.id)}
-                className={`flex items-center gap-3 px-5 py-3 text-sm font-semibold transition whitespace-nowrap ${tab === t.id ? "bg-brand-red text-white" : "hover:bg-muted text-brand-black"}`}
-              >
-                <t.icon className="h-4 w-4" /> {t.label}
-              </button>
-            ))}
-            <button onClick={onLogout} className="flex items-center gap-3 px-5 py-3 text-sm font-semibold text-brand-black hover:bg-muted border-t border-border mt-auto">
-              <LogOut className="h-4 w-4" /> Sign out
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:block text-right leading-tight">
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Signed in</div>
+              <div className="text-xs font-bold text-brand-black truncate max-w-[200px]">{email || "Demo user"}</div>
+            </div>
+            <button onClick={onLogout} className="inline-flex items-center gap-2 border border-border px-3 py-2 text-xs font-bold hover:border-brand-red hover:text-brand-red transition">
+              <LogOut className="h-3.5 w-3.5" /> Sign out
             </button>
+          </div>
+        </div>
+      </header>
+
+      <div className="mx-auto max-w-7xl container-px py-6 lg:py-8 grid lg:grid-cols-[220px_1fr] gap-6 lg:gap-8">
+        {/* Sidebar */}
+        <aside className="lg:sticky lg:top-20 self-start">
+          <nav className="bg-white border border-border flex lg:flex-col overflow-x-auto lg:overflow-visible">
+            {tabs.map((t) => {
+              const isActive = tab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  className={`relative flex items-center gap-3 px-4 py-3 text-sm font-semibold transition whitespace-nowrap border-l-2 ${
+                    isActive
+                      ? "bg-brand-red/5 text-brand-red border-brand-red"
+                      : "text-brand-black border-transparent hover:bg-muted hover:border-border"
+                  }`}
+                >
+                  <t.icon className="h-4 w-4 shrink-0" />
+                  <span>{t.label}</span>
+                </button>
+              );
+            })}
           </nav>
         </aside>
 
-        <section>
+        {/* Main */}
+        <section className="min-w-0">
+          <div className="mb-6 flex items-center gap-2 text-xs text-muted-foreground">
+            <span>Admin</span>
+            <span>/</span>
+            <span className="font-bold text-brand-black uppercase tracking-wider">{active?.label}</span>
+          </div>
           {tab === "dashboard" && <DashboardOverview products={products} inquiries={inquiries} onTab={setTab} />}
           {tab === "products" && <ProductsManager products={products} save={save} remove={remove} uploadImage={uploadImage} />}
           {tab === "inquiries" && <InquiriesManager inquiries={inquiries} updateStatus={updateStatus} remove={removeInquiry} />}
