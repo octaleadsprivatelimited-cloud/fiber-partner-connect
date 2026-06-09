@@ -64,10 +64,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Fujitomo Electronics — Fiber Optic Solutions | INNO Authorized Distributor" },
+      { title: "Satya Power Technology's — Fiber Optic Solutions | INNO Authorized Distributor" },
       { name: "description", content: "Authorized INNO distributor for AP & Telangana. Sales + service of fiber optic fusion splicers, OTDRs, power meters, cleavers and spare parts." },
-      { name: "author", content: "Fujitomo Electronics" },
-      { property: "og:title", content: "Fujitomo Electronics — Fiber Optic Solutions" },
+      { name: "author", content: "Satya Power Technology's" },
+      { property: "og:title", content: "Satya Power Technology's — Fiber Optic Solutions" },
       { property: "og:description", content: "Your trusted partner for fiber optic equipment in Andhra Pradesh & Telangana." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

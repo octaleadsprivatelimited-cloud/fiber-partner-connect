@@ -10,7 +10,7 @@ import { PRODUCTS } from "@/lib/products";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Fujitomo Electronics — INNO Authorized Distributor for AP & Telangana" },
+      { title: "Satya Power Technology's — INNO Authorized Distributor for AP & Telangana" },
       { name: "description", content: "Premium fiber optic equipment — fusion splicers, OTDRs, power meters & service across Andhra Pradesh and Telangana." },
     ],
   }),

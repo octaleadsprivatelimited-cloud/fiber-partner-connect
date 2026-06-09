@@ -419,7 +419,7 @@ function SettingsManager() {
       <h1 className="text-3xl font-black text-brand-black">Settings</h1>
       <div className="bg-white border border-border p-6 max-w-2xl">
         <h2 className="font-black text-brand-black">Product Image Watermark</h2>
-        <p className="text-sm text-muted-foreground mt-1">Overlay the Fujitomo logo and phone number on product images.</p>
+        <p className="text-sm text-muted-foreground mt-1">Overlay the company logo and phone number on product images.</p>
         <label className="flex items-center gap-3 mt-5 cursor-pointer">
           <input type="checkbox" checked={watermarkEnabled} onChange={(e) => persist(e.target.checked)} className="h-5 w-5 accent-brand-red" />
           <span className="font-bold">Enable watermark overlay</span>
