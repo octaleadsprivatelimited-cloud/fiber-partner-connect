@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Wrench, Gauge, ClipboardCheck, MapPin, Package, Headphones, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { CTABanner } from "@/components/CTABanner";
+import { submitInquiry } from "@/lib/admin-data";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -29,8 +30,13 @@ interface Form { name: string; phone: string; equipment: string; issue: string; 
 function ServicesPage() {
   const [sent, setSent] = useState(false);
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Form>();
-  const onSubmit = (data: Form) => {
-    console.log("Service request:", data); // TODO: save to Firestore once configured
+  const onSubmit = async (data: Form) => {
+    try {
+      await submitInquiry({
+        name: data.name, phone: data.phone,
+        subject: `Service: ${data.equipment}`, message: data.issue,
+      });
+    } catch (e) { console.error(e); }
     setSent(true);
     reset();
     setTimeout(() => setSent(false), 5000);

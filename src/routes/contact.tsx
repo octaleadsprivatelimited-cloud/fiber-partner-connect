@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Phone, Mail, MapPin, MessageCircle, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { SITE, whatsappLink } from "@/lib/site";
+import { submitInquiry } from "@/lib/admin-data";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -19,8 +20,8 @@ interface Form { name: string; email: string; phone: string; subject: string; me
 function ContactPage() {
   const [sent, setSent] = useState(false);
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Form>();
-  const onSubmit = (data: Form) => {
-    console.log("Contact form:", data); // TODO: save to Firestore once configured
+  const onSubmit = async (data: Form) => {
+    try { await submitInquiry(data); } catch (e) { console.error(e); }
     setSent(true);
     reset();
     setTimeout(() => setSent(false), 5000);
