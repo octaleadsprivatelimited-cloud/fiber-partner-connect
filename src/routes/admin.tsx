@@ -564,60 +564,192 @@ function InquiriesManager({ inquiries, updateStatus, remove }: {
   );
 }
 
-/* ============ Brands manager (lightweight) ============ */
+/* ============ Brands manager (grid) ============ */
+interface BrandItem { name: string; description: string; logo?: string }
 function BrandsManager() {
   const KEY = "admin-brand-descriptions";
-  const [items, setItems] = useState<{ name: string; description: string }[]>([]);
+  const [items, setItems] = useState<BrandItem[]>([]);
+  const [editing, setEditing] = useState<{ index: number; item: BrandItem } | null>(null);
+  const [adding, setAdding] = useState(false);
+
   useEffect(() => {
     const raw = typeof localStorage !== "undefined" ? localStorage.getItem(KEY) : null;
     setItems(raw ? JSON.parse(raw) : BRANDS.map((b) => ({ name: b, description: "" })));
   }, []);
-  const update = (i: number, description: string) => {
-    const next = items.map((it, idx) => idx === i ? { ...it, description } : it);
-    setItems(next); localStorage.setItem(KEY, JSON.stringify(next));
+
+  const persist = (next: BrandItem[]) => {
+    setItems(next);
+    localStorage.setItem(KEY, JSON.stringify(next));
   };
+  const saveItem = (i: number, item: BrandItem) => {
+    persist(i === -1 ? [...items, item] : items.map((it, idx) => idx === i ? item : it));
+    setEditing(null); setAdding(false);
+  };
+  const removeItem = (i: number) => {
+    if (!confirm(`Delete brand "${items[i].name}"?`)) return;
+    persist(items.filter((_, idx) => idx !== i));
+  };
+
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-black text-brand-black">Brands</h1>
-      <p className="text-sm text-muted-foreground">Edit each brand's description. Logo uploads will sync to Firebase Storage once configured.</p>
-      <div className="space-y-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-black text-brand-black">Brands</h1>
+          <p className="text-sm text-muted-foreground mt-1">Manage brand logos and descriptions shown on the public Brands page.</p>
+        </div>
+        <button onClick={() => setAdding(true)} className="inline-flex items-center gap-2 bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white font-bold px-4 py-2.5 rounded-md hover:opacity-90 transition">
+          <Plus className="h-4 w-4" /> Add Brand
+        </button>
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((it, i) => (
-          <div key={it.name} className="bg-white border border-border p-5">
-            <div className="font-black text-brand-black text-lg">{it.name}</div>
-            <textarea
-              value={it.description}
-              onChange={(e) => update(i, e.target.value)}
-              placeholder="Short brand description shown on the Brands page"
-              rows={2}
-              className="mt-2 w-full border border-input px-3 py-2 text-sm focus:outline-none focus:border-brand-red"
-            />
+          <div key={it.name + i} className="group bg-white rounded-xl border border-border p-5 flex flex-col hover:shadow-lg hover:-translate-y-0.5 transition">
+            <div className="flex items-start gap-3">
+              <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-violet-100 to-fuchsia-100 grid place-items-center overflow-hidden shrink-0 border border-border">
+                {it.logo
+                  ? <img src={it.logo} alt={it.name} className="h-full w-full object-contain p-1" />
+                  : <span className="font-black text-violet-700 text-lg">{it.name[0]}</span>}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="font-black text-brand-black text-lg truncate">{it.name}</div>
+                <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Brand</div>
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground mt-3 line-clamp-3 flex-1 min-h-[3.75rem]">
+              {it.description || <span className="italic text-muted-foreground/70">No description yet.</span>}
+            </p>
+            <div className="flex gap-2 mt-4 pt-4 border-t border-border">
+              <button onClick={() => setEditing({ index: i, item: it })} className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:border-violet-500 hover:text-violet-700 transition">
+                <Pencil className="h-3.5 w-3.5" /> Edit
+              </button>
+              <button onClick={() => removeItem(i)} className="inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:bg-brand-red hover:border-brand-red hover:text-white transition">
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
+            </div>
           </div>
         ))}
       </div>
+
+      <AnimatePresence>
+        {(editing || adding) && (
+          <BrandEditor
+            initial={editing?.item ?? { name: "", description: "", logo: "" }}
+            isNew={adding}
+            onClose={() => { setEditing(null); setAdding(false); }}
+            onSave={(item) => saveItem(editing?.index ?? -1, item)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
+function BrandEditor({ initial, isNew, onClose, onSave }: { initial: BrandItem; isNew: boolean; onClose: () => void; onSave: (item: BrandItem) => void }) {
+  const [form, setForm] = useState<BrandItem>(initial);
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+      <motion.div initial={{ scale: 0.95, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 10 }} className="bg-white w-full max-w-lg rounded-xl overflow-hidden">
+        <div className="p-5 border-b border-border flex items-center justify-between">
+          <h2 className="text-xl font-black text-brand-black">{isNew ? "Add Brand" : "Edit Brand"}</h2>
+          <button onClick={onClose} className="p-2 hover:bg-muted rounded"><X className="h-4 w-4" /></button>
+        </div>
+        <div className="p-5 space-y-4">
+          <Field label="Brand Name">
+            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" />
+          </Field>
+          <Field label="Description">
+            <textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" />
+          </Field>
+          <Field label="Logo URL (optional)">
+            <input value={form.logo ?? ""} onChange={(e) => setForm({ ...form, logo: e.target.value })} placeholder="https://…" className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" />
+          </Field>
+          <div className="flex gap-3 pt-2">
+            <button onClick={onClose} className="flex-1 border border-border font-bold py-2.5 rounded hover:bg-muted">Cancel</button>
+            <button onClick={() => form.name.trim() && onSave(form)} className="flex-1 bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white font-bold py-2.5 rounded hover:opacity-90">Save</button>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 /* ============ Settings ============ */
+interface CompanyInfo {
+  name: string; tagline: string; phone: string; phoneAlt: string; email: string;
+  address: string; gstin: string; founded: string; ceo: string; website: string;
+}
+const COMPANY_KEY = "admin-company-info";
+const defaultCompany = (): CompanyInfo => ({
+  name: SITE.name, tagline: SITE.tagline, phone: SITE.phone, phoneAlt: SITE.phoneAlt,
+  email: SITE.email, address: SITE.address, gstin: SITE.gstin,
+  founded: String(SITE.founded), ceo: SITE.ceo, website: SITE.website,
+});
+
 function SettingsManager() {
   const [watermarkEnabled, setWE] = useState(true);
   const [saved, setSaved] = useState(false);
-  useEffect(() => { getSettings().then((s) => setWE(s.watermarkEnabled)); }, []);
-  const persist = async (v: boolean) => {
+  const [company, setCompany] = useState<CompanyInfo>(defaultCompany);
+  const [companySaved, setCompanySaved] = useState(false);
+
+  useEffect(() => {
+    getSettings().then((s) => setWE(s.watermarkEnabled));
+    const raw = typeof localStorage !== "undefined" ? localStorage.getItem(COMPANY_KEY) : null;
+    if (raw) { try { setCompany({ ...defaultCompany(), ...JSON.parse(raw) }); } catch {} }
+  }, []);
+
+  const persistWM = async (v: boolean) => {
     setWE(v); await saveSettings({ watermarkEnabled: v });
     setSaved(true); setTimeout(() => setSaved(false), 1500);
   };
+  const saveCompany = () => {
+    localStorage.setItem(COMPANY_KEY, JSON.stringify(company));
+    setCompanySaved(true); setTimeout(() => setCompanySaved(false), 1800);
+  };
+  const set = <K extends keyof CompanyInfo>(k: K, v: CompanyInfo[K]) => setCompany((c) => ({ ...c, [k]: v }));
+
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-black text-brand-black">Settings</h1>
-      <div className="bg-white border border-border p-6 max-w-2xl">
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-black text-brand-black">Settings</h1>
+        <p className="text-sm text-muted-foreground mt-1">Manage company information and store preferences.</p>
+      </div>
+
+      {/* Company details */}
+      <div className="bg-white rounded-xl border border-border">
+        <div className="p-5 border-b border-border">
+          <h2 className="font-black text-brand-black">Company Information</h2>
+          <p className="text-sm text-muted-foreground mt-1">Contact details and business profile shown across the site.</p>
+        </div>
+        <div className="p-5 grid sm:grid-cols-2 gap-4">
+          <Field label="Company Name"><input value={company.name} onChange={(e) => set("name", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
+          <Field label="Tagline / Slogan"><input value={company.tagline} onChange={(e) => set("tagline", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
+          <Field label="Primary Phone"><input value={company.phone} onChange={(e) => set("phone", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
+          <Field label="Alternate Phone"><input value={company.phoneAlt} onChange={(e) => set("phoneAlt", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
+          <Field label="Email"><input type="email" value={company.email} onChange={(e) => set("email", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
+          <Field label="Website"><input value={company.website} onChange={(e) => set("website", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
+          <Field label="GSTIN"><input value={company.gstin} onChange={(e) => set("gstin", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
+          <Field label="Founded Year"><input value={company.founded} onChange={(e) => set("founded", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
+          <Field label="CEO / Owner"><input value={company.ceo} onChange={(e) => set("ceo", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
+          <div className="sm:col-span-2">
+            <Field label="Address"><textarea rows={3} value={company.address} onChange={(e) => set("address", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
+          </div>
+          <div className="sm:col-span-2 flex items-center gap-3 pt-2">
+            <button onClick={saveCompany} className="bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white font-bold px-5 py-2.5 rounded hover:opacity-90">Save Changes</button>
+            {companySaved && <span className="text-xs font-bold text-emerald-600">Saved ✓</span>}
+          </div>
+        </div>
+      </div>
+
+      {/* Watermark */}
+      <div className="bg-white rounded-xl border border-border p-6 max-w-2xl">
         <h2 className="font-black text-brand-black">Product Image Watermark</h2>
         <p className="text-sm text-muted-foreground mt-1">Overlay the company logo and phone number on product images.</p>
         <label className="flex items-center gap-3 mt-5 cursor-pointer">
-          <input type="checkbox" checked={watermarkEnabled} onChange={(e) => persist(e.target.checked)} className="h-5 w-5 accent-brand-red" />
+          <input type="checkbox" checked={watermarkEnabled} onChange={(e) => persistWM(e.target.checked)} className="h-5 w-5 accent-violet-600" />
           <span className="font-bold">Enable watermark overlay</span>
         </label>
-        {saved && <div className="mt-3 text-xs text-brand-red font-bold">Saved ✓</div>}
+        {saved && <div className="mt-3 text-xs text-emerald-600 font-bold">Saved ✓</div>}
       </div>
     </div>
   );
