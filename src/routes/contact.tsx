@@ -8,8 +8,8 @@ import { submitInquiry } from "@/lib/admin-data";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Satya Power Technology's" },
-      { name: "description", content: "Contact Satya Power Technology's for fiber optic equipment sales, service and quotes across Andhra Pradesh & Telangana." },
+      { title: "Contact — SATYA POWER TECHNOLOGY'S" },
+      { name: "description", content: "Contact SATYA POWER TECHNOLOGY'S for fiber optic equipment sales, service and quotes across Andhra Pradesh & Telangana." },
     ],
   }),
   component: ContactPage,

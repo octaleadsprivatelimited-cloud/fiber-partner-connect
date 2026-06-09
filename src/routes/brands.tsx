@@ -6,7 +6,7 @@ import { CTABanner } from "@/components/CTABanner";
 export const Route = createFileRoute("/brands")({
   head: () => ({
     meta: [
-      { title: "Brands — Satya Power Technology's" },
+      { title: "Brands — SATYA POWER TECHNOLOGY'S" },
       { name: "description", content: "Authorized INNO distributor plus Fujikura, Sumitomo, Grandway, EXFO, VIAVI and Fiberfox fiber optic equipment." },
     ],
   }),
@@ -41,7 +41,7 @@ function BrandsPage() {
             </div>
             <h2 className="text-5xl md:text-7xl font-black">INNO</h2>
             <p className="mt-4 text-lg text-white/90 max-w-lg">
-              Satya Power Technology's is the <strong>authorized distributor of INNO Instrument</strong> for Andhra Pradesh & Telangana — covering full sales, service and warranty support.
+              SATYA POWER TECHNOLOGY'S is the <strong>authorized distributor of INNO Instrument</strong> for Andhra Pradesh & Telangana — covering full sales, service and warranty support.
             </p>
             <ul className="mt-6 space-y-2 text-white/90">
               <li>✓ View 7 / View 5 / View 3 fusion splicers</li>

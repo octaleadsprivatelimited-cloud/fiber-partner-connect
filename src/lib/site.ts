@@ -1,5 +1,5 @@
 export const SITE = {
-  name: "Satya Power Technology's",
+  name: "SATYA POWER TECHNOLOGY'S",
   tagline: "Service first, Sales next",
   phone: "+91 95428 40444",
   phoneAlt: "+91 86881 51526",
@@ -11,7 +11,7 @@ export const SITE = {
   founded: 2013,
   ceo: "Mr. Deepak Singh",
   website: "www.satyapowertechnologys.in",
-  whatsappMsg: "Hello Satya Power Technology's, I'd like a quote.",
+  whatsappMsg: "Hello SATYA POWER TECHNOLOGY'S, I'd like a quote.",
 };
 
 export const whatsappLink = (msg = SITE.whatsappMsg) =>
