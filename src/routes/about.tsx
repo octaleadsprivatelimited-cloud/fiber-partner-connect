@@ -7,15 +7,15 @@ import { SITE } from "@/lib/site";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — Fujitomo Electronics" },
-      { name: "description", content: "Founded in 2023 by Mr. Deepak Singh, Fujitomo Electronics is the authorized INNO distributor for AP & Telangana." },
+      { title: "About — Satya Power Technology's" },
+      { name: "description", content: "Founded in 2013 by Mr. Deepak Singh, Satya Power Technology's is the authorized INNO distributor for AP & Telangana." },
     ],
   }),
   component: AboutPage,
 });
 
 const timeline = [
-  { year: "2023", title: "Founded", body: "Fujitomo Electronics established under the leadership of Mr. Deepak Singh." },
+  { year: "2013", title: "Founded", body: "Satya Power Technology's established under the leadership of Mr. Deepak Singh." },
   { year: "2024", title: "Authorized INNO Distributor", body: "Awarded official distribution rights for INNO Instrument across AP & Telangana." },
   { year: "2024", title: "Service Center Launched", body: "In-house repair and calibration facility opened — the only authorized one in region." },
   { year: "2025", title: "Expanding Catalogue", body: "Added Fujikura, Sumitomo, Grandway, EXFO, VIAVI and Fiberfox to the brand portfolio." },
@@ -58,7 +58,7 @@ function AboutPage() {
             <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">LEADERSHIP</div>
             <h2 className="text-3xl md:text-5xl font-black">{SITE.ceo}</h2>
             <div className="text-white/60 font-semibold mt-1">Founder & CEO</div>
-            <p className="mt-5 text-white/80 max-w-2xl">A telecom industry veteran, Mr. Deepak Singh founded Fujitomo Electronics in 2023 with a simple belief: customers deserve more than a sale — they deserve genuine service. Under his leadership, Fujitomo became the authorized INNO distributor for both states and the only in-region authorized service center.</p>
+            <p className="mt-5 text-white/80 max-w-2xl">A telecom industry veteran, Mr. Deepak Singh founded Satya Power Technology's in 2013 with a simple belief: customers deserve more than a sale — they deserve genuine service. Under his leadership, the company became the authorized INNO distributor for both states and the only in-region authorized service center.</p>
           </div>
         </div>
       </section>
