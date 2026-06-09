@@ -1,0 +1,127 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useForm } from "react-hook-form";
+import { motion } from "framer-motion";
+import { Wrench, Gauge, ClipboardCheck, MapPin, Package, Headphones, CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import { CTABanner } from "@/components/CTABanner";
+
+export const Route = createFileRoute("/services")({
+  head: () => ({
+    meta: [
+      { title: "Services — Fujitomo Electronics | Fusion Splicer Repair & OTDR Calibration" },
+      { name: "description", content: "Authorized service center for fiber optic equipment across AP & Telangana — splicer repair, OTDR calibration, on-site support and genuine spares." },
+    ],
+  }),
+  component: ServicesPage,
+});
+
+const services = [
+  { icon: Wrench, t: "Fusion Splicer Repair", d: "Full diagnostics and repair for INNO, Fujikura, Sumitomo and other splicers." },
+  { icon: Gauge, t: "OTDR Calibration", d: "Precision calibration to manufacturer specifications with certificate." },
+  { icon: ClipboardCheck, t: "Preventive Maintenance", d: "Scheduled maintenance contracts keep your fleet field-ready." },
+  { icon: Headphones, t: "On-Site Support", d: "Engineers dispatched across AP & Telangana for urgent issues." },
+  { icon: Package, t: "Spare Parts Supply", d: "Electrodes, blades, heaters, motors, LCD displays and more in stock." },
+  { icon: MapPin, t: "Pan-Region Coverage", d: "Service hubs covering Hyderabad, Vijayawada, Visakhapatnam and beyond." },
+];
+
+interface Form { name: string; phone: string; equipment: string; issue: string; }
+
+function ServicesPage() {
+  const [sent, setSent] = useState(false);
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<Form>();
+  const onSubmit = (data: Form) => {
+    console.log("Service request:", data); // TODO: save to Firestore once configured
+    setSent(true);
+    reset();
+    setTimeout(() => setSent(false), 5000);
+  };
+
+  return (
+    <>
+      <section className="bg-brand-black text-white py-20 border-b-4 border-brand-red relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_50%,#E32028_0%,transparent_50%)]" />
+        <div className="mx-auto max-w-7xl container-px relative">
+          <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">OUR DIFFERENTIATOR</div>
+          <h1 className="text-4xl md:text-7xl font-black max-w-3xl">We Don't Just Sell — <span className="text-brand-red">We Service.</span></h1>
+          <p className="mt-5 text-lg text-white/80 max-w-2xl">Competitors stop at the sale. We go further — providing authorized repair, calibration and on-site support for every product we deliver.</p>
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="mx-auto max-w-7xl container-px">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {services.map((s, i) => (
+              <motion.div
+                key={s.t}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                className="bg-white border border-border p-7 hover:border-brand-red transition group"
+              >
+                <div className="h-12 w-12 bg-brand-red text-white flex items-center justify-center mb-4 group-hover:bg-brand-black transition">
+                  <s.icon className="h-6 w-6" />
+                </div>
+                <h3 className="text-lg font-bold text-brand-black">{s.t}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-muted/30">
+        <div className="mx-auto max-w-7xl container-px grid lg:grid-cols-2 gap-12 items-start">
+          <div>
+            <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">COVERAGE</div>
+            <h2 className="text-3xl md:text-5xl font-black text-brand-black">Service across Andhra Pradesh & Telangana</h2>
+            <p className="mt-4 text-muted-foreground">Our authorized service network reaches every major city and industrial hub. Typical turnaround: 48 hours for diagnosis, same-week resolution.</p>
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              {["Hyderabad", "Vijayawada", "Visakhapatnam", "Warangal", "Guntur", "Tirupati", "Nellore", "Kakinada"].map((c) => (
+                <div key={c} className="bg-white border-l-4 border-brand-red px-4 py-3 font-semibold text-sm">{c}</div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-white p-7 border border-border">
+            <h3 className="text-2xl font-black text-brand-black">Book a Service</h3>
+            <p className="text-sm text-muted-foreground mt-1">Tell us about your equipment — we'll get back within hours.</p>
+            {sent ? (
+              <div className="mt-6 bg-brand-red/10 border border-brand-red p-5 flex items-start gap-3">
+                <CheckCircle2 className="h-5 w-5 text-brand-red shrink-0 mt-0.5" />
+                <div><div className="font-bold text-brand-red">Request received</div><div className="text-sm text-muted-foreground">Our team will contact you shortly.</div></div>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-4">
+                <Field label="Your name" error={errors.name?.message}>
+                  <input {...register("name", { required: "Required" })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+                </Field>
+                <Field label="Phone" error={errors.phone?.message}>
+                  <input {...register("phone", { required: "Required", pattern: { value: /^[0-9+\s-]{8,}$/, message: "Invalid phone" } })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+                </Field>
+                <Field label="Equipment (brand + model)" error={errors.equipment?.message}>
+                  <input {...register("equipment", { required: "Required" })} placeholder="e.g. INNO View 7" className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+                </Field>
+                <Field label="Issue / service required" error={errors.issue?.message}>
+                  <textarea rows={3} {...register("issue", { required: "Required", maxLength: { value: 1000, message: "Max 1000 chars" } })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+                </Field>
+                <button type="submit" className="w-full bg-brand-red text-white font-bold py-3 hover:bg-brand-red-dark transition">Submit Request</button>
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+      <CTABanner />
+    </>
+  );
+}
+
+function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+  return (
+    <label className="block">
+      <span className="text-xs font-bold uppercase tracking-wider text-brand-black">{label}</span>
+      <div className="mt-1.5">{children}</div>
+      {error && <span className="text-xs text-brand-red mt-1 block">{error}</span>}
+    </label>
+  );
+}
