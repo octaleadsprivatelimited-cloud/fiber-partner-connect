@@ -46,7 +46,7 @@
   --card-foreground: oklch(0.15 0.01 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.15 0.01 0);
-  --primary: oklch(0.58 0.22 27);
+  --primary: oklch(0.36 0.09 255);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.18 0.01 0);
   --secondary-foreground: oklch(1 0 0);
@@ -58,11 +58,11 @@
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.92 0.005 0);
   --input: oklch(0.92 0.005 0);
-  --ring: oklch(0.58 0.22 27);
+  --ring: oklch(0.36 0.09 255);
 
-  /* Brand — from Satya Power Technologys logo */
-  --brand-red: oklch(0.58 0.22 27);        /* #E32028 logo red */
-  --brand-red-dark: oklch(0.48 0.19 27);
+  /* Brand — Satya Power Technologys */
+  --brand-red: oklch(0.36 0.09 255);       /* now deep navy — alias kept for compatibility */
+  --brand-red-dark: oklch(0.28 0.08 255);  /* darker navy */
   --brand-black: oklch(0.18 0.005 0);      /* #111111 */
   --brand-yellow: oklch(0.86 0.17 90);     /* #F5C518 bulb yellow */
   --brand-orange: oklch(0.72 0.18 50);     /* #F08A2C accent orange */
