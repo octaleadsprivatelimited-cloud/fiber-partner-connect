@@ -82,75 +82,36 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* CEO */}
-      <section className="py-20 bg-brand-black text-white relative overflow-hidden">
-        <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-brand-red/20 blur-3xl" />
-        <div className="relative mx-auto max-w-6xl container-px grid md:grid-cols-[260px_1fr] gap-10 items-center">
-          <div className="relative mx-auto md:mx-0">
-            <div className="aspect-square w-60 rounded-2xl bg-gradient-to-br from-brand-red via-brand-red-dark to-brand-black flex items-center justify-center shadow-2xl ring-4 ring-white/5">
-              <div className="text-7xl font-black leading-none tracking-tight">DS</div>
-            </div>
-            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-brand-yellow text-brand-black text-[10px] font-black tracking-[0.2em] px-3 py-1.5 rounded-full whitespace-nowrap">
-              FOUNDER · CEO
-            </div>
-          </div>
-          <div>
-            <Quote className="h-8 w-8 text-brand-red mb-3" />
-            <p className="text-lg md:text-2xl font-semibold leading-relaxed text-white/90 italic">
-              "Customers deserve more than a sale — they deserve genuine service. That belief built this company."
-            </p>
-            <div className="mt-6 pt-5 border-t border-white/10">
-              <div className="text-2xl md:text-3xl font-black">{SITE.ceo}</div>
-              <div className="text-white/60 text-sm font-semibold mt-1">Founder & CEO · SATYA POWER TECHNOLOGY'S</div>
-              <p className="mt-4 text-white/70 text-sm md:text-base max-w-2xl leading-relaxed">
-                A telecom industry veteran, Mr. Deepak Singh founded the company in 2013. Under his leadership it became the authorized INNO distributor for both states and the only in-region authorized service center.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Timeline */}
-      <section className="py-20">
-        <div className="mx-auto max-w-5xl container-px">
-          <div className="max-w-xl mb-12">
+      <section className="py-20 bg-muted/40">
+        <div className="mx-auto max-w-7xl container-px">
+          <div className="text-center max-w-2xl mx-auto mb-12">
             <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-2">MILESTONES</div>
             <h2 className="text-3xl md:text-5xl font-black text-brand-black">Our Journey</h2>
           </div>
 
-          <div className="relative">
-            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-brand-red via-border to-transparent md:-translate-x-1/2" />
-            <div className="space-y-8">
-              {timeline.map((t, i) => {
-                const left = i % 2 === 0;
-                return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.08 }}
-                    className={`relative md:grid md:grid-cols-2 md:gap-10 ${left ? "" : "md:[&>*:first-child]:order-2"}`}
-                  >
-                    <div className={`pl-12 md:pl-0 ${left ? "md:text-right md:pr-10" : "md:pl-10"}`}>
-                      <div className="bg-white border border-border rounded-xl p-5 hover:border-brand-red hover:shadow-lg transition inline-block">
-                        <div className="flex items-center gap-2 text-brand-red text-sm font-bold">
-                          <Calendar className="h-4 w-4" /> {t.year}
-                        </div>
-                        <div className="text-xl font-black text-brand-black mt-2">{t.title}</div>
-                        <p className="text-muted-foreground text-sm mt-2 max-w-md">{t.body}</p>
-                      </div>
-                    </div>
-                    <div className="hidden md:block" />
-                    <div className="absolute left-4 md:left-1/2 top-5 -translate-x-1/2 h-4 w-4 rounded-full bg-brand-red ring-4 ring-background" />
-                  </motion.div>
-                );
-              })}
-            </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {timeline.map((t, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="bg-white border border-border rounded-xl p-6 hover:border-brand-red hover:shadow-lg transition"
+              >
+                <div className="flex items-center gap-2 text-brand-red text-sm font-bold">
+                  <Calendar className="h-4 w-4" /> {t.year}
+                </div>
+                <div className="text-xl font-black text-brand-black mt-3">{t.title}</div>
+                <p className="text-muted-foreground text-sm mt-2">{t.body}</p>
+              </motion.div>
+            ))}
           </div>
 
           {/* Location card */}
-          <div className="mt-16 rounded-2xl bg-gradient-to-r from-primary to-primary/80 text-white p-8 md:p-10 flex flex-col md:flex-row md:items-center gap-6 justify-between">
+          <div className="mt-12 rounded-2xl bg-gradient-to-r from-primary to-primary/80 text-white p-8 md:p-10 flex flex-col md:flex-row md:items-center gap-6 justify-between">
             <div className="flex items-start gap-4">
               <MapPin className="h-8 w-8 text-brand-yellow shrink-0" />
               <div>
