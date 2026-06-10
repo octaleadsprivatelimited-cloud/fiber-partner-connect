@@ -213,7 +213,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
             {tab === "services" && <ServicesManager />}
             {tab === "inquiries" && <InquiriesManager inquiries={inquiries} updateStatus={updateStatus} remove={removeInquiry} />}
             {tab === "brands" && <BrandsManager />}
-            {tab === "partners" && <PartnersManager />}
+            
             {tab === "settings" && <SettingsManager />}
           </section>
         </div>
