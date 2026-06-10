@@ -1,25 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, MapPin, Wrench, Award, ShieldCheck, Headphones, Package } from "lucide-react";
-import h1 from "@/assets/hero-1.jpg";
-import h2 from "@/assets/hero-2.jpg";
-import h3 from "@/assets/hero-3.jpg";
+import heroPoster from "@/assets/hero-1.jpg";
 
 const slides = [
   {
-    img: h1,
     eyebrow: { icon: Award, text: "AUTHORIZED INNO DISTRIBUTOR" },
     title: "Fiber Optic Tools for AP & Telangana",
     body: "The only authorized INNO partner for sales AND service across both states.",
   },
   {
-    img: h2,
     eyebrow: { icon: Wrench, text: "SALES + SERVICE" },
     title: "We Don't Just Sell — We Service",
     body: "In-house repair, calibration & on-site support. Competitors only sell. We do both.",
   },
   {
-    img: h3,
     eyebrow: { icon: MapPin, text: "PREMIUM EQUIPMENT" },
     title: "Built for the Field, Trusted by Pros",
     body: "INNO, Fujikura, Sumitomo, EXFO, VIAVI, Grandway — all under one trusted roof.",
@@ -43,69 +38,63 @@ export function Hero() {
 
   return (
     <section className="relative bg-primary text-white overflow-x-hidden">
-      {/* subtle decorative wash on the right */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_40%,oklch(0.55_0.15_255/0.55),transparent_60%)]" />
+      {/* Video background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={heroPoster}
+        >
+          <source src="/hero-bg.mp4" type="video/mp4" />
+        </video>
+        {/* Lighter overlay for readability */}
+        <div className="absolute inset-0 bg-black/35" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent" />
+      </div>
 
-      <div className="relative mx-auto max-w-7xl container-px pt-10 md:pt-20 pb-28 md:pb-44">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center">
-          {/* LEFT: copy */}
-          <div>
-            <div className="min-h-[150px] sm:min-h-[168px] md:min-h-0">
-              <div className="inline-flex items-center gap-2 mb-4">
-                <Eyebrow className="h-3.5 w-3.5 text-white/80" />
-                <span className="text-[10px] md:text-[11px] font-bold tracking-[0.22em] text-white/80">{s.eyebrow.text}</span>
-              </div>
-              <h1 className="text-[26px] sm:text-4xl md:text-5xl font-black leading-[1.1] text-white max-w-xl">
-                {s.title}
-              </h1>
-              <p className="mt-4 text-sm sm:text-base text-white/75 max-w-lg">{s.body}</p>
-            </div>
+      <div className="relative mx-auto max-w-7xl container-px pt-16 md:pt-28 pb-28 md:pb-44">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <Eyebrow className="h-3.5 w-3.5 text-white/90" />
+            <span className="text-[10px] md:text-[11px] font-bold tracking-[0.22em] text-white/90">{s.eyebrow.text}</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black leading-[1.05] text-white">
+            {s.title}
+          </h1>
+          <p className="mt-5 text-base sm:text-lg text-white/85 max-w-2xl mx-auto">{s.body}</p>
 
-            <div className="mt-6 flex gap-3">
-              <Link
-                to="/products"
-                className="flex-1 sm:flex-none inline-flex justify-center items-center gap-2 bg-white text-primary hover:bg-white/90 px-5 py-3 rounded-md font-bold text-sm sm:text-base transition"
-              >
-                Explore Products <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/services"
-                className="flex-1 sm:flex-none inline-flex justify-center items-center gap-2 border border-white/40 hover:bg-white/10 px-5 py-3 rounded-md font-bold text-sm sm:text-base transition"
-              >
-                Our Services
-              </Link>
-            </div>
-
-            <div className="mt-6 flex items-start gap-2 text-xs sm:text-sm text-white/70">
-              <ShieldCheck className="h-4 w-4 text-brand-yellow shrink-0 mt-0.5" />
-              Authorized INNO Partner — 500+ happy customers
-            </div>
+          <div className="mt-7 flex flex-wrap gap-3 justify-center">
+            <Link
+              to="/products"
+              className="inline-flex justify-center items-center gap-2 bg-white text-primary hover:bg-white/90 px-6 py-3 rounded-md font-bold text-sm sm:text-base transition"
+            >
+              Explore Products <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to="/services"
+              className="inline-flex justify-center items-center gap-2 border border-white/50 hover:bg-white/10 px-6 py-3 rounded-md font-bold text-sm sm:text-base transition"
+            >
+              Our Services
+            </Link>
           </div>
 
-          {/* RIGHT: image */}
-          <div className="relative hidden md:block">
-            <div className="relative aspect-[16/10] sm:aspect-[5/4] rounded-xl sm:rounded-2xl overflow-hidden">
-              <img
-                key={i}
-                src={s.img}
-                alt=""
-                width={900}
-                height={720}
-                className="absolute inset-0 h-full w-full object-cover animate-in fade-in zoom-in-105 duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/40 via-transparent to-transparent" />
-            </div>
+          <div className="mt-6 flex items-center justify-center gap-2 text-xs sm:text-sm text-white/80">
+            <ShieldCheck className="h-4 w-4 text-brand-yellow shrink-0" />
+            Authorized INNO Partner — 500+ happy customers
           </div>
         </div>
 
         {/* slide indicators */}
-        <div className="mt-10 flex gap-2">
+        <div className="mt-10 flex gap-2 justify-center">
           {slides.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setI(idx)}
               aria-label={`Slide ${idx + 1}`}
-              className={`h-1 rounded-full transition-all ${idx === i ? "w-12 bg-white" : "w-6 bg-white/30"}`}
+              className={`h-1 rounded-full transition-all ${idx === i ? "w-12 bg-white" : "w-6 bg-white/40"}`}
             />
           ))}
         </div>
@@ -134,7 +123,6 @@ export function Hero() {
         </div>
       </div>
 
-      {/* spacer so following sections clear the overlapping cards */}
       <div className="h-16 md:h-20 bg-background" />
     </section>
   );
