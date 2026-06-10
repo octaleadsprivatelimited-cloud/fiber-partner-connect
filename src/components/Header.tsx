@@ -19,10 +19,14 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
       {/* Top bar */}
       <div className="bg-brand-black text-white text-xs">
-        <div className="mx-auto max-w-7xl container-px flex h-8 items-center justify-between">
-          <span className="hidden sm:inline">Authorized INNO Distributor — Andhra Pradesh & Telangana</span>
-          <span className="sm:hidden">INNO Authorized — AP & TG</span>
-          <a href={`mailto:${SITE.email}`} className="hover:text-brand-red transition">{SITE.email}</a>
+        <div className="mx-auto max-w-7xl container-px flex h-9 items-center justify-between gap-3">
+          <Link to="/" className="flex items-center gap-2 shrink-0">
+            <Logo className="h-6" />
+            <span className="hidden sm:inline font-semibold tracking-wide">Satya Power Technologys</span>
+          </Link>
+          <a href={`tel:${SITE.phoneRaw}`} className="inline-flex items-center gap-1.5 font-bold hover:text-brand-red transition">
+            <Phone className="h-3.5 w-3.5" /> {SITE.phone}
+          </a>
         </div>
       </div>
       <div className="mx-auto max-w-7xl container-px flex h-16 items-center justify-between">
