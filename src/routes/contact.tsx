@@ -4,6 +4,7 @@ import { Phone, Mail, MapPin, MessageCircle, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { SITE, whatsappLink } from "@/lib/site";
 import { submitInquiry } from "@/lib/admin-data";
+import { sendToFormspree } from "@/lib/formspree";
 import { PageHero } from "@/components/PageHero";
 import bgContact from "@/assets/bg-contact.jpg";
 
@@ -23,7 +24,18 @@ function ContactPage() {
   const [sent, setSent] = useState(false);
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Form>();
   const onSubmit = async (data: Form) => {
+    // 1. Email admin via Formspree
+    await sendToFormspree({
+      _subject: `Contact: ${data.subject}`,
+      type: "Contact Form",
+      ...data,
+    });
+    // 2. Save to admin dashboard
     try { await submitInquiry(data); } catch (e) { console.error(e); }
+    // 3. Notify owner on WhatsApp
+    const msg = `*New Enquiry*%0A%0A*Name:* ${data.name}%0A*Phone:* ${data.phone}%0A*Email:* ${data.email}%0A*Subject:* ${data.subject}%0A*Message:* ${data.message}`;
+    window.open(`https://wa.me/${SITE.phoneRaw}?text=${msg}`, "_blank", "noopener,noreferrer");
+
     setSent(true);
     reset();
     setTimeout(() => setSent(false), 5000);
