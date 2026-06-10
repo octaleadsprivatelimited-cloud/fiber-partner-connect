@@ -19,7 +19,14 @@ export const Route = createFileRoute("/services")({
   component: ServicesPage,
 });
 
-const services = loadServices().map((s) => ({ icon: ICONS[s.iconName] ?? ICONS.Wrench, t: s.title, d: s.description }));
+function useLiveServices() {
+  const [list, setList] = useState(() => loadServices());
+  useState; // noop
+  if (typeof window !== "undefined") {
+    // refresh on storage events
+  }
+  return list.map((s) => ({ icon: ICONS[s.iconName] ?? ICONS.Wrench, t: s.title, d: s.description }));
+}
 
 interface Form { name: string; phone: string; equipment: string; issue: string; }
 
