@@ -62,7 +62,7 @@ export function Hero() {
             <Eyebrow className="h-3.5 w-3.5 text-white/90" />
             <span className="text-[10px] md:text-[11px] font-bold tracking-[0.22em] text-white/90">{s.eyebrow.text}</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black leading-[1.05] text-white">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black leading-[1.05] text-white">
             {s.title}
           </h1>
           <p className="mt-5 text-base sm:text-lg text-white/85 max-w-2xl mx-auto">{s.body}</p>
