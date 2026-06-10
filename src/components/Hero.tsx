@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, MapPin, Wrench, Award, ShieldCheck, Headphones, Package } from "lucide-react";
 import h1 from "@/assets/hero-1.jpg";
 import h2 from "@/assets/hero-2.jpg";
@@ -43,7 +42,7 @@ export function Hero() {
   const Eyebrow = s.eyebrow.icon;
 
   return (
-    <section className="relative bg-primary text-white overflow-hidden">
+    <section className="relative bg-primary text-white overflow-x-hidden">
       {/* subtle decorative wash on the right */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_40%,oklch(0.55_0.15_255/0.55),transparent_60%)]" />
 
@@ -51,24 +50,16 @@ export function Hero() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center">
           {/* LEFT: copy */}
           <div>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-              >
-                <div className="inline-flex items-center gap-2 mb-4">
-                  <Eyebrow className="h-3.5 w-3.5 text-white/80" />
-                  <span className="text-[10px] md:text-[11px] font-bold tracking-[0.22em] text-white/80">{s.eyebrow.text}</span>
-                </div>
-                <h1 className="text-[26px] sm:text-4xl md:text-5xl font-black leading-[1.1] text-white max-w-xl">
-                  {s.title}
-                </h1>
-                <p className="mt-4 text-sm sm:text-base text-white/75 max-w-lg">{s.body}</p>
-              </motion.div>
-            </AnimatePresence>
+            <div className="min-h-[150px] sm:min-h-[168px] md:min-h-0">
+              <div className="inline-flex items-center gap-2 mb-4">
+                <Eyebrow className="h-3.5 w-3.5 text-white/80" />
+                <span className="text-[10px] md:text-[11px] font-bold tracking-[0.22em] text-white/80">{s.eyebrow.text}</span>
+              </div>
+              <h1 className="text-[26px] sm:text-4xl md:text-5xl font-black leading-[1.1] text-white max-w-xl">
+                {s.title}
+              </h1>
+              <p className="mt-4 text-sm sm:text-base text-white/75 max-w-lg">{s.body}</p>
+            </div>
 
             <div className="mt-6 flex gap-3">
               <Link
@@ -121,21 +112,21 @@ export function Hero() {
       </div>
 
       {/* Feature cards overlapping bottom */}
-      <div className="relative -mt-24 md:-mt-28 z-10">
+      <div className="relative z-10 bg-background pt-4 md:-mt-28 md:bg-transparent md:pt-0">
         <div className="mx-auto max-w-7xl px-3 md:px-8">
-          <div className="grid grid-cols-3 gap-2 md:gap-4">
+          <div className="flex flex-col gap-3 md:grid md:grid-cols-3 md:gap-4">
             {features.map((f) => {
               const Icon = f.icon;
               return (
                 <div
                   key={f.title}
-                  className="bg-white text-brand-black rounded-lg md:rounded-xl shadow-xl p-2.5 md:p-6 border border-black/5 min-w-0"
+                  className="bg-white text-brand-black rounded-lg md:rounded-xl shadow-xl p-4 md:p-6 border border-black/5 min-w-0"
                 >
-                  <div className="h-7 w-7 md:h-10 md:w-10 rounded-md md:rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-1.5 md:mb-4">
-                    <Icon className="h-3.5 w-3.5 md:h-5 md:w-5" />
+                  <div className="h-8 w-8 md:h-10 md:w-10 rounded-md md:rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-2 md:mb-4">
+                    <Icon className="h-4 w-4 md:h-5 md:w-5" />
                   </div>
-                  <h3 className="font-bold text-[12px] leading-tight md:text-lg">{f.title}</h3>
-                  <p className="mt-1 text-[10px] md:text-sm text-brand-black/65 leading-snug md:leading-relaxed">{f.body}</p>
+                  <h3 className="font-bold text-base leading-tight md:text-lg">{f.title}</h3>
+                  <p className="mt-1.5 text-sm text-brand-black/65 leading-relaxed">{f.body}</p>
                 </div>
               );
             })}
