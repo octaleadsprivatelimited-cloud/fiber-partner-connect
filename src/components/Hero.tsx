@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, MapPin, Wrench, Award, ShieldCheck, Star } from "lucide-react";
+import { ArrowRight, MapPin, Wrench, Award, ShieldCheck, Headphones, Package } from "lucide-react";
 import h1 from "@/assets/hero-1.jpg";
 import h2 from "@/assets/hero-2.jpg";
 import h3 from "@/assets/hero-3.jpg";
@@ -9,31 +9,28 @@ import h3 from "@/assets/hero-3.jpg";
 const slides = [
   {
     img: h1,
-    eyebrow: { icon: Award, text: "AUTHORIZED DISTRIBUTOR" },
-    title: "INNO Brand —",
-    titleAccent: "AP & Telangana",
+    eyebrow: { icon: Award, text: "AUTHORIZED INNO DISTRIBUTOR" },
+    title: "Fiber Optic Tools for AP & Telangana",
     body: "The only authorized INNO partner for sales AND service across both states.",
   },
   {
     img: h2,
     eyebrow: { icon: Wrench, text: "SALES + SERVICE" },
-    title: "We Don't Just Sell —",
-    titleAccent: "We Service",
+    title: "We Don't Just Sell — We Service",
     body: "In-house repair, calibration & on-site support. Competitors only sell. We do both.",
   },
   {
     img: h3,
     eyebrow: { icon: MapPin, text: "PREMIUM EQUIPMENT" },
-    title: "Fiber Optic Tools",
-    titleAccent: "Built for the Field",
+    title: "Built for the Field, Trusted by Pros",
     body: "INNO, Fujikura, Sumitomo, EXFO, VIAVI, Grandway — all under one trusted roof.",
   },
 ];
 
-const stats = [
-  { value: "12+", label: "Years in business" },
-  { value: "2", label: "States covered" },
-  { value: "100%", label: "Authorized service" },
+const features = [
+  { icon: Package, title: "Genuine Products", body: "Authorized stock from INNO, Fujikura, Sumitomo, EXFO, VIAVI and more." },
+  { icon: Wrench, title: "Authorized Service", body: "In-house repair, calibration and certified spare parts." },
+  { icon: Headphones, title: "On-Site Support", body: "Engineers dispatched across AP & Telangana for urgent issues." },
 ];
 
 export function Hero() {
@@ -46,110 +43,114 @@ export function Hero() {
   const Eyebrow = s.eyebrow.icon;
 
   return (
-    <section className="relative bg-brand-black text-white overflow-hidden">
-      {/* Decorative background gradient */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_30%,oklch(0.36_0.09_255/0.45),transparent_55%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_70%,oklch(0.18_0.005_0)_100%)]" />
+    <section className="relative bg-primary text-white overflow-hidden">
+      {/* subtle decorative wash on the right */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_40%,oklch(0.55_0.15_255/0.55),transparent_60%)]" />
 
-      <div className="relative mx-auto max-w-7xl container-px pt-14 pb-20 md:pt-20 md:pb-28">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+      <div className="relative mx-auto max-w-7xl container-px pt-14 md:pt-20 pb-36 md:pb-44">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
           {/* LEFT: copy */}
-          <div className="lg:col-span-7">
+          <div>
             <AnimatePresence mode="wait">
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.5 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.45 }}
               >
-                <div className="inline-flex items-center gap-2 bg-primary/15 border border-primary/40 text-primary-foreground px-3 py-1.5 rounded-full mb-6">
-                  <Eyebrow className="h-3.5 w-3.5 text-primary" />
-                  <span className="text-[11px] font-bold tracking-[0.2em]">{s.eyebrow.text}</span>
+                <div className="inline-flex items-center gap-2 mb-5">
+                  <Eyebrow className="h-3.5 w-3.5 text-white/80" />
+                  <span className="text-[11px] font-bold tracking-[0.25em] text-white/80">{s.eyebrow.text}</span>
                 </div>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-[1.02]">
+                <h1 className="text-3xl md:text-5xl font-black leading-[1.1] text-white max-w-xl">
                   {s.title}
-                  <span className="block bg-gradient-to-r from-primary via-brand-yellow to-brand-orange bg-clip-text text-transparent">
-                    {s.titleAccent}
-                  </span>
                 </h1>
-                <p className="mt-6 text-base md:text-lg text-white/75 max-w-xl">{s.body}</p>
+                <p className="mt-5 text-base text-white/75 max-w-lg">{s.body}</p>
               </motion.div>
             </AnimatePresence>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 to="/products"
-                className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 px-7 py-3.5 rounded-md font-bold transition shadow-lg shadow-primary/30"
+                className="inline-flex items-center gap-2 bg-white text-primary hover:bg-white/90 px-6 py-3 rounded-md font-bold transition"
               >
                 Explore Products <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 to="/services"
-                className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/25 hover:bg-white hover:text-brand-black px-7 py-3.5 rounded-md font-bold transition"
+                className="inline-flex items-center gap-2 border border-white/40 hover:bg-white/10 px-6 py-3 rounded-md font-bold transition"
               >
                 Our Services
               </Link>
             </div>
 
-            {/* Trust strip */}
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/70">
-              <div className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-brand-yellow" /> Authorized INNO Partner</div>
-              <div className="flex items-center gap-2"><Star className="h-4 w-4 text-brand-yellow" /> 500+ happy customers</div>
+            <div className="mt-8 flex items-center gap-2 text-sm text-white/70">
+              <ShieldCheck className="h-4 w-4 text-brand-yellow" />
+              Authorized INNO Partner — 500+ happy customers
             </div>
           </div>
 
-          {/* RIGHT: framed image with floating stat */}
-          <div className="lg:col-span-5">
-            <div className="relative">
-              {/* glow */}
-              <div className="absolute -inset-4 bg-gradient-to-tr from-primary/40 via-brand-yellow/20 to-transparent blur-2xl rounded-3xl" aria-hidden />
-
-              <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-                <AnimatePresence mode="sync">
-                  <motion.img
-                    key={i}
-                    src={s.img}
-                    alt=""
-                    width={800}
-                    height={1000}
-                    initial={{ opacity: 0, scale: 1.06 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1.1, ease: "easeOut" }}
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
-                </AnimatePresence>
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-black/70 via-transparent to-transparent" />
-              </div>
-
-              {/* Floating stat card */}
-              <div className="absolute -bottom-6 -left-6 md:-left-10 bg-white text-brand-black rounded-xl shadow-2xl px-5 py-4 hidden sm:block">
-                <div className="grid grid-cols-3 gap-5">
-                  {stats.map((st) => (
-                    <div key={st.label}>
-                      <div className="text-2xl font-black text-primary">{st.value}</div>
-                      <div className="text-[10px] uppercase tracking-wider text-brand-black/60 font-semibold leading-tight mt-0.5">{st.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+          {/* RIGHT: image */}
+          <div className="relative">
+            <div className="relative aspect-[5/4] rounded-2xl overflow-hidden">
+              <AnimatePresence mode="sync">
+                <motion.img
+                  key={i}
+                  src={s.img}
+                  alt=""
+                  width={900}
+                  height={720}
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </AnimatePresence>
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary/40 via-transparent to-transparent" />
             </div>
           </div>
         </div>
 
-        {/* Slide indicators */}
-        <div className="mt-14 flex gap-2">
+        {/* slide indicators */}
+        <div className="mt-10 flex gap-2">
           {slides.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setI(idx)}
               aria-label={`Slide ${idx + 1}`}
-              className={`h-1 rounded-full transition-all ${idx === i ? "w-12 bg-primary" : "w-6 bg-white/30"}`}
+              className={`h-1 rounded-full transition-all ${idx === i ? "w-12 bg-white" : "w-6 bg-white/30"}`}
             />
           ))}
         </div>
       </div>
+
+      {/* Feature cards overlapping bottom */}
+      <div className="relative -mt-24 md:-mt-28 z-10">
+        <div className="mx-auto max-w-7xl container-px">
+          <div className="grid md:grid-cols-3 gap-4">
+            {features.map((f) => {
+              const Icon = f.icon;
+              return (
+                <div
+                  key={f.title}
+                  className="bg-white text-brand-black rounded-xl shadow-xl p-6 border border-black/5"
+                >
+                  <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-bold text-lg">{f.title}</h3>
+                  <p className="mt-1.5 text-sm text-brand-black/65 leading-relaxed">{f.body}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* spacer so following sections clear the overlapping cards */}
+      <div className="h-16 md:h-20 bg-background" />
     </section>
   );
 }
