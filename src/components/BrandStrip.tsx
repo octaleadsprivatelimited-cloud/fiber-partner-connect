@@ -1,13 +1,27 @@
 import { useEffect, useState } from "react";
-import { loadPartners, type Partner } from "@/lib/partners";
+import { BRANDS } from "@/lib/products";
+
+interface BrandItem { name: string; description?: string; logo?: string }
+const KEY = "admin-brand-descriptions";
+
+function loadBrands(): BrandItem[] {
+  if (typeof localStorage === "undefined")
+    return BRANDS.map((b) => ({ name: b }));
+  const raw = localStorage.getItem(KEY);
+  if (!raw) return BRANDS.map((b) => ({ name: b }));
+  try {
+    const parsed = JSON.parse(raw) as BrandItem[];
+    return Array.isArray(parsed) && parsed.length ? parsed : BRANDS.map((b) => ({ name: b }));
+  } catch { return BRANDS.map((b) => ({ name: b })); }
+}
 
 export function BrandStrip() {
-  const [brands, setBrands] = useState<Partner[]>(() => loadPartners());
+  const [brands, setBrands] = useState<BrandItem[]>(() => loadBrands());
 
   useEffect(() => {
-    setBrands(loadPartners());
+    setBrands(loadBrands());
     const onStorage = (e: StorageEvent) => {
-      if (e.key === "admin-partners") setBrands(loadPartners());
+      if (e.key === KEY) setBrands(loadBrands());
     };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
@@ -21,7 +35,7 @@ export function BrandStrip() {
         <div className="flex items-center gap-3 mb-8 justify-center">
           <div className="h-1 w-10 bg-primary" />
           <span className="text-xs font-bold uppercase tracking-[0.2em] text-foreground/70">
-            Authorized Partners
+            Authorized Brands & Partners
           </span>
           <div className="h-1 w-10 bg-primary" />
         </div>
@@ -39,11 +53,7 @@ export function BrandStrip() {
             {loop.map((b, idx) => (
               <div
                 key={`${b.name}-${idx}`}
-                className={`shrink-0 w-40 md:w-48 h-24 flex flex-col items-center justify-center text-center py-3 px-3 rounded-lg border transition ${
-                  b.primary
-                    ? "bg-primary text-primary-foreground border-primary shadow-md"
-                    : "bg-card border-border hover:border-primary hover:shadow-sm"
-                }`}
+                className="shrink-0 w-40 md:w-48 h-24 flex flex-col items-center justify-center text-center py-3 px-3 rounded-lg border bg-card border-border hover:border-primary hover:shadow-sm transition"
               >
                 {b.logo ? (
                   <img
@@ -52,17 +62,8 @@ export function BrandStrip() {
                     className="max-h-12 max-w-full object-contain"
                   />
                 ) : (
-                  <div
-                    className={`font-black tracking-tight ${
-                      b.primary ? "text-xl" : "text-lg text-foreground/80"
-                    }`}
-                  >
+                  <div className="font-black tracking-tight text-lg text-foreground/80">
                     {b.name}
-                  </div>
-                )}
-                {b.primary && (
-                  <div className="text-[9px] font-bold mt-1 uppercase tracking-wider opacity-90">
-                    Primary Partner
                   </div>
                 )}
               </div>
