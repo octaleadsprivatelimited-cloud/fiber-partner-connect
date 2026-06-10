@@ -9,7 +9,7 @@ import {
 import {
   LayoutDashboard, Package, MessageSquare, Tag as TagIcon, Settings as SettingsIcon,
   LogOut, Plus, Pencil, Trash2, Upload, AlertCircle, CheckCircle2, X, Mail, Phone,
-  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Search, Bell,
+  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Search, Bell, Wrench,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import {
