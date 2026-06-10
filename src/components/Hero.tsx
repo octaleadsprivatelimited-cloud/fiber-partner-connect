@@ -83,7 +83,7 @@ export function Hero() {
           </div>
 
           {/* RIGHT: image */}
-          <div className="relative">
+          <div className="relative hidden md:block">
             <div className="relative aspect-[16/10] sm:aspect-[5/4] rounded-xl sm:rounded-2xl overflow-hidden">
               <img
                 key={i}
