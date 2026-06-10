@@ -50,24 +50,16 @@ export function Hero() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
           {/* LEFT: copy */}
           <div>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.45 }}
-              >
-                <div className="inline-flex items-center gap-2 mb-5">
-                  <Eyebrow className="h-3.5 w-3.5 text-white/80" />
-                  <span className="text-[11px] font-bold tracking-[0.25em] text-white/80">{s.eyebrow.text}</span>
-                </div>
-                <h1 className="text-3xl md:text-5xl font-black leading-[1.1] text-white max-w-xl">
-                  {s.title}
-                </h1>
-                <p className="mt-5 text-base text-white/75 max-w-lg">{s.body}</p>
-              </motion.div>
-            </AnimatePresence>
+            <div key={i} className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+              <div className="inline-flex items-center gap-2 mb-5">
+                <Eyebrow className="h-3.5 w-3.5 text-white/80" />
+                <span className="text-[11px] font-bold tracking-[0.25em] text-white/80">{s.eyebrow.text}</span>
+              </div>
+              <h1 className="text-3xl md:text-5xl font-black leading-[1.1] text-white max-w-xl">
+                {s.title}
+              </h1>
+              <p className="mt-5 text-base text-white/75 max-w-lg">{s.body}</p>
+            </div>
 
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
