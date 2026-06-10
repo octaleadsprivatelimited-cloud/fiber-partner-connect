@@ -636,7 +636,7 @@ function BrandsManager() {
           <h1 className="text-2xl sm:text-3xl font-black text-brand-black">Brands</h1>
           <p className="text-sm text-muted-foreground mt-1">Manage brand logos and descriptions shown on the public Brands page.</p>
         </div>
-        <button onClick={() => setAdding(true)} className="inline-flex items-center gap-2 bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white font-bold px-4 py-2.5 rounded-md hover:opacity-90 transition">
+        <button onClick={() => setAdding(true)} className="inline-flex items-center gap-2 bg-brand-red text-white font-semibold px-4 py-2.5 rounded-md hover:opacity-90 transition">
           <Plus className="h-4 w-4" /> Add Brand
         </button>
       </div>
@@ -645,10 +645,10 @@ function BrandsManager() {
         {items.map((it, i) => (
           <div key={it.name + i} className="group bg-white rounded-xl border border-border p-5 flex flex-col hover:shadow-lg hover:-translate-y-0.5 transition">
             <div className="flex items-start gap-3">
-              <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-violet-100 to-fuchsia-100 grid place-items-center overflow-hidden shrink-0 border border-border">
+              <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-red-50 to-rose-50 grid place-items-center overflow-hidden shrink-0 border border-border">
                 {it.logo
                   ? <img src={it.logo} alt={it.name} className="h-full w-full object-contain p-1" />
-                  : <span className="font-black text-violet-700 text-lg">{it.name[0]}</span>}
+                  : <span className="font-black text-brand-red text-lg">{it.name[0]}</span>}
               </div>
               <div className="min-w-0 flex-1">
                 <div className="font-black text-brand-black text-lg truncate">{it.name}</div>
@@ -659,7 +659,7 @@ function BrandsManager() {
               {it.description || <span className="italic text-muted-foreground/70">No description yet.</span>}
             </p>
             <div className="flex gap-2 mt-4 pt-4 border-t border-border">
-              <button onClick={() => setEditing({ index: i, item: it })} className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:border-violet-500 hover:text-violet-700 transition">
+              <button onClick={() => setEditing({ index: i, item: it })} className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:border-violet-500 hover:text-brand-red transition">
                 <Pencil className="h-3.5 w-3.5" /> Edit
               </button>
               <button onClick={() => removeItem(i)} className="inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:bg-brand-red hover:border-brand-red hover:text-white transition">
@@ -695,17 +695,17 @@ function BrandEditor({ initial, isNew, onClose, onSave }: { initial: BrandItem; 
         </div>
         <div className="p-5 space-y-4">
           <Field label="Brand Name">
-            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" />
+            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" />
           </Field>
           <Field label="Description">
-            <textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" />
+            <textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" />
           </Field>
           <Field label="Logo URL (optional)">
-            <input value={form.logo ?? ""} onChange={(e) => setForm({ ...form, logo: e.target.value })} placeholder="https://…" className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" />
+            <input value={form.logo ?? ""} onChange={(e) => setForm({ ...form, logo: e.target.value })} placeholder="https://…" className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" />
           </Field>
           <div className="flex gap-3 pt-2">
             <button onClick={onClose} className="flex-1 border border-border font-bold py-2.5 rounded hover:bg-muted">Cancel</button>
-            <button onClick={() => form.name.trim() && onSave(form)} className="flex-1 bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white font-bold py-2.5 rounded hover:opacity-90">Save</button>
+            <button onClick={() => form.name.trim() && onSave(form)} className="flex-1 bg-brand-red text-white font-semibold py-2.5 rounded hover:opacity-90">Save</button>
           </div>
         </div>
       </motion.div>
@@ -761,20 +761,20 @@ function SettingsManager() {
           <p className="text-sm text-muted-foreground mt-1">Contact details and business profile shown across the site.</p>
         </div>
         <div className="p-5 grid sm:grid-cols-2 gap-4">
-          <Field label="Company Name"><input value={company.name} onChange={(e) => set("name", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
-          <Field label="Tagline / Slogan"><input value={company.tagline} onChange={(e) => set("tagline", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
-          <Field label="Primary Phone"><input value={company.phone} onChange={(e) => set("phone", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
-          <Field label="Alternate Phone"><input value={company.phoneAlt} onChange={(e) => set("phoneAlt", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
-          <Field label="Email"><input type="email" value={company.email} onChange={(e) => set("email", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
-          <Field label="Website"><input value={company.website} onChange={(e) => set("website", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
-          <Field label="GSTIN"><input value={company.gstin} onChange={(e) => set("gstin", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
-          <Field label="Founded Year"><input value={company.founded} onChange={(e) => set("founded", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
-          <Field label="CEO / Owner"><input value={company.ceo} onChange={(e) => set("ceo", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
+          <Field label="Company Name"><input value={company.name} onChange={(e) => set("name", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>
+          <Field label="Tagline / Slogan"><input value={company.tagline} onChange={(e) => set("tagline", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>
+          <Field label="Primary Phone"><input value={company.phone} onChange={(e) => set("phone", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>
+          <Field label="Alternate Phone"><input value={company.phoneAlt} onChange={(e) => set("phoneAlt", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>
+          <Field label="Email"><input type="email" value={company.email} onChange={(e) => set("email", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>
+          <Field label="Website"><input value={company.website} onChange={(e) => set("website", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>
+          <Field label="GSTIN"><input value={company.gstin} onChange={(e) => set("gstin", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>
+          <Field label="Founded Year"><input value={company.founded} onChange={(e) => set("founded", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>
+          <Field label="CEO / Owner"><input value={company.ceo} onChange={(e) => set("ceo", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>
           <div className="sm:col-span-2">
-            <Field label="Address"><textarea rows={3} value={company.address} onChange={(e) => set("address", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-violet-500 rounded" /></Field>
+            <Field label="Address"><textarea rows={3} value={company.address} onChange={(e) => set("address", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>
           </div>
           <div className="sm:col-span-2 flex items-center gap-3 pt-2">
-            <button onClick={saveCompany} className="bg-gradient-to-r from-violet-600 to-fuchsia-500 text-white font-bold px-5 py-2.5 rounded hover:opacity-90">Save Changes</button>
+            <button onClick={saveCompany} className="bg-brand-red text-white font-semibold px-5 py-2.5 rounded hover:opacity-90">Save Changes</button>
             {companySaved && <span className="text-xs font-bold text-emerald-600">Saved ✓</span>}
           </div>
         </div>
@@ -785,7 +785,7 @@ function SettingsManager() {
         <h2 className="font-black text-brand-black">Product Image Watermark</h2>
         <p className="text-sm text-muted-foreground mt-1">Overlay the company logo and phone number on product images.</p>
         <label className="flex items-center gap-3 mt-5 cursor-pointer">
-          <input type="checkbox" checked={watermarkEnabled} onChange={(e) => persistWM(e.target.checked)} className="h-5 w-5 accent-violet-600" />
+          <input type="checkbox" checked={watermarkEnabled} onChange={(e) => persistWM(e.target.checked)} className="h-5 w-5 accent-brand-red" />
           <span className="font-bold">Enable watermark overlay</span>
         </label>
         {saved && <div className="mt-3 text-xs text-emerald-600 font-bold">Saved ✓</div>}
