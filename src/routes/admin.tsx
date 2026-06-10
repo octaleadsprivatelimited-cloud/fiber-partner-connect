@@ -266,34 +266,31 @@ function DashboardOverview({ products, inquiries, onTab }: { products: Product[]
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-brand-black">Dashboard</h1>
-          <p className="text-sm text-muted-foreground mt-1">Welcome back — here's what's happening with your store.</p>
-        </div>
+      <div>
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Welcome back</h2>
+        <p className="text-sm text-slate-500 mt-1">Here's what's happening with your store today.</p>
       </div>
 
       {/* Stat cards */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {stats.map((s) => (
           <button
             key={s.label}
             onClick={() => onTab(s.tab)}
-            className={`text-left rounded-xl p-5 text-white bg-gradient-to-br ${s.gradient} shadow-lg shadow-black/5 hover:shadow-xl hover:-translate-y-0.5 transition relative overflow-hidden`}
+            className="text-left bg-white rounded-xl p-4 sm:p-5 border border-slate-200 hover:border-slate-300 hover:shadow-sm transition"
           >
-            <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10" />
-            <div className="absolute -right-10 bottom-0 h-20 w-20 rounded-full bg-white/10" />
-            <div className="relative flex items-start justify-between">
-              <div>
-                <div className="text-xs font-semibold tracking-wider uppercase text-white/85">{s.label}</div>
-                <div className="text-4xl font-black mt-2 tabular-nums">{s.value}</div>
+            <div className="flex items-center justify-between">
+              <div className={`h-9 w-9 rounded-lg grid place-items-center ${s.iconBg}`}>
+                <s.icon className={`h-4.5 w-4.5 ${s.iconColor}`} />
               </div>
-              <s.icon className="h-6 w-6 text-white/80" />
+              <div className={`flex items-center gap-0.5 text-[11px] font-semibold ${s.up ? "text-emerald-600" : "text-slate-400"}`}>
+                {s.up ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
+                <span>{s.delta}</span>
+              </div>
             </div>
-            <div className="relative mt-4 flex items-center gap-1 text-xs font-semibold text-white/90">
-              {s.up ? <TrendingUp className="h-3.5 w-3.5" /> : <TrendingDown className="h-3.5 w-3.5" />}
-              <span>{s.delta}</span>
-              <span className="text-white/70">this month</span>
+            <div className="mt-3 sm:mt-4">
+              <div className="text-2xl sm:text-3xl font-bold text-slate-900 tabular-nums">{s.value}</div>
+              <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
             </div>
           </button>
         ))}
