@@ -479,10 +479,10 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-      <motion.div initial={{ scale: 0.95, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 10 }} className="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="p-5 border-b border-border flex items-center justify-between sticky top-0 bg-white z-10">
-          <h2 className="text-xl font-black text-brand-black">{isNew ? "Add Product" : "Edit Product"}</h2>
-          <button onClick={onClose} className="p-2 hover:bg-muted"><X className="h-4 w-4" /></button>
+      <motion.div initial={{ scale: 0.95, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 10 }} className="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl">
+        <div className="p-5 border-b border-slate-200 flex items-center justify-between sticky top-0 bg-white z-10">
+          <h2 className="text-lg font-bold text-slate-900">{isNew ? "Add Product" : "Edit Product"}</h2>
+          <button onClick={onClose} className="p-2 rounded-lg hover:bg-slate-100"><X className="h-4 w-4" /></button>
         </div>
         <form onSubmit={handleSubmit(async (d) => {
           const id = d.id || d.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 50);
@@ -490,32 +490,32 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
         })} className="p-5 space-y-4">
           {isNew && (
             <Field label="ID (optional, slug)">
-              <input {...register("id")} placeholder="auto-generated from name" className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+              <input {...register("id")} placeholder="auto-generated from name" className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10" />
             </Field>
           )}
           <Field label="Name" error={errors.name?.message}>
-            <input {...register("name", { required: "Required" })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+            <input {...register("name", { required: "Required" })} className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10" />
           </Field>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Category">
-              <select {...register("category")} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red bg-white">
+              <select {...register("category")} className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red bg-white">
                 {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>
             </Field>
             <Field label="Brand">
-              <select {...register("brand")} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red bg-white">
+              <select {...register("brand")} className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red bg-white">
                 {BRANDS.map((b) => <option key={b} value={b}>{b}</option>)}
               </select>
             </Field>
           </div>
           <Field label="Description" error={errors.description?.message}>
-            <textarea rows={3} {...register("description", { required: "Required", maxLength: 1000 })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+            <textarea rows={3} {...register("description", { required: "Required", maxLength: 1000 })} className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10" />
           </Field>
 
           <Field label="Image">
-            <div className="flex items-center gap-4">
-              {image && <img src={image} alt="" className="h-20 w-20 object-cover border border-border" />}
-              <label className="inline-flex items-center gap-2 border border-border px-4 py-2.5 font-bold text-sm cursor-pointer hover:border-brand-red transition">
+            <div className="flex flex-wrap items-center gap-3">
+              {image && <img src={image} alt="" className="h-20 w-20 object-cover rounded-lg border border-slate-200" />}
+              <label className="inline-flex items-center gap-2 border border-slate-200 rounded-lg px-4 py-2.5 font-semibold text-sm cursor-pointer hover:border-brand-red hover:text-brand-red transition">
                 <Upload className="h-4 w-4" /> {uploading ? "Uploading…" : "Upload"}
                 <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
                   const f = e.target.files?.[0]; if (!f) return;
@@ -523,19 +523,19 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
                   try { const url = await uploadImage(f); setValue("image", url); } finally { setUploading(false); }
                 }} />
               </label>
-              <input {...register("image", { required: "Required" })} placeholder="or paste URL" className="flex-1 border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+              <input {...register("image", { required: "Required" })} placeholder="or paste URL" className="flex-1 min-w-[200px] border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10" />
             </div>
             {errors.image && <span className="text-xs text-brand-red mt-1 block">{errors.image.message}</span>}
           </Field>
 
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" {...register("featured")} className="h-4 w-4 accent-brand-red" />
-            <span className="text-sm font-bold">Show on homepage (featured)</span>
+            <span className="text-sm font-semibold text-slate-700">Show on homepage (featured)</span>
           </label>
 
           <div className="flex gap-3 pt-4">
-            <button type="button" onClick={onClose} className="flex-1 border border-border font-bold py-3 hover:bg-muted">Cancel</button>
-            <button type="submit" disabled={isSubmitting} className="flex-1 bg-brand-red text-white font-bold py-3 hover:bg-brand-red-dark disabled:opacity-60">
+            <button type="button" onClick={onClose} className="flex-1 border border-slate-200 font-semibold py-2.5 rounded-lg hover:bg-slate-50 text-sm">Cancel</button>
+            <button type="submit" disabled={isSubmitting} className="flex-1 bg-brand-red text-white font-semibold py-2.5 rounded-lg hover:bg-brand-red-dark disabled:opacity-60 text-sm shadow-sm">
               {isSubmitting ? "Saving…" : "Save"}
             </button>
           </div>
