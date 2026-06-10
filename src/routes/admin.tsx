@@ -9,7 +9,7 @@ import {
 import {
   LayoutDashboard, Package, MessageSquare, Tag as TagIcon, Settings as SettingsIcon,
   LogOut, Plus, Pencil, Trash2, Upload, AlertCircle, CheckCircle2, X, Mail, Phone,
-  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Search, Bell,
+  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Search, Bell, Wrench,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import {
@@ -18,6 +18,7 @@ import {
   type Inquiry,
 } from "@/lib/admin-data";
 import { CATEGORIES, BRANDS, type Product, type Category, type Brand } from "@/lib/products";
+import { SERVICES } from "@/lib/services";
 import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/admin")({
@@ -25,7 +26,7 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-type Tab = "dashboard" | "products" | "inquiries" | "brands" | "settings";
+type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "settings";
 
 function AdminPage() {
   const { user, loading, login, logout } = useAuth();
@@ -97,6 +98,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
   const tabs: { id: Tab; label: string; icon: any }[] = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "products", label: "Products", icon: Package },
+    { id: "services", label: "Services", icon: Wrench },
     { id: "inquiries", label: "Inquiries", icon: MessageSquare },
     { id: "brands", label: "Brands", icon: TagIcon },
     { id: "settings", label: "Settings", icon: SettingsIcon },
@@ -207,6 +209,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
           <section className="p-4 sm:p-6 lg:p-8 min-w-0">
             {tab === "dashboard" && <DashboardOverview products={products} inquiries={inquiries} onTab={setTab} />}
             {tab === "products" && <ProductsManager products={products} save={save} remove={remove} uploadImage={uploadImage} />}
+            {tab === "services" && <ServicesManager />}
             {tab === "inquiries" && <InquiriesManager inquiries={inquiries} updateStatus={updateStatus} remove={removeInquiry} />}
             {tab === "brands" && <BrandsManager />}
             {tab === "settings" && <SettingsManager />}
@@ -802,5 +805,46 @@ function Field({ label, error, children }: { label: string; error?: string; chil
       <div className="mt-1.5">{children}</div>
       {error && <span className="text-xs text-brand-red mt-1 block">{error}</span>}
     </label>
+  );
+}
+
+/* ============ Services manager ============ */
+function ServicesManager() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7">
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Services</h2>
+            <p className="text-sm text-slate-500 mt-1">
+              {SERVICES.length} services listed on the public site
+            </p>
+          </div>
+          <a
+            href="/services"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-red hover:underline"
+          >
+            <Eye className="h-4 w-4" /> View on site
+          </a>
+        </div>
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {SERVICES.map((s) => (
+          <div
+            key={s.id}
+            className="bg-white border border-slate-200 rounded-2xl p-5 hover:border-brand-red/40 hover:shadow-sm transition"
+          >
+            <div className="h-11 w-11 rounded-xl bg-brand-red/10 text-brand-red grid place-items-center mb-4">
+              <s.icon className="h-5 w-5" />
+            </div>
+            <h3 className="font-bold text-slate-900">{s.title}</h3>
+            <p className="mt-1.5 text-sm text-slate-500 leading-relaxed">{s.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
