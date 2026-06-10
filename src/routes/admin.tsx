@@ -98,6 +98,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
   const tabs: { id: Tab; label: string; icon: any }[] = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "products", label: "Products", icon: Package },
+    { id: "services", label: "Services", icon: Wrench },
     { id: "inquiries", label: "Inquiries", icon: MessageSquare },
     { id: "brands", label: "Brands", icon: TagIcon },
     { id: "settings", label: "Settings", icon: SettingsIcon },
