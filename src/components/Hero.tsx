@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, MapPin, Wrench, Award, ShieldCheck, Headphones, Package } from "lucide-react";
 import heroPoster from "@/assets/hero-1.jpg";
+import heroVideo from "@/assets/hero-bg.mp4.asset.json";
 
 const slides = [
   {
@@ -48,7 +49,7 @@ export function Hero() {
           playsInline
           poster={heroPoster}
         >
-          <source src="/hero-bg.mp4" type="video/mp4" />
+          <source src={heroVideo.url} type="video/mp4" />
         </video>
         {/* Lighter overlay for readability */}
         <div className="absolute inset-0 bg-black/35" />
