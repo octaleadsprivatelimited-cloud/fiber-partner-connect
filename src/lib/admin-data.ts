@@ -12,6 +12,7 @@ import {
 } from "firebase/auth";
 import { getFirebase } from "./firebase";
 import { PRODUCTS as SEED_PRODUCTS, type Product } from "./products";
+import { compressImage } from "./image-compress";
 
 export function isFirebaseConfigured() {
   const fb = getFirebase();
