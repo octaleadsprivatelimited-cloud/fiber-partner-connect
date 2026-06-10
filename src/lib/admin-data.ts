@@ -89,9 +89,16 @@ export function useProducts() {
     setLoading(true);
     const q = query(collection(fb.db, "products"), orderBy("name"));
     return onSnapshot(q, (snap) => {
-      setProducts(snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Product, "id">) })));
+      const list = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Product, "id">) }));
+      // If Firestore is empty, fall back to the seeded demo catalog so the
+      // admin and storefront still show content out of the box.
+      setProducts(list.length ? list : SEED_PRODUCTS);
       setLoading(false);
-    }, () => setLoading(false));
+    }, () => {
+      // Read failed (rules/offline) — keep seed data visible.
+      setProducts(SEED_PRODUCTS);
+      setLoading(false);
+    });
   }, []);
 
   const save = async (p: Product) => {
@@ -100,14 +107,19 @@ export function useProducts() {
       setProducts((prev) => prev.find((x) => x.id === p.id) ? prev.map((x) => x.id === p.id ? p : x) : [...prev, p]);
       return;
     }
-    if (p.id && (await getDoc(doc(fb.db, "products", p.id))).exists()) {
-      const { id, ...rest } = p;
-      await updateDoc(doc(fb.db, "products", id), rest);
-    } else if (p.id) {
-      const { id, ...rest } = p;
-      await setDoc(doc(fb.db, "products", id), rest);
-    } else {
-      await addDoc(collection(fb.db, "products"), p);
+    try {
+      if (p.id && (await getDoc(doc(fb.db, "products", p.id))).exists()) {
+        const { id, ...rest } = p;
+        await updateDoc(doc(fb.db, "products", id), rest);
+      } else if (p.id) {
+        const { id, ...rest } = p;
+        await setDoc(doc(fb.db, "products", id), rest);
+      } else {
+        await addDoc(collection(fb.db, "products"), p);
+      }
+    } catch (e) {
+      console.warn("Firestore save failed, updating locally:", e);
+      setProducts((prev) => prev.find((x) => x.id === p.id) ? prev.map((x) => x.id === p.id ? p : x) : [...prev, p]);
     }
   };
 
@@ -117,17 +129,28 @@ export function useProducts() {
       setProducts((prev) => prev.filter((p) => p.id !== id));
       return;
     }
-    await deleteDoc(doc(fb.db, "products", id));
+    try { await deleteDoc(doc(fb.db, "products", id)); }
+    catch (e) {
+      console.warn("Firestore delete failed, removing locally:", e);
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+    }
   };
 
   const uploadImage = async (file: File): Promise<string> => {
+    // Always compress first to keep payloads small.
+    const compressed = await compressImage(file, { maxSize: 1200, quality: 0.8 });
     const fb = getFirebase();
-    if (!fb || !isFirebaseConfigured()) {
-      return URL.createObjectURL(file);
+    if (!fb || !isFirebaseConfigured()) return compressed;
+    try {
+      // Convert data URL back to a Blob for Storage upload.
+      const blob = await (await fetch(compressed)).blob();
+      const r = ref(fb.storage, `uploads/${Date.now()}-${file.name.replace(/\.[^.]+$/, "")}.jpg`);
+      await uploadBytes(r, blob);
+      return await getDownloadURL(r);
+    } catch (e) {
+      console.warn("Storage upload failed, using inline data URL:", e);
+      return compressed;
     }
-    const r = ref(fb.storage, `products/${Date.now()}-${file.name}`);
-    await uploadBytes(r, file);
-    return getDownloadURL(r);
   };
 
   return { products, loading, save, remove, uploadImage };
