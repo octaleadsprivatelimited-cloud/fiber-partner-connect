@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Award, Target, Users } from "lucide-react";
 import { CTABanner } from "@/components/CTABanner";
+import { PageHero } from "@/components/PageHero";
 import { SITE } from "@/lib/site";
+import bgAbout from "@/assets/bg-about.jpg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
