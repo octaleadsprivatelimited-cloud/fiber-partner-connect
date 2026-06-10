@@ -1,17 +1,20 @@
-const brands = [
-  { name: "INNO", primary: true },
-  { name: "Fujikura" },
-  { name: "Sumitomo" },
-  { name: "Grandway" },
-  { name: "EXFO" },
-  { name: "VIAVI" },
-  { name: "Fiberfox" },
-];
-
-// Duplicate the list so the marquee loops seamlessly
-const loop = [...brands, ...brands];
+import { useEffect, useState } from "react";
+import { loadPartners, type Partner } from "@/lib/partners";
 
 export function BrandStrip() {
+  const [brands, setBrands] = useState<Partner[]>(() => loadPartners());
+
+  useEffect(() => {
+    setBrands(loadPartners());
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "admin-partners") setBrands(loadPartners());
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
+  const loop = [...brands, ...brands];
+
   return (
     <section className="bg-background py-14">
       <div className="mx-auto max-w-7xl container-px">
@@ -36,19 +39,27 @@ export function BrandStrip() {
             {loop.map((b, idx) => (
               <div
                 key={`${b.name}-${idx}`}
-                className={`shrink-0 w-40 md:w-48 text-center py-5 rounded-lg border transition ${
+                className={`shrink-0 w-40 md:w-48 h-24 flex flex-col items-center justify-center text-center py-3 px-3 rounded-lg border transition ${
                   b.primary
                     ? "bg-primary text-primary-foreground border-primary shadow-md"
                     : "bg-card border-border hover:border-primary hover:shadow-sm"
                 }`}
               >
-                <div
-                  className={`font-black tracking-tight ${
-                    b.primary ? "text-xl" : "text-lg text-foreground/80"
-                  }`}
-                >
-                  {b.name}
-                </div>
+                {b.logo ? (
+                  <img
+                    src={b.logo}
+                    alt={b.name}
+                    className="max-h-12 max-w-full object-contain"
+                  />
+                ) : (
+                  <div
+                    className={`font-black tracking-tight ${
+                      b.primary ? "text-xl" : "text-lg text-foreground/80"
+                    }`}
+                  >
+                    {b.name}
+                  </div>
+                )}
                 {b.primary && (
                   <div className="text-[9px] font-bold mt-1 uppercase tracking-wider opacity-90">
                     Primary Partner
