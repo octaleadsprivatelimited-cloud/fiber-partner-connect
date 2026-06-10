@@ -135,11 +135,11 @@ function BrandsPage() {
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function StatLight({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg bg-white/5 border border-white/10 p-3">
-      <div className="text-xl font-black text-brand-yellow">{value}</div>
-      <div className="text-[10px] uppercase tracking-[0.15em] text-white/60 mt-1">{label}</div>
+    <div className="rounded-lg bg-muted border border-border p-3">
+      <div className="text-xl font-black text-brand-red">{value}</div>
+      <div className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mt-1">{label}</div>
     </div>
   );
 }
