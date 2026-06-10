@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import { Wrench, Gauge, ClipboardCheck, MapPin, Package, Headphones, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
 import { submitInquiry } from "@/lib/admin-data";
+import { SERVICES } from "@/lib/services";
 import bgServices from "@/assets/bg-services.jpg";
 
 export const Route = createFileRoute("/services")({
@@ -18,14 +19,7 @@ export const Route = createFileRoute("/services")({
   component: ServicesPage,
 });
 
-const services = [
-  { icon: Wrench, t: "Fusion Splicer Repair", d: "Full diagnostics and repair for INNO, Fujikura, Sumitomo and other splicers." },
-  { icon: Gauge, t: "OTDR Calibration", d: "Precision calibration to manufacturer specifications with certificate." },
-  { icon: ClipboardCheck, t: "Preventive Maintenance", d: "Scheduled maintenance contracts keep your fleet field-ready." },
-  { icon: Headphones, t: "On-Site Support", d: "Engineers dispatched across AP & Telangana for urgent issues." },
-  { icon: Package, t: "Spare Parts Supply", d: "Electrodes, blades, heaters, motors, LCD displays and more in stock." },
-  { icon: MapPin, t: "Pan-Region Coverage", d: "Service hubs covering Hyderabad, Vijayawada, Visakhapatnam and beyond." },
-];
+const services = SERVICES.map((s) => ({ icon: s.icon, t: s.title, d: s.description }));
 
 interface Form { name: string; phone: string; equipment: string; issue: string; }
 
