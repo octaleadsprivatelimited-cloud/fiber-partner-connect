@@ -113,20 +113,20 @@ export function Hero() {
 
       {/* Feature cards overlapping bottom */}
       <div className="relative -mt-24 md:-mt-28 z-10">
-        <div className="mx-auto max-w-7xl container-px">
-          <div className="grid grid-cols-3 gap-3 md:gap-4">
+        <div className="mx-auto max-w-7xl px-3 md:px-8">
+          <div className="grid grid-cols-3 gap-2 md:gap-4">
             {features.map((f) => {
               const Icon = f.icon;
               return (
                 <div
                   key={f.title}
-                  className="bg-white text-brand-black rounded-xl shadow-xl p-3 md:p-6 border border-black/5"
+                  className="bg-white text-brand-black rounded-lg md:rounded-xl shadow-xl p-2.5 md:p-6 border border-black/5 min-w-0"
                 >
-                  <div className="h-8 w-8 md:h-10 md:w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-2 md:mb-4">
-                    <Icon className="h-4 w-4 md:h-5 md:w-5" />
+                  <div className="h-7 w-7 md:h-10 md:w-10 rounded-md md:rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-1.5 md:mb-4">
+                    <Icon className="h-3.5 w-3.5 md:h-5 md:w-5" />
                   </div>
-                  <h3 className="font-bold text-sm md:text-lg">{f.title}</h3>
-                  <p className="mt-1 text-xs md:text-sm text-brand-black/65 leading-relaxed">{f.body}</p>
+                  <h3 className="font-bold text-[12px] leading-tight md:text-lg">{f.title}</h3>
+                  <p className="mt-1 text-[10px] md:text-sm text-brand-black/65 leading-snug md:leading-relaxed">{f.body}</p>
                 </div>
               );
             })}
