@@ -23,7 +23,6 @@ function Home() {
     <>
       <Hero />
       <BrandStrip />
-      <WhyChoose />
 
       <section className="py-20">
         <div className="mx-auto max-w-7xl container-px">
@@ -41,6 +40,8 @@ function Home() {
           </div>
         </div>
       </section>
+
+      <WhyChoose />
 
       <CTABanner />
     </>

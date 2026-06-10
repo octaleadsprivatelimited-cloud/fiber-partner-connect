@@ -4,6 +4,21 @@ import { Logo } from "./Logo";
 import { SITE } from "@/lib/site";
 import bg from "@/assets/bg-about.jpg";
 
+const QUICK_LINKS: { to: string; label: string }[] = [
+  { to: "/products", label: "Products" },
+  { to: "/brands", label: "Brands" },
+  { to: "/services", label: "Services" },
+  { to: "/about", label: "About" },
+  { to: "/contact", label: "Contact" },
+];
+
+const CATEGORIES = [
+  "Fusion Splicers",
+  "OTDR & Power Meters",
+  "Cleavers & VFL",
+  "Spare Parts & Service",
+];
+
 export function Footer() {
   return (
     <footer className="relative bg-brand-black text-white overflow-hidden">
@@ -16,32 +31,47 @@ export function Footer() {
             <p className="mt-4 text-sm text-white/70 max-w-xs">{SITE.tagline}. Authorized INNO Distributor for Andhra Pradesh & Telangana.</p>
           </div>
 
-          {/* Quick Links — collapsible on mobile */}
-          <details className="md:open group border-b border-white/10 md:border-0 pb-3 md:pb-0 [&[open]_.chev]:rotate-180">
-            <summary className="flex items-center justify-between md:block cursor-pointer md:cursor-default list-none md:pointer-events-none">
-              <h4 className="font-bold text-sm uppercase tracking-wider mb-0 md:mb-4">Quick Links</h4>
-              <ChevronDown className="chev h-4 w-4 transition md:hidden" />
-            </summary>
-            <ul className="space-y-2 text-sm text-white/70 mt-3 md:mt-0">
-              {["/products", "/brands", "/services", "/about", "/contact"].map((p) => (
-                <li key={p}><Link to={p} className="hover:text-brand-red">{p.slice(1).replace(/^./, (c) => c.toUpperCase())}</Link></li>
-              ))}
-            </ul>
-          </details>
+          {/* Quick Links — collapsible on mobile, always open on desktop */}
+          <div>
+            <details className="md:hidden border-b border-white/10 pb-3 [&[open]_.chev]:rotate-180">
+              <summary className="flex items-center justify-between cursor-pointer list-none">
+                <h4 className="font-bold text-sm uppercase tracking-wider">Quick Links</h4>
+                <ChevronDown className="chev h-4 w-4 transition" />
+              </summary>
+              <ul className="space-y-2 text-sm text-white/70 mt-3">
+                {QUICK_LINKS.map((l) => (
+                  <li key={l.to}><Link to={l.to} className="hover:text-brand-red">{l.label}</Link></li>
+                ))}
+              </ul>
+            </details>
+            <div className="hidden md:block">
+              <h4 className="font-bold text-sm uppercase tracking-wider mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-sm text-white/70">
+                {QUICK_LINKS.map((l) => (
+                  <li key={l.to}><Link to={l.to} className="hover:text-brand-red">{l.label}</Link></li>
+                ))}
+              </ul>
+            </div>
+          </div>
 
-          {/* Categories — collapsible on mobile */}
-          <details className="border-b border-white/10 md:border-0 pb-3 md:pb-0 [&[open]_.chev]:rotate-180">
-            <summary className="flex items-center justify-between md:block cursor-pointer md:cursor-default list-none md:pointer-events-none">
-              <h4 className="font-bold text-sm uppercase tracking-wider mb-0 md:mb-4">Categories</h4>
-              <ChevronDown className="chev h-4 w-4 transition md:hidden" />
-            </summary>
-            <ul className="space-y-2 text-sm text-white/70 mt-3 md:mt-0">
-              <li>Fusion Splicers</li>
-              <li>OTDR & Power Meters</li>
-              <li>Cleavers & VFL</li>
-              <li>Spare Parts & Service</li>
-            </ul>
-          </details>
+          {/* Categories — collapsible on mobile, always open on desktop */}
+          <div>
+            <details className="md:hidden border-b border-white/10 pb-3 [&[open]_.chev]:rotate-180">
+              <summary className="flex items-center justify-between cursor-pointer list-none">
+                <h4 className="font-bold text-sm uppercase tracking-wider">Categories</h4>
+                <ChevronDown className="chev h-4 w-4 transition" />
+              </summary>
+              <ul className="space-y-2 text-sm text-white/70 mt-3">
+                {CATEGORIES.map((c) => <li key={c}>{c}</li>)}
+              </ul>
+            </details>
+            <div className="hidden md:block">
+              <h4 className="font-bold text-sm uppercase tracking-wider mb-4">Categories</h4>
+              <ul className="space-y-2 text-sm text-white/70">
+                {CATEGORIES.map((c) => <li key={c}>{c}</li>)}
+              </ul>
+            </div>
+          </div>
 
           {/* Get in Touch — always expanded */}
           <div>
