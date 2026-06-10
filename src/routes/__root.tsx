@@ -1,19 +1,13 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  Outlet,
-  Link,
-  createRootRouteWithContext,
-  useRouter,
-  useRouterState,
-} from "@tanstack/react-router";
-import { useEffect } from "react";
+import { Outlet, Link, useLocation } from "react-router-dom";
 
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Toaster } from "../components/ui/sonner";
 
-function NotFoundComponent() {
+const queryClient = new QueryClient();
+
+export function NotFoundPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
@@ -32,63 +26,8 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
-  const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
-
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">This page didn't load</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Something went wrong. Try refreshing or head back home.</p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => { router.invalidate(); reset(); }}
-            className="bg-brand-red px-4 py-2 text-sm font-bold text-white hover:bg-brand-red-dark transition"
-          >
-            Try again
-          </button>
-          <a href="/" className="border border-input px-4 py-2 text-sm font-semibold hover:bg-accent">Go home</a>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SATYA POWER TECHNOLOGY'S — Fiber Optic Solutions | INNO Authorized Distributor" },
-      { name: "description", content: "Authorized INNO distributor for AP & Telangana. Sales + service of fiber optic fusion splicers, OTDRs, power meters, cleavers and spare parts." },
-      { name: "author", content: "SATYA POWER TECHNOLOGY'S" },
-      { property: "og:title", content: "SATYA POWER TECHNOLOGY'S — Fiber Optic Solutions | INNO Authorized Distributor" },
-      { property: "og:description", content: "Authorized INNO distributor for AP & Telangana. Sales + service of fiber optic fusion splicers, OTDRs, power meters, cleavers and spare parts." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "SATYA POWER TECHNOLOGY'S — Fiber Optic Solutions | INNO Authorized Distributor" },
-      { name: "twitter:description", content: "Authorized INNO distributor for AP & Telangana. Sales + service of fiber optic fusion splicers, OTDRs, power meters, cleavers and spare parts." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/a1dac029-edae-47d0-8104-92564749377f" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/a1dac029-edae-47d0-8104-92564749377f" },
-    ],
-    links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" },
-    ],
-  }),
-  component: RootComponent,
-  notFoundComponent: NotFoundComponent,
-  errorComponent: ErrorComponent,
-});
-
-function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+export default function RootLayout() {
+  const { pathname } = useLocation();
   const isAdmin = pathname.startsWith("/admin");
   return (
     <QueryClientProvider client={queryClient}>
@@ -101,4 +40,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-
