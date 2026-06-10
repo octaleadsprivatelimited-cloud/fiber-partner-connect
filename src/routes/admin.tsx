@@ -555,39 +555,44 @@ function InquiriesManager({ inquiries, updateStatus, remove }: {
   const list = inquiries.filter((i) => filter === "all" || i.status === filter);
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-black text-brand-black">Inquiries</h1>
+      <div>
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Inquiries</h2>
+        <p className="text-sm text-slate-500 mt-1">Messages from your contact form</p>
+      </div>
       <div className="flex gap-2 flex-wrap">
-        {(["all", "new", "read", "resolved"] as const).map((f) => (
-          <button key={f} onClick={() => setFilter(f)} className={`text-xs font-bold uppercase tracking-wider px-4 py-2 transition ${filter === f ? "bg-brand-red text-white" : "bg-white border border-border hover:border-brand-red"}`}>
-            {f} ({f === "all" ? inquiries.length : inquiries.filter((i) => i.status === f).length})
-          </button>
-        ))}
+        {(["all", "new", "read", "resolved"] as const).map((f) => {
+          const count = f === "all" ? inquiries.length : inquiries.filter((i) => i.status === f).length;
+          return (
+            <button key={f} onClick={() => setFilter(f)} className={`text-xs font-semibold capitalize px-3 py-1.5 rounded-lg transition ${filter === f ? "bg-brand-red text-white" : "bg-white border border-slate-200 text-slate-600 hover:border-slate-300"}`}>
+              {f} <span className={filter === f ? "text-white/80" : "text-slate-400"}>({count})</span>
+            </button>
+          );
+        })}
       </div>
 
       {list.length === 0 ? (
-        <div className="bg-white border border-border p-12 text-center text-muted-foreground text-sm">No inquiries to show.</div>
+        <div className="bg-white border border-slate-200 rounded-xl p-12 text-center text-slate-400 text-sm">No inquiries to show.</div>
       ) : (
         <div className="space-y-3">
           {list.map((i) => (
-            <div key={i.id} className="bg-white border border-border p-5">
-              <div className="flex flex-wrap items-start justify-between gap-3">
+            <div key={i.id} className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className={`inline-block h-2 w-2 rounded-full ${i.status === "new" ? "bg-brand-red" : i.status === "resolved" ? "bg-green-500" : "bg-muted-foreground/40"}`} />
-                    <span className="font-bold text-brand-black">{i.name}</span>
-                    <span className="text-xs uppercase tracking-wider text-muted-foreground">{i.status}</span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-semibold text-slate-900">{i.name}</span>
+                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${i.status === "new" ? "bg-red-50 text-brand-red" : i.status === "resolved" ? "bg-emerald-50 text-emerald-700" : "bg-blue-50 text-blue-700"}`}>{i.status ?? "new"}</span>
                   </div>
-                  <div className="flex flex-wrap gap-4 text-xs text-muted-foreground mt-1">
+                  <div className="flex flex-wrap gap-3 text-xs text-slate-500 mt-1.5">
                     {i.phone && <span className="flex items-center gap-1"><Phone className="h-3 w-3" />{i.phone}</span>}
                     {i.email && <span className="flex items-center gap-1"><Mail className="h-3 w-3" />{i.email}</span>}
                   </div>
-                  {i.subject && <div className="font-semibold mt-2">{i.subject}</div>}
-                  <p className="text-sm text-foreground mt-2">{i.message}</p>
+                  {i.subject && <div className="font-semibold mt-2 text-slate-800 text-sm">{i.subject}</div>}
+                  <p className="text-sm text-slate-600 mt-2 leading-relaxed">{i.message}</p>
                 </div>
-                <div className="flex flex-col gap-2 shrink-0">
-                  {i.status !== "read" && <button onClick={() => updateStatus(i.id!, "read")} className="text-xs font-bold border border-border px-3 py-1.5 hover:border-brand-red">Mark read</button>}
-                  {i.status !== "resolved" && <button onClick={() => updateStatus(i.id!, "resolved")} className="text-xs font-bold bg-brand-black text-white px-3 py-1.5 hover:bg-brand-red">Resolve</button>}
-                  <button onClick={() => { if (confirm("Delete this inquiry?")) remove(i.id!); }} className="text-xs font-bold text-brand-red hover:underline">Delete</button>
+                <div className="flex sm:flex-col gap-2 shrink-0 flex-wrap">
+                  {i.status !== "read" && <button onClick={() => updateStatus(i.id!, "read")} className="text-xs font-semibold border border-slate-200 px-3 py-1.5 rounded-lg hover:bg-slate-50">Mark read</button>}
+                  {i.status !== "resolved" && <button onClick={() => updateStatus(i.id!, "resolved")} className="text-xs font-semibold bg-slate-900 text-white px-3 py-1.5 rounded-lg hover:bg-slate-700">Resolve</button>}
+                  <button onClick={() => { if (confirm("Delete this inquiry?")) remove(i.id!); }} className="text-xs font-semibold text-brand-red hover:underline px-2 py-1.5">Delete</button>
                 </div>
               </div>
             </div>
