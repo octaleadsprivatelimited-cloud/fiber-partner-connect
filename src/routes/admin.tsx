@@ -258,9 +258,9 @@ function DashboardOverview({ products, inquiries, onTab }: { products: Product[]
 
   // Inquiry status donut
   const pieData = [
-    { name: "New", value: unread, color: "#ff6a88" },
-    { name: "Read", value: inquiries.filter((i) => i.status === "read").length, color: "#5b8def" },
-    { name: "Resolved", value: resolved, color: "#28d4a8" },
+    { name: "New", value: unread, color: "#dc2626" },
+    { name: "Read", value: inquiries.filter((i) => i.status === "read").length, color: "#3b82f6" },
+    { name: "Resolved", value: resolved, color: "#10b981" },
   ].filter((d) => d.value > 0);
   const pieFallback = pieData.length === 0 ? [{ name: "No data", value: 1, color: "#e5e7eb" }] : pieData;
 
