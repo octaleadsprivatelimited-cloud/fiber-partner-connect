@@ -4,6 +4,8 @@ import { Phone, Mail, MapPin, MessageCircle, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { SITE, whatsappLink } from "@/lib/site";
 import { submitInquiry } from "@/lib/admin-data";
+import { PageHero } from "@/components/PageHero";
+import bgContact from "@/assets/bg-contact.jpg";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -29,13 +31,12 @@ function ContactPage() {
 
   return (
     <>
-      <section className="bg-brand-black text-white py-14 border-b-4 border-brand-red">
-        <div className="mx-auto max-w-7xl container-px">
-          <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">GET IN TOUCH</div>
-          <h1 className="text-4xl md:text-6xl font-black">Let's talk fiber.</h1>
-          <p className="mt-3 text-white/70 max-w-2xl">Quotes, service requests, partnership enquiries — we typically reply within hours.</p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="GET IN TOUCH"
+        title="Let's talk fiber."
+        description="Quotes, service requests, partnership enquiries — we typically reply within hours."
+        bgImage={bgContact}
+      />
 
       <section className="py-16">
         <div className="mx-auto max-w-7xl container-px grid lg:grid-cols-[1fr_1.2fr] gap-12">

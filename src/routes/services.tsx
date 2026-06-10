@@ -4,7 +4,9 @@ import { motion } from "framer-motion";
 import { Wrench, Gauge, ClipboardCheck, MapPin, Package, Headphones, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { CTABanner } from "@/components/CTABanner";
+import { PageHero } from "@/components/PageHero";
 import { submitInquiry } from "@/lib/admin-data";
+import bgServices from "@/assets/bg-services.jpg";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -44,14 +46,12 @@ function ServicesPage() {
 
   return (
     <>
-      <section className="bg-brand-black text-white py-20 border-b-4 border-brand-red relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_50%,#E32028_0%,transparent_50%)]" />
-        <div className="mx-auto max-w-7xl container-px relative">
-          <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">OUR DIFFERENTIATOR</div>
-          <h1 className="text-4xl md:text-7xl font-black max-w-3xl">We Don't Just Sell — <span className="text-brand-red">We Service.</span></h1>
-          <p className="mt-5 text-lg text-white/80 max-w-2xl">Competitors stop at the sale. We go further — providing authorized repair, calibration and on-site support for every product we deliver.</p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="OUR DIFFERENTIATOR"
+        title={<>We Don't Just Sell — <span className="text-primary">We Service.</span></>}
+        description="Competitors stop at the sale. We go further — providing authorized repair, calibration and on-site support for every product we deliver."
+        bgImage={bgServices}
+      />
 
       <section className="py-20">
         <div className="mx-auto max-w-7xl container-px">
