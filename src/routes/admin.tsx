@@ -659,7 +659,7 @@ function BrandsManager() {
               {it.description || <span className="italic text-muted-foreground/70">No description yet.</span>}
             </p>
             <div className="flex gap-2 mt-4 pt-4 border-t border-border">
-              <button onClick={() => setEditing({ index: i, item: it })} className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:border-violet-500 hover:text-brand-red transition">
+              <button onClick={() => setEditing({ index: i, item: it })} className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:border-brand-red hover:text-brand-red transition">
                 <Pencil className="h-3.5 w-3.5" /> Edit
               </button>
               <button onClick={() => removeItem(i)} className="inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:bg-brand-red hover:border-brand-red hover:text-white transition">
