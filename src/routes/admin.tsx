@@ -394,42 +394,69 @@ function ProductsManager({ products, save, remove, uploadImage }: {
   const [editing, setEditing] = useState<Product | null>(null);
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-black text-brand-black">Products</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Products</h2>
+          <p className="text-sm text-slate-500 mt-1">{products.length} item{products.length === 1 ? "" : "s"} in your catalog</p>
+        </div>
         <button onClick={() => setEditing({ id: "", name: "", brand: "INNO", category: "Fusion Splicers", description: "", image: "" })}
-          className="inline-flex items-center gap-2 bg-brand-red text-white font-bold px-4 py-2.5 hover:bg-brand-red-dark transition">
+          className="inline-flex items-center gap-2 bg-brand-red text-white font-semibold px-4 py-2.5 rounded-lg hover:bg-brand-red-dark transition text-sm shadow-sm">
           <Plus className="h-4 w-4" /> Add Product
         </button>
       </div>
 
-      <div className="bg-white border border-border overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="bg-muted text-xs uppercase tracking-wider text-muted-foreground">
-            <tr>
-              <th className="text-left p-3">Image</th>
-              <th className="text-left p-3">Name</th>
-              <th className="text-left p-3">Category</th>
-              <th className="text-left p-3">Brand</th>
-              <th className="text-left p-3">Featured</th>
-              <th className="text-right p-3">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            {products.map((p) => (
-              <tr key={p.id} className="hover:bg-muted/30">
-                <td className="p-3"><img src={p.image} alt="" className="h-12 w-12 object-cover" /></td>
-                <td className="p-3 font-semibold text-brand-black">{p.name}</td>
-                <td className="p-3 text-muted-foreground">{p.category}</td>
-                <td className="p-3"><span className="text-xs font-bold bg-brand-black text-white px-2 py-1">{p.brand}</span></td>
-                <td className="p-3">{p.featured ? <CheckCircle2 className="h-4 w-4 text-brand-red" /> : <span className="text-muted-foreground">—</span>}</td>
-                <td className="p-3 text-right">
-                  <button onClick={() => setEditing(p)} className="p-2 hover:bg-muted"><Pencil className="h-4 w-4" /></button>
-                  <button onClick={() => { if (confirm(`Delete "${p.name}"?`)) remove(p.id); }} className="p-2 hover:bg-brand-red hover:text-white"><Trash2 className="h-4 w-4" /></button>
-                </td>
+      {/* Mobile card list */}
+      <div className="grid sm:hidden gap-3">
+        {products.map((p) => (
+          <div key={p.id} className="bg-white border border-slate-200 rounded-xl p-3 flex gap-3">
+            <img src={p.image} alt="" className="h-16 w-16 object-cover rounded-lg shrink-0 bg-slate-100" />
+            <div className="flex-1 min-w-0">
+              <div className="font-semibold text-slate-900 text-sm truncate">{p.name}</div>
+              <div className="text-xs text-slate-500 mt-0.5 truncate">{p.category}</div>
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-[10px] font-bold bg-slate-900 text-white px-1.5 py-0.5 rounded">{p.brand}</span>
+                {p.featured && <span className="text-[10px] font-bold bg-red-50 text-brand-red px-1.5 py-0.5 rounded">FEATURED</span>}
+              </div>
+            </div>
+            <div className="flex flex-col gap-1 shrink-0">
+              <button onClick={() => setEditing(p)} className="p-1.5 rounded hover:bg-slate-100"><Pencil className="h-4 w-4 text-slate-600" /></button>
+              <button onClick={() => { if (confirm(`Delete "${p.name}"?`)) remove(p.id); }} className="p-1.5 rounded hover:bg-red-50"><Trash2 className="h-4 w-4 text-brand-red" /></button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop table */}
+      <div className="hidden sm:block bg-white border border-slate-200 rounded-xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+              <tr>
+                <th className="text-left p-3 font-semibold">Image</th>
+                <th className="text-left p-3 font-semibold">Name</th>
+                <th className="text-left p-3 font-semibold">Category</th>
+                <th className="text-left p-3 font-semibold">Brand</th>
+                <th className="text-left p-3 font-semibold">Featured</th>
+                <th className="text-right p-3 font-semibold">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {products.map((p) => (
+                <tr key={p.id} className="hover:bg-slate-50/60">
+                  <td className="p-3"><img src={p.image} alt="" className="h-12 w-12 object-cover rounded-md bg-slate-100" /></td>
+                  <td className="p-3 font-semibold text-slate-900">{p.name}</td>
+                  <td className="p-3 text-slate-600">{p.category}</td>
+                  <td className="p-3"><span className="text-[10px] font-bold bg-slate-900 text-white px-2 py-1 rounded">{p.brand}</span></td>
+                  <td className="p-3">{p.featured ? <CheckCircle2 className="h-4 w-4 text-emerald-600" /> : <span className="text-slate-300">—</span>}</td>
+                  <td className="p-3 text-right whitespace-nowrap">
+                    <button onClick={() => setEditing(p)} className="p-2 rounded hover:bg-slate-100"><Pencil className="h-4 w-4 text-slate-600" /></button>
+                    <button onClick={() => { if (confirm(`Delete "${p.name}"?`)) remove(p.id); }} className="p-2 rounded hover:bg-red-50 ml-1"><Trash2 className="h-4 w-4 text-brand-red" /></button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <AnimatePresence>
