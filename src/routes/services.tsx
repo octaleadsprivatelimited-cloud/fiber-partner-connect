@@ -21,10 +21,9 @@ export const Route = createFileRoute("/services")({
 
 interface Form { name: string; phone: string; equipment: string; issue: string; }
 
-interface Form { name: string; phone: string; equipment: string; issue: string; }
-
 function ServicesPage() {
   const [sent, setSent] = useState(false);
+  const services = loadServices().map((s) => ({ icon: ICONS[s.iconName] ?? ICONS.Wrench, t: s.title, d: s.description }));
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Form>();
   const onSubmit = async (data: Form) => {
     try {
