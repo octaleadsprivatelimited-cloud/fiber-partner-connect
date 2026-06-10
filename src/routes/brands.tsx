@@ -1,19 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Award, ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
 import bgBrands from "@/assets/bg-brands.jpg";
 
-export const Route = createFileRoute("/brands")({
-  head: () => ({
-    meta: [
-      { title: "Brands — SATYA POWER TECHNOLOGY'S" },
-      { name: "description", content: "Authorized INNO distributor plus Fujikura, Sumitomo, Grandway, EXFO, VIAVI and Fiberfox fiber optic equipment." },
-    ],
-  }),
-  component: BrandsPage,
-});
 
 const brands = [
   { name: "Fujikura", tag: "Japan", desc: "Premium fusion splicers (90S+, 41S+) trusted globally for active fusion control and ruggedness." },
@@ -140,3 +131,5 @@ function StatLight({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
+export default BrandsPage;

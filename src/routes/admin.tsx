@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
@@ -22,10 +21,6 @@ import { useServicesStore, ICON_NAMES, ICONS, type ServiceItem } from "@/lib/ser
 import { compressImage } from "@/lib/image-compress";
 import { SITE } from "@/lib/site";
 
-export const Route = createFileRoute("/admin")({
-  head: () => ({ meta: [{ title: `Admin — ${SITE.name}` }, { name: "robots", content: "noindex" }] }),
-  component: AdminPage,
-});
 
 type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "settings";
 
@@ -921,3 +916,5 @@ function ServiceEditor({ initial, onClose, onSave }: {
     </motion.div>
   );
 }
+
+export default AdminPage;

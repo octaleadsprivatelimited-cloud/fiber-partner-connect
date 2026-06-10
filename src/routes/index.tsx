@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Hero } from "@/components/Hero";
 import { BrandStrip } from "@/components/BrandStrip";
@@ -7,15 +7,6 @@ import { ProductCard } from "@/components/ProductCard";
 import { CTABanner } from "@/components/CTABanner";
 import { PRODUCTS } from "@/lib/products";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "SATYA POWER TECHNOLOGY'S — INNO Authorized Distributor for AP & Telangana" },
-      { name: "description", content: "Premium fiber optic equipment — fusion splicers, OTDRs, power meters & service across Andhra Pradesh and Telangana." },
-    ],
-  }),
-  component: Home,
-});
 
 function Home() {
   const featured = PRODUCTS.filter((p) => p.featured).slice(0, 8);
@@ -47,3 +38,5 @@ function Home() {
     </>
   );
 }
+
+export default Home;
