@@ -6,6 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { SITE } from "@/lib/site";
 import { z } from "zod";
 import { toast } from "sonner";
+import { sendToFormspree } from "@/lib/formspree";
+import { submitInquiry } from "@/lib/admin-data";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name required").max(80),
@@ -18,16 +20,43 @@ export function QuoteDialog({ trigger, productName }: { trigger: React.ReactNode
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ name: "", mobile: "", requirement: productName ?? "", address: "" });
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const r = schema.safeParse(form);
     if (!r.success) {
       toast.error(r.error.issues[0].message);
       return;
     }
+
+    // 1. Email admin via Formspree
+    await sendToFormspree({
+      _subject: `Quote Request: ${productName ?? form.requirement}`,
+      type: "Product Quote",
+      product: productName ?? "",
+      name: form.name,
+      mobile: form.mobile,
+      requirement: form.requirement,
+      address: form.address,
+    });
+
+    // 2. Save to admin dashboard (Firestore)
+    try {
+      await submitInquiry({
+        name: form.name,
+        phone: form.mobile,
+        subject: `Quote: ${productName ?? form.requirement}`,
+        message: `Requirement: ${form.requirement}\nAddress: ${form.address}`,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+
+    // 3. Open WhatsApp to owner
     const msg = `*Quote Request*%0A%0A*Name:* ${form.name}%0A*Mobile:* ${form.mobile}%0A*Requirement:* ${form.requirement}%0A*Address:* ${form.address}`;
     const url = `https://wa.me/${SITE.phoneRaw}?text=${msg}`;
     window.open(url, "_blank", "noopener,noreferrer");
+
+    toast.success("Quote sent! We'll reach out shortly.");
     setOpen(false);
   };
 
