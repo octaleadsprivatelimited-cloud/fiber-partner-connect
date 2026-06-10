@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, MapPin, Wrench, Award, ShieldCheck, Headphones, Package } from "lucide-react";
 import heroPoster from "@/assets/hero-1.jpg";
+import heroVideo from "@/assets/hero-bg.mp4.asset.json";
 
 const slides = [
   {
