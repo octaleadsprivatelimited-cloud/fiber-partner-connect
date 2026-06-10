@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, MapPin, Wrench, Award, ShieldCheck, Headphones, Package } from "lucide-react";
 import h1 from "@/assets/hero-1.jpg";
