@@ -4,7 +4,9 @@ import { motion } from "framer-motion";
 import { Wrench, Gauge, ClipboardCheck, MapPin, Package, Headphones, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { CTABanner } from "@/components/CTABanner";
+import { PageHero } from "@/components/PageHero";
 import { submitInquiry } from "@/lib/admin-data";
+import bgServices from "@/assets/bg-services.jpg";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
