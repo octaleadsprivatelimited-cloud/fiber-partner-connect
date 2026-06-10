@@ -24,13 +24,12 @@ function ProductsPage() {
   );
   return (
     <>
-      <section className="bg-brand-black text-white py-14 border-b-4 border-brand-red">
-        <div className="mx-auto max-w-7xl container-px">
-          <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">CATALOGUE</div>
-          <h1 className="text-4xl md:text-6xl font-black">All Products</h1>
-          <p className="mt-3 text-white/70 max-w-2xl">Browse our full range of fiber optic equipment and accessories. Tap any product for a WhatsApp quote.</p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="CATALOGUE"
+        title="All Products"
+        description="Browse our full range of fiber optic equipment and accessories. Tap any product for a WhatsApp quote."
+        bgImage={bgProducts}
+      />
 
       <section className="py-12">
         <div className="mx-auto max-w-7xl container-px grid lg:grid-cols-[260px_1fr] gap-10">
