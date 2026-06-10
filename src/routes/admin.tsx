@@ -706,8 +706,19 @@ function BrandEditor({ initial, isNew, onClose, onSave }: { initial: BrandItem; 
           <Field label="Description">
             <textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" />
           </Field>
-          <Field label="Logo URL (optional)">
-            <input value={form.logo ?? ""} onChange={(e) => setForm({ ...form, logo: e.target.value })} placeholder="https://…" className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" />
+          <Field label="Logo">
+            <div className="flex flex-wrap items-center gap-3">
+              {form.logo && <img src={form.logo} alt="" className="h-16 w-16 object-contain rounded-lg border border-border bg-white p-1" />}
+              <label className="inline-flex items-center gap-2 border border-input rounded px-4 py-2.5 font-semibold text-sm cursor-pointer hover:border-brand-red hover:text-brand-red transition">
+                <Upload className="h-4 w-4" /> {form.logo ? "Replace logo" : "Upload logo"}
+                <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                  const f = e.target.files?.[0]; if (!f) return;
+                  const url = await compressImage(f, { maxSize: 400, quality: 0.85 });
+                  setForm((p) => ({ ...p, logo: url }));
+                }} />
+              </label>
+              <span className="text-xs text-slate-500">Auto-compressed.</span>
+            </div>
           </Field>
           <div className="flex gap-3 pt-2">
             <button onClick={onClose} className="flex-1 border border-border font-bold py-2.5 rounded hover:bg-muted">Cancel</button>
