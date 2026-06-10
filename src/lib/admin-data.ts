@@ -168,37 +168,92 @@ export interface Inquiry {
   createdAt?: any;
 }
 
+const INQUIRY_LOCAL_KEY = "admin-inquiries";
+
+function readLocalInquiries(): Inquiry[] {
+  if (typeof localStorage === "undefined") return [];
+  const raw = localStorage.getItem(INQUIRY_LOCAL_KEY);
+  if (!raw) return [];
+  try { return JSON.parse(raw) as Inquiry[]; } catch { return []; }
+}
+function writeLocalInquiries(list: Inquiry[]) {
+  if (typeof localStorage !== "undefined")
+    localStorage.setItem(INQUIRY_LOCAL_KEY, JSON.stringify(list));
+}
+
 export async function submitInquiry(data: Omit<Inquiry, "id" | "status" | "createdAt">) {
-  const fb = getFirebase();
-  if (!fb || !isFirebaseConfigured()) {
-    console.warn("Inquiry (Firebase not configured):", data);
-    return;
+  // Always persist locally so the admin panel sees the message even when
+  // Firestore rules block writes / the user is offline.
+  const local: Inquiry = {
+    ...data,
+    id: `local-${Date.now()}`,
+    status: "new",
+    createdAt: Date.now(),
+  };
+  const list = [local, ...readLocalInquiries()];
+  writeLocalInquiries(list);
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new StorageEvent("storage", { key: INQUIRY_LOCAL_KEY }));
   }
-  await addDoc(collection(fb.db, "inquiries"), { ...data, status: "new", createdAt: serverTimestamp() });
+
+  const fb = getFirebase();
+  if (!fb || !isFirebaseConfigured()) return;
+  try {
+    await addDoc(collection(fb.db, "inquiries"), { ...data, status: "new", createdAt: serverTimestamp() });
+  } catch (e) {
+    console.warn("Firestore inquiry write failed, kept locally:", e);
+  }
 }
 
 export function useInquiries() {
-  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+  const [remote, setRemote] = useState<Inquiry[]>([]);
+  const [local, setLocal] = useState<Inquiry[]>(() => readLocalInquiries());
+
   useEffect(() => {
+    const sync = () => setLocal(readLocalInquiries());
+    sync();
+    if (typeof window !== "undefined") {
+      window.addEventListener("storage", sync);
+    }
     const fb = getFirebase();
-    if (!fb || !isFirebaseConfigured()) return;
-    const q = query(collection(fb.db, "inquiries"), orderBy("createdAt", "desc"));
-    return onSnapshot(q, (snap) => setInquiries(snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) }))));
+    let unsub: (() => void) | undefined;
+    if (fb && isFirebaseConfigured()) {
+      try {
+        const q = query(collection(fb.db, "inquiries"), orderBy("createdAt", "desc"));
+        unsub = onSnapshot(
+          q,
+          (snap) => setRemote(snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) }))),
+          (e) => console.warn("Firestore inquiry read failed:", e),
+        );
+      } catch (e) { console.warn(e); }
+    }
+    return () => {
+      if (typeof window !== "undefined") window.removeEventListener("storage", sync);
+      unsub?.();
+    };
   }, []);
 
+  const inquiries = [...local, ...remote];
+
   const updateStatus = async (id: string, status: Inquiry["status"]) => {
-    const fb = getFirebase();
-    if (!fb || !isFirebaseConfigured()) {
-      setInquiries((prev) => prev.map((i) => i.id === id ? { ...i, status } : i)); return;
+    if (id.startsWith("local-")) {
+      const next = readLocalInquiries().map((i) => i.id === id ? { ...i, status } : i);
+      writeLocalInquiries(next); setLocal(next); return;
     }
-    await updateDoc(doc(fb.db, "inquiries", id), { status });
+    const fb = getFirebase();
+    if (!fb || !isFirebaseConfigured()) return;
+    try { await updateDoc(doc(fb.db, "inquiries", id), { status }); }
+    catch (e) { console.warn(e); }
   };
   const remove = async (id: string) => {
-    const fb = getFirebase();
-    if (!fb || !isFirebaseConfigured()) {
-      setInquiries((prev) => prev.filter((i) => i.id !== id)); return;
+    if (id.startsWith("local-")) {
+      const next = readLocalInquiries().filter((i) => i.id !== id);
+      writeLocalInquiries(next); setLocal(next); return;
     }
-    await deleteDoc(doc(fb.db, "inquiries", id));
+    const fb = getFirebase();
+    if (!fb || !isFirebaseConfigured()) return;
+    try { await deleteDoc(doc(fb.db, "inquiries", id)); }
+    catch (e) { console.warn(e); }
   };
   return { inquiries, updateStatus, remove };
 }
