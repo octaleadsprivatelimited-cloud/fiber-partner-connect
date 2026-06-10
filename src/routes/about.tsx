@@ -26,13 +26,12 @@ const timeline = [
 function AboutPage() {
   return (
     <>
-      <section className="bg-brand-black text-white py-16 border-b-4 border-brand-red">
-        <div className="mx-auto max-w-7xl container-px">
-          <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">OUR STORY</div>
-          <h1 className="text-4xl md:text-6xl font-black max-w-3xl">Built on trust. Backed by service.</h1>
-          <p className="mt-4 text-white/70 max-w-2xl text-lg">{SITE.tagline}</p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="OUR STORY"
+        title="Built on trust. Backed by service."
+        description={SITE.tagline}
+        bgImage={bgAbout}
+      />
 
       <section className="py-20">
         <div className="mx-auto max-w-7xl container-px grid lg:grid-cols-3 gap-10">
