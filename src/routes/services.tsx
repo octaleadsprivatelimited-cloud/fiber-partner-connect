@@ -19,7 +19,7 @@ export const Route = createFileRoute("/services")({
   component: ServicesPage,
 });
 
-const services = SERVICES.map((s) => ({ icon: s.icon, t: s.title, d: s.description }));
+const services = loadServices().map((s) => ({ icon: ICONS[s.iconName] ?? ICONS.Wrench, t: s.title, d: s.description }));
 
 interface Form { name: string; phone: string; equipment: string; issue: string; }
 
