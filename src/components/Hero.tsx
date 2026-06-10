@@ -1,5 +1,6 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, MapPin, Wrench, Award, ShieldCheck, Headphones, Package } from "lucide-react";
 import h1 from "@/assets/hero-1.jpg";
 import h2 from "@/assets/hero-2.jpg";
