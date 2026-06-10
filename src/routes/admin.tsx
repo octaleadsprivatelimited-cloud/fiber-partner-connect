@@ -18,6 +18,7 @@ import {
   type Inquiry,
 } from "@/lib/admin-data";
 import { CATEGORIES, BRANDS, type Product, type Category, type Brand } from "@/lib/products";
+import { SERVICES } from "@/lib/services";
 import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/admin")({
