@@ -6,7 +6,7 @@ import { useState } from "react";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
 import { submitInquiry } from "@/lib/admin-data";
-import { SERVICES } from "@/lib/services";
+import { loadServices, ICONS } from "@/lib/services-data";
 import bgServices from "@/assets/bg-services.jpg";
 
 export const Route = createFileRoute("/services")({
