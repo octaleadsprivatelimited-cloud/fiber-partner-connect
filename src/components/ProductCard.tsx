@@ -3,6 +3,7 @@ import { ArrowRight, Phone } from "lucide-react";
 import { SITE } from "@/lib/site";
 import type { Product } from "@/lib/products";
 import { QuoteDialog } from "@/components/QuoteDialog";
+import { Logo } from "@/components/Logo";
 
 export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
   return (
@@ -15,15 +16,16 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
     >
       <div className="relative aspect-square bg-muted overflow-hidden">
         <img src={p.image} alt={p.name} loading="lazy" className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
-        {/* Watermark overlay - top */}
-        <div className="absolute inset-x-0 top-0 bg-brand-black/85 backdrop-blur-sm">
-          <div className="flex items-center gap-2 px-3 py-2 border-l-4 border-brand-red">
-            <div className="text-white">
-              <div className="font-black text-xs leading-none">SATYA POWER TECHNOLOGY'S</div>
-              <div className="text-brand-red text-[10px] font-semibold flex items-center gap-1 mt-0.5">
-                <Phone className="h-2.5 w-2.5" />{SITE.phone}
-              </div>
-            </div>
+        {/* Watermark overlay - top: logo + contact number */}
+        <div className="absolute inset-x-0 top-0 bg-white/95 backdrop-blur-sm border-l-4 border-brand-red">
+          <div className="flex items-center justify-between gap-2 px-2.5 py-1.5">
+            <Logo className="h-7" />
+            <a
+              href={`tel:${SITE.phoneRaw}`}
+              className="inline-flex items-center gap-1 text-brand-black text-[11px] font-bold whitespace-nowrap"
+            >
+              <Phone className="h-3 w-3 text-brand-red" />{SITE.phone}
+            </a>
           </div>
         </div>
         <div className="absolute bottom-3 left-3 bg-brand-black text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1">
