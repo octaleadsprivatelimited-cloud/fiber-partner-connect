@@ -1,59 +1,57 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import type { Product } from "@/lib/products";
 import { QuoteDialog } from "@/components/QuoteDialog";
 
 export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: idx * 0.05 }}
-      className="group relative bg-white rounded-xl border border-border hover:border-brand-red/40 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col"
+      transition={{ duration: 0.35, delay: idx * 0.04 }}
+      className="group flex flex-col"
     >
-      {/* Image */}
-      <div className="relative aspect-[4/3] bg-gradient-to-br from-muted to-muted/50 overflow-hidden">
+      {/* Image — Shopify-style: clean, square, edge-to-edge */}
+      <div className="relative aspect-square bg-[#f6f6f6] overflow-hidden">
         <img
           src={p.image}
           alt={p.name}
           loading="lazy"
-          className="h-full w-full object-contain p-6 group-hover:scale-110 transition-transform duration-500"
+          className="h-full w-full object-contain p-4 transition-transform duration-500 ease-out group-hover:scale-105"
         />
-        {/* Brand chip */}
-        <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm text-brand-black text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
-          {p.brand}
-        </div>
         {p.featured && (
-          <div className="absolute top-3 right-3 bg-brand-red text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
+          <span className="absolute top-3 left-3 bg-brand-red text-white text-[10px] font-semibold uppercase tracking-wider px-2 py-1">
             Featured
-          </div>
+          </span>
         )}
+
+        {/* Quick-add overlay on hover (Shopify pattern) */}
+        <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out p-3">
+          <QuoteDialog
+            productName={p.name}
+            trigger={
+              <button
+                type="button"
+                className="w-full bg-brand-black text-white text-xs font-semibold uppercase tracking-wider py-3 hover:bg-brand-red transition-colors"
+              >
+                Get a Quote
+              </button>
+            }
+          />
+        </div>
       </div>
 
-      {/* Body */}
-      <div className="p-5 flex flex-col flex-1">
-        <div className="text-[10px] font-bold tracking-[0.15em] text-brand-red uppercase">
-          {p.category}
+      {/* Body — minimal, centered text like Shopify themes */}
+      <div className="pt-4 pb-2 text-center">
+        <div className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
+          {p.brand}
         </div>
-        <h3 className="font-bold text-brand-black mt-1.5 leading-snug line-clamp-2 min-h-[3rem] group-hover:text-brand-red transition-colors">
+        <h3 className="mt-1 text-sm font-medium text-brand-black leading-snug line-clamp-2 group-hover:underline underline-offset-4 decoration-1">
           {p.name}
         </h3>
-        <p className="text-sm text-muted-foreground mt-2 flex-1 line-clamp-2">
-          {p.description}
-        </p>
-        <QuoteDialog
-          productName={p.name}
-          trigger={
-            <button
-              type="button"
-              className="mt-4 inline-flex items-center justify-center gap-2 border-2 border-brand-black text-brand-black text-sm font-bold py-2.5 rounded-lg hover:bg-brand-black hover:text-white transition group/btn w-full"
-            >
-              Get a Quote
-              <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition" />
-            </button>
-          }
-        />
+        <div className="mt-1.5 text-xs text-muted-foreground">
+          {p.category}
+        </div>
       </div>
     </motion.div>
   );
