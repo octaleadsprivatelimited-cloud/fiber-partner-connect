@@ -225,22 +225,22 @@ function DashboardOverview({ products, inquiries, onTab }: { products: Product[]
   const stats = [
     {
       label: "Total Products", value: products.length, icon: ShoppingBag,
-      gradient: "from-[#ff6a88] via-[#ff8e72] to-[#ffb37b]",
+      iconBg: "bg-brand-red/10", iconColor: "text-brand-red",
       delta: "+12%", up: true, tab: "products" as const,
     },
     {
       label: "Inquiries", value: inquiries.length, icon: MessageSquare,
-      gradient: "from-[#5b8def] via-[#5f9bff] to-[#6ad2ff]",
+      iconBg: "bg-blue-50", iconColor: "text-blue-600",
       delta: "+8%", up: true, tab: "inquiries" as const,
     },
     {
       label: "Unread", value: unread, icon: Eye,
-      gradient: "from-[#28d4a8] via-[#38e0b2] to-[#7ef0c8]",
+      iconBg: "bg-amber-50", iconColor: "text-amber-600",
       delta: unread > 0 ? "new" : "0", up: unread > 0, tab: "inquiries" as const,
     },
     {
       label: "Featured", value: products.filter((p) => p.featured).length, icon: Users,
-      gradient: "from-[#a78bfa] via-[#c084fc] to-[#e879f9]",
+      iconBg: "bg-emerald-50", iconColor: "text-emerald-600",
       delta: "live", up: true, tab: "products" as const,
     },
   ];
