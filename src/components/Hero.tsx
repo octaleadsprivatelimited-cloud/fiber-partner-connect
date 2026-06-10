@@ -85,20 +85,14 @@ export function Hero() {
           {/* RIGHT: image */}
           <div className="relative">
             <div className="relative aspect-[5/4] rounded-2xl overflow-hidden">
-              <AnimatePresence mode="sync">
-                <motion.img
-                  key={i}
-                  src={s.img}
-                  alt=""
-                  width={900}
-                  height={720}
-                  initial={{ opacity: 0, scale: 1.05 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 1, ease: "easeOut" }}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              </AnimatePresence>
+              <img
+                key={i}
+                src={s.img}
+                alt=""
+                width={900}
+                height={720}
+                className="absolute inset-0 h-full w-full object-cover animate-in fade-in zoom-in-105 duration-700"
+              />
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/40 via-transparent to-transparent" />
             </div>
           </div>
