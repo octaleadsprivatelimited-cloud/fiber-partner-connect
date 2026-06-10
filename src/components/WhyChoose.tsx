@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Building2, Users, ShieldCheck, Scale, Tag, Globe, Wrench } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Building2, Users, ShieldCheck, Scale, Tag, Globe, Wrench, ArrowRight } from "lucide-react";
 
 const items = [
   { icon: Building2, t: "Advance Infrastructure", d: "Modern facilities and inventory ready for immediate dispatch." },
@@ -35,24 +36,55 @@ export function WhyChoose() {
               <p className="text-sm text-muted-foreground group-hover:text-white/70 mt-2">{it.d}</p>
             </motion.div>
           ))}
-          {/* Highlight card */}
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-            className="bg-brand-red text-white p-7 sm:col-span-2 lg:col-span-3 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8"
-          >
-            <div className="h-14 w-14 bg-white text-brand-red flex items-center justify-center shrink-0">
-              <Wrench className="h-7 w-7" />
-            </div>
-            <div className="flex-1">
-              <div className="text-xs font-bold tracking-[0.2em] text-white/80 mb-1">OUR DIFFERENTIATOR</div>
-              <h3 className="text-2xl md:text-3xl font-black">Authorized Service Center — AP & Telangana</h3>
-              <p className="mt-2 text-white/90 max-w-2xl">Competitors only sell. We sell AND service — repair, calibration, on-site support and genuine spare parts.</p>
-            </div>
-          </motion.div>
         </div>
+
+        {/* Differentiator banner — dark high-contrast */}
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="relative group overflow-hidden rounded-3xl bg-slate-950 shadow-2xl mt-10"
+        >
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-brand-red/10 to-transparent pointer-events-none" />
+          <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-brand-red/20 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative flex flex-col lg:flex-row items-center justify-between gap-10 p-8 md:p-12 lg:p-16">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-8 flex-1">
+              <div className="relative flex-shrink-0">
+                <div className="absolute inset-0 bg-brand-red blur-xl opacity-20 group-hover:opacity-40 transition-opacity" />
+                <div className="relative w-20 h-20 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+                  <Wrench className="h-10 w-10 text-brand-red" strokeWidth={1.75} />
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2">
+                  <span className="h-px w-6 bg-brand-red" />
+                  <span className="text-xs font-bold tracking-widest text-brand-red uppercase">Our Differentiator</span>
+                </div>
+                <h3 className="text-3xl md:text-4xl font-extrabold text-white leading-tight">
+                  Authorized Service Center <br className="hidden md:block" />
+                  <span className="text-slate-400 font-medium">— AP & Telangana</span>
+                </h3>
+                <p className="text-slate-400 text-base md:text-lg max-w-2xl">
+                  Competitors only sell. We sell AND service — certified repair, precision calibration, on-site support and genuine spare parts for your high-end optical equipment.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex-shrink-0">
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center px-8 py-4 bg-brand-red hover:bg-red-700 text-white font-bold rounded-xl transition-all transform hover:-translate-y-1 hover:shadow-lg active:scale-95 group/btn"
+              >
+                <span>Book Service Now</span>
+                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover/btn:translate-x-1" />
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );
