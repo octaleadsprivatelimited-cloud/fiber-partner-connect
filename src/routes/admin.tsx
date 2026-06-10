@@ -209,6 +209,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
           <section className="p-4 sm:p-6 lg:p-8 min-w-0">
             {tab === "dashboard" && <DashboardOverview products={products} inquiries={inquiries} onTab={setTab} />}
             {tab === "products" && <ProductsManager products={products} save={save} remove={remove} uploadImage={uploadImage} />}
+            {tab === "services" && <ServicesManager />}
             {tab === "inquiries" && <InquiriesManager inquiries={inquiries} updateStatus={updateStatus} remove={removeInquiry} />}
             {tab === "brands" && <BrandsManager />}
             {tab === "settings" && <SettingsManager />}
