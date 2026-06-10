@@ -3,6 +3,7 @@ import { ArrowRight, Phone } from "lucide-react";
 import { SITE } from "@/lib/site";
 import type { Product } from "@/lib/products";
 import { QuoteDialog } from "@/components/QuoteDialog";
+import { Logo } from "@/components/Logo";
 
 export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
   return (
