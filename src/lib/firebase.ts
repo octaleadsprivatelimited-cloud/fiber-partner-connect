@@ -26,7 +26,7 @@ export function getFirebase() {
       _auth = getAuth(app);
       _storage = getStorage(app);
     } catch (e) {
-      console.warn("Firebase init skipped (placeholder config):", e);
+      console.warn("Firebase init failed:", e);
     }
   }
   return app ? { app, db: _db!, auth: _auth!, storage: _storage! } : null;
