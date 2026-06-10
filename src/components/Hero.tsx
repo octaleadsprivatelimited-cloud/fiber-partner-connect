@@ -49,7 +49,7 @@ export function Hero() {
           playsInline
           poster={heroPoster}
         >
-          <source src="/hero-bg.mp4" type="video/mp4" />
+          <source src={heroVideo.url} type="video/mp4" />
         </video>
         {/* Lighter overlay for readability */}
         <div className="absolute inset-0 bg-black/35" />
