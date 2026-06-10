@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { Phone, Mail, MapPin, MessageCircle, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
@@ -8,15 +7,6 @@ import { sendToFormspree } from "@/lib/formspree";
 import { PageHero } from "@/components/PageHero";
 import bgContact from "@/assets/bg-contact.jpg";
 
-export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact — SATYA POWER TECHNOLOGY'S" },
-      { name: "description", content: "Contact SATYA POWER TECHNOLOGY'S for fiber optic equipment sales, service and quotes across Andhra Pradesh & Telangana." },
-    ],
-  }),
-  component: ContactPage,
-});
 
 interface Form { name: string; email: string; phone: string; subject: string; message: string; }
 
@@ -130,3 +120,5 @@ function Field({ label, error, children }: { label: string; error?: string; chil
     </label>
   );
 }
+
+export default ContactPage;

@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
@@ -9,15 +8,6 @@ import { submitInquiry } from "@/lib/admin-data";
 import { loadServices, ICONS } from "@/lib/services-data";
 import bgServices from "@/assets/bg-services.jpg";
 
-export const Route = createFileRoute("/services")({
-  head: () => ({
-    meta: [
-      { title: "Services — SATYA POWER TECHNOLOGY'S | Fusion Splicer Repair & OTDR Calibration" },
-      { name: "description", content: "Authorized service center for fiber optic equipment across AP & Telangana — splicer repair, OTDR calibration, on-site support and genuine spares." },
-    ],
-  }),
-  component: ServicesPage,
-});
 
 interface Form { name: string; phone: string; equipment: string; issue: string; }
 
@@ -124,3 +114,5 @@ function Field({ label, error, children }: { label: string; error?: string; chil
     </label>
   );
 }
+
+export default ServicesPage;

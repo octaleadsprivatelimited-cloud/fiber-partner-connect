@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { ArrowRight, MessageCircle, Phone, Clock, MapPin } from "lucide-react";
 import { SITE, whatsappLink } from "@/lib/site";
 import bg from "@/assets/bg-contact.jpg";

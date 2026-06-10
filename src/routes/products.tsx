@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import { CTABanner } from "@/components/CTABanner";
@@ -6,15 +5,6 @@ import { PageHero } from "@/components/PageHero";
 import { PRODUCTS, CATEGORIES, BRANDS } from "@/lib/products";
 import bgProducts from "@/assets/bg-products.jpg";
 
-export const Route = createFileRoute("/products")({
-  head: () => ({
-    meta: [
-      { title: "Products — SATYA POWER TECHNOLOGY'S" },
-      { name: "description", content: "Fusion splicers, OTDRs, power meters, cleavers, VFLs, toolkits and genuine spare parts from INNO, Fujikura, Sumitomo and more." },
-    ],
-  }),
-  component: ProductsPage,
-});
 
 function ProductsPage() {
   const [cat, setCat] = useState<string>("All");
@@ -79,3 +69,5 @@ function ProductsPage() {
     </>
   );
 }
+
+export default ProductsPage;

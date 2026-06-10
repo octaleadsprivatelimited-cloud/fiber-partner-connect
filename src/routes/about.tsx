@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Award, Target, Users, Quote, MapPin, Calendar } from "lucide-react";
 import { CTABanner } from "@/components/CTABanner";
@@ -6,15 +5,6 @@ import { PageHero } from "@/components/PageHero";
 import { SITE } from "@/lib/site";
 import bgAbout from "@/assets/bg-about.jpg";
 
-export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About — SATYA POWER TECHNOLOGY'S" },
-      { name: "description", content: "Founded in 2013 by Mr. Deepak Singh, SATYA POWER TECHNOLOGY'S is the authorized INNO distributor for AP & Telangana." },
-    ],
-  }),
-  component: AboutPage,
-});
 
 const timeline = [
   { year: "2013", title: "Founded", body: "SATYA POWER TECHNOLOGY'S established under the leadership of Mr. Deepak Singh." },
@@ -128,3 +118,5 @@ function AboutPage() {
     </>
   );
 }
+
+export default AboutPage;
