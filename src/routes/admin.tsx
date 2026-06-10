@@ -807,3 +807,44 @@ function Field({ label, error, children }: { label: string; error?: string; chil
     </label>
   );
 }
+
+/* ============ Services manager ============ */
+function ServicesManager() {
+  return (
+    <div className="space-y-6">
+      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7">
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Services</h2>
+            <p className="text-sm text-slate-500 mt-1">
+              {SERVICES.length} services listed on the public site
+            </p>
+          </div>
+          <a
+            href="/services"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-red hover:underline"
+          >
+            <Eye className="h-4 w-4" /> View on site
+          </a>
+        </div>
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {SERVICES.map((s) => (
+          <div
+            key={s.id}
+            className="bg-white border border-slate-200 rounded-2xl p-5 hover:border-brand-red/40 hover:shadow-sm transition"
+          >
+            <div className="h-11 w-11 rounded-xl bg-brand-red/10 text-brand-red grid place-items-center mb-4">
+              <s.icon className="h-5 w-5" />
+            </div>
+            <h3 className="font-bold text-slate-900">{s.title}</h3>
+            <p className="mt-1.5 text-sm text-slate-500 leading-relaxed">{s.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
