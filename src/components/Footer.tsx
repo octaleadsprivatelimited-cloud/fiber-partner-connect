@@ -8,7 +8,7 @@ export function Footer() {
     <footer className="bg-brand-black text-white mt-20">
       <div className="mx-auto max-w-7xl container-px py-14 grid gap-10 md:grid-cols-4">
         <div>
-          <div className="bg-white inline-block px-3 py-2"><Logo /></div>
+          <Logo className="h-16" />
           <p className="mt-4 text-sm text-white/70 max-w-xs">{SITE.tagline}. Authorized INNO Distributor for Andhra Pradesh & Telangana.</p>
         </div>
         <div>
