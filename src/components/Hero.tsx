@@ -114,19 +114,19 @@ export function Hero() {
       {/* Feature cards overlapping bottom */}
       <div className="relative -mt-24 md:-mt-28 z-10">
         <div className="mx-auto max-w-7xl container-px">
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-3 md:gap-4">
             {features.map((f) => {
               const Icon = f.icon;
               return (
                 <div
                   key={f.title}
-                  className="bg-white text-brand-black rounded-xl shadow-xl p-6 border border-black/5"
+                  className="bg-white text-brand-black rounded-xl shadow-xl p-3 md:p-6 border border-black/5"
                 >
-                  <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
-                    <Icon className="h-5 w-5" />
+                  <div className="h-8 w-8 md:h-10 md:w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-2 md:mb-4">
+                    <Icon className="h-4 w-4 md:h-5 md:w-5" />
                   </div>
-                  <h3 className="font-bold text-lg">{f.title}</h3>
-                  <p className="mt-1.5 text-sm text-brand-black/65 leading-relaxed">{f.body}</p>
+                  <h3 className="font-bold text-sm md:text-lg">{f.title}</h3>
+                  <p className="mt-1 text-xs md:text-sm text-brand-black/65 leading-relaxed">{f.body}</p>
                 </div>
               );
             })}
