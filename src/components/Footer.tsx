@@ -2,10 +2,14 @@ import { Link } from "@tanstack/react-router";
 import { Phone, Mail, MapPin, Linkedin, Facebook, Instagram } from "lucide-react";
 import { Logo } from "./Logo";
 import { SITE } from "@/lib/site";
+import bg from "@/assets/bg-about.jpg";
 
 export function Footer() {
   return (
-    <footer className="bg-brand-black text-white mt-20">
+    <footer className="relative bg-brand-black text-white overflow-hidden">
+      <img src={bg} alt="" className="absolute inset-0 h-full w-full object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-b from-brand-black/85 via-brand-black/80 to-brand-black/90" />
+      <div className="relative">
       <div className="mx-auto max-w-7xl container-px py-14 grid gap-10 md:grid-cols-4">
         <div>
           <Logo className="h-16" />
