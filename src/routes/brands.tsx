@@ -105,7 +105,7 @@ function BrandsPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {brands.map((b, i) => (
               <motion.div
                 key={b.name}

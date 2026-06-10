@@ -66,7 +66,7 @@ function ProductsPage() {
 
           <div>
             <div className="text-sm text-muted-foreground mb-4">{filtered.length} products</div>
-            <div className="grid grid-cols-2 xl:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
               {filtered.map((p, i) => <ProductCard key={p.id} p={p} idx={i} />)}
             </div>
             {filtered.length === 0 && (

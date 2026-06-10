@@ -46,7 +46,7 @@ function AboutPage() {
             <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-2">WHAT DRIVES US</div>
             <h2 className="text-3xl md:text-4xl font-black text-brand-black">Service first. Sales next.</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-3 gap-5">
             {pillars.map((b, i) => (
               <motion.div
                 key={b.t}
@@ -91,7 +91,7 @@ function AboutPage() {
             <h2 className="text-3xl md:text-5xl font-black text-brand-black">Our Journey</h2>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {timeline.map((t, i) => (
               <motion.div
                 key={i}
