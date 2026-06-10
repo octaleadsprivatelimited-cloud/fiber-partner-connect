@@ -1,18 +1,15 @@
-// Firebase placeholder configuration.
-// Replace these values with your real Firebase project credentials.
-// Get them from: https://console.firebase.google.com/ → Project Settings → General → Your apps
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { getAuth, type Auth } from "firebase/auth";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "REPLACE_WITH_YOUR_API_KEY",
-  authDomain: "fujitomo-electronics.firebaseapp.com",
-  projectId: "fujitomo-electronics",
-  storageBucket: "fujitomo-electronics.appspot.com",
-  messagingSenderId: "REPLACE",
-  appId: "REPLACE",
+  apiKey: "AIzaSyAXdC1bcD66N9PkpJHG3YOQm0udfUg5SiY",
+  authDomain: "satyapowertechnologys-293df.firebaseapp.com",
+  projectId: "satyapowertechnologys-293df",
+  storageBucket: "satyapowertechnologys-293df.firebasestorage.app",
+  messagingSenderId: "510357840168",
+  appId: "1:510357840168:web:0a155cf7303a69017b701d",
 };
 
 let app: FirebaseApp | null = null;
