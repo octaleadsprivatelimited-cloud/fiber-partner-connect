@@ -77,9 +77,6 @@ function BrandsPage() {
           {/* Stat card */}
           <div className="lg:col-span-2">
             <div className="relative rounded-2xl bg-white border border-border p-8 shadow-sm">
-              <div className="absolute -top-3 left-6 bg-brand-yellow text-brand-black text-[10px] font-black tracking-[0.2em] px-3 py-1 rounded-full">
-                PRIMARY PARTNER
-              </div>
               <div className="text-7xl md:text-8xl font-black tracking-tight text-brand-black">INNO</div>
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <StatLight label="Years partnered" value="2+" />
