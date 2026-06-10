@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { Phone, MessageCircle, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
@@ -32,15 +32,16 @@ export function Header() {
         <Link to="/" className="shrink-0"><Logo className="h-12 md:h-14" /></Link>
         <nav className="hidden lg:flex items-center gap-7">
           {nav.map((n) => (
-            <Link
+            <NavLink
               key={n.to}
               to={n.to}
-              activeOptions={{ exact: n.to === "/" }}
-              activeProps={{ className: "text-brand-red" }}
-              className="text-sm font-semibold text-brand-black hover:text-brand-red transition"
+              end={n.to === "/"}
+              className={({ isActive }) =>
+                `text-sm font-semibold hover:text-brand-red transition ${isActive ? "text-brand-red" : "text-brand-black"}`
+              }
             >
               {n.label}
-            </Link>
+            </NavLink>
           ))}
         </nav>
         <div className="flex items-center gap-2">
