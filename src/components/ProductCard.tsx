@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import type { Product } from "@/lib/products";
 import { QuoteDialog } from "@/components/QuoteDialog";
 
@@ -24,25 +25,10 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
             Featured
           </span>
         )}
-
-        {/* Quick-add overlay on hover (Shopify pattern) */}
-        <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out p-3">
-          <QuoteDialog
-            productName={p.name}
-            trigger={
-              <button
-                type="button"
-                className="w-full bg-brand-black text-white text-xs font-semibold uppercase tracking-wider py-3 hover:bg-brand-red transition-colors"
-              >
-                Get a Quote
-              </button>
-            }
-          />
-        </div>
       </div>
 
       {/* Body — minimal, centered text like Shopify themes */}
-      <div className="pt-4 pb-2 text-center">
+      <div className="pt-4 pb-2 text-center flex flex-col items-center">
         <div className="text-[11px] font-medium tracking-wider text-muted-foreground uppercase">
           {p.brand}
         </div>
@@ -52,6 +38,19 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
         <div className="mt-1.5 text-xs text-muted-foreground">
           {p.category}
         </div>
+
+        <QuoteDialog
+          productName={p.name}
+          trigger={
+            <button
+              type="button"
+              className="mt-3 inline-flex items-center justify-center gap-2 bg-brand-black text-white text-xs font-semibold uppercase tracking-wider px-5 py-2.5 hover:bg-brand-red transition-colors group/btn"
+            >
+              Get a Quote
+              <ArrowRight className="h-3.5 w-3.5 group-hover/btn:translate-x-0.5 transition" />
+            </button>
+          }
+        />
       </div>
     </motion.div>
   );

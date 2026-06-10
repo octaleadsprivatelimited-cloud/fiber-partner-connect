@@ -32,8 +32,8 @@ function ProductsPage() {
       />
 
       <section className="py-12">
-        <div className="mx-auto max-w-7xl container-px grid lg:grid-cols-[260px_1fr] gap-10">
-          <aside className="lg:sticky lg:top-28 self-start space-y-8">
+        <div className="mx-auto max-w-7xl container-px grid md:grid-cols-[240px_1fr] lg:grid-cols-[260px_1fr] gap-10 items-start">
+          <aside className="md:sticky md:top-24 self-start space-y-8 md:max-h-[calc(100vh-7rem)] md:overflow-y-auto md:pr-2">
             <div>
               <h3 className="font-bold text-sm uppercase tracking-wider mb-3 text-brand-black">Category</h3>
               <div className="flex flex-wrap lg:flex-col gap-2">
