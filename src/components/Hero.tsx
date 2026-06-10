@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, MapPin, Wrench, Award, ShieldCheck, Headphones, Package } from "lucide-react";
 import h1 from "@/assets/hero-1.jpg";
 import h2 from "@/assets/hero-2.jpg";
@@ -50,16 +51,24 @@ export function Hero() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center">
           {/* LEFT: copy */}
           <div>
-            <div key={i} className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-              <div className="inline-flex items-center gap-2 mb-4">
-                <Eyebrow className="h-3.5 w-3.5 text-white/80" />
-                <span className="text-[10px] md:text-[11px] font-bold tracking-[0.22em] text-white/80">{s.eyebrow.text}</span>
-              </div>
-              <h1 className="text-[26px] sm:text-4xl md:text-5xl font-black leading-[1.1] text-white max-w-xl">
-                {s.title}
-              </h1>
-              <p className="mt-4 text-sm sm:text-base text-white/75 max-w-lg">{s.body}</p>
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              >
+                <div className="inline-flex items-center gap-2 mb-4">
+                  <Eyebrow className="h-3.5 w-3.5 text-white/80" />
+                  <span className="text-[10px] md:text-[11px] font-bold tracking-[0.22em] text-white/80">{s.eyebrow.text}</span>
+                </div>
+                <h1 className="text-[26px] sm:text-4xl md:text-5xl font-black leading-[1.1] text-white max-w-xl">
+                  {s.title}
+                </h1>
+                <p className="mt-4 text-sm sm:text-base text-white/75 max-w-lg">{s.body}</p>
+              </motion.div>
+            </AnimatePresence>
 
             <div className="mt-6 flex gap-3">
               <Link
