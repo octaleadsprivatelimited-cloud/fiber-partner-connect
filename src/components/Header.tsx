@@ -26,7 +26,7 @@ export function Header() {
         </div>
       </div>
       <div className="mx-auto max-w-7xl container-px flex h-16 items-center justify-between">
-        <Link to="/" className="shrink-0"><Logo /></Link>
+        <Link to="/" className="shrink-0"><Logo className="h-14" /></Link>
         <nav className="hidden lg:flex items-center gap-7">
           {nav.map((n) => (
             <Link
