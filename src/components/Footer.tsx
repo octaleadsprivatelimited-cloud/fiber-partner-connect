@@ -52,6 +52,7 @@ export function Footer() {
           <span>{SITE.website}</span>
         </div>
       </div>
+      </div>
     </footer>
   );
 }
