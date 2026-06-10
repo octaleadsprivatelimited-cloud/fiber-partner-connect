@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Award, ArrowRight } from "lucide-react";
 import { CTABanner } from "@/components/CTABanner";
+import { PageHero } from "@/components/PageHero";
+import bgBrands from "@/assets/bg-brands.jpg";
 
 export const Route = createFileRoute("/brands")({
   head: () => ({
