@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import { CTABanner } from "@/components/CTABanner";
+import { PageHero } from "@/components/PageHero";
 import { PRODUCTS, CATEGORIES, BRANDS } from "@/lib/products";
+import bgProducts from "@/assets/bg-products.jpg";
 
 export const Route = createFileRoute("/products")({
   head: () => ({
