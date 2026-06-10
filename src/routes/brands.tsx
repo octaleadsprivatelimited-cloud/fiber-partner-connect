@@ -42,36 +42,33 @@ function BrandsPage() {
       />
 
       {/* INNO featured */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-brand-black via-brand-black to-primary/80 text-white relative overflow-hidden">
-        <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-brand-red/30 blur-3xl" />
-        <div className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-primary/40 blur-3xl" />
-
+      <section className="py-16 md:py-24 relative overflow-hidden">
         <div className="relative mx-auto max-w-7xl container-px grid lg:grid-cols-5 gap-10 items-center">
           <div className="lg:col-span-3">
             <div className="inline-flex items-center gap-2 bg-brand-red text-white px-3 py-1.5 mb-5 text-[11px] font-bold tracking-[0.2em] rounded-full">
               <Award className="h-3.5 w-3.5" /> AUTHORIZED DISTRIBUTOR
             </div>
-            <h2 className="text-4xl md:text-6xl font-black leading-tight">
+            <h2 className="text-4xl md:text-6xl font-black leading-tight text-brand-black">
               INNO Instrument
-              <span className="block text-brand-yellow text-lg md:text-xl font-bold tracking-[0.2em] mt-3">
+              <span className="block text-brand-red text-lg md:text-xl font-bold tracking-[0.2em] mt-3">
                 AP & TELANGANA · SALES + SERVICE
               </span>
             </h2>
-            <p className="mt-5 text-base md:text-lg text-white/80 max-w-xl">
+            <p className="mt-5 text-base md:text-lg text-muted-foreground max-w-xl">
               SATYA POWER TECHNOLOGY'S is the authorized distributor of INNO Instrument across Andhra Pradesh and Telangana — covering full sales, service and warranty support.
             </p>
             <ul className="mt-7 grid sm:grid-cols-2 gap-3">
               {innoHighlights.map((h) => (
-                <li key={h} className="flex items-start gap-2.5 text-sm text-white/90">
-                  <CheckCircle2 className="h-4 w-4 text-brand-yellow shrink-0 mt-0.5" /> {h}
+                <li key={h} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                  <CheckCircle2 className="h-4 w-4 text-brand-red shrink-0 mt-0.5" /> {h}
                 </li>
               ))}
             </ul>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/products" className="inline-flex items-center gap-2 bg-brand-red px-6 py-3 font-bold rounded-md hover:bg-brand-red-dark transition">
+              <Link to="/products" className="inline-flex items-center gap-2 bg-brand-red text-white px-6 py-3 font-bold rounded-md hover:bg-brand-red-dark transition">
                 Shop INNO Products <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link to="/services" className="inline-flex items-center gap-2 border border-white/30 px-6 py-3 font-bold rounded-md hover:bg-white/10 transition">
+              <Link to="/services" className="inline-flex items-center gap-2 border border-border px-6 py-3 font-bold rounded-md hover:bg-muted transition text-brand-black">
                 Service & Repair
               </Link>
             </div>
@@ -79,18 +76,18 @@ function BrandsPage() {
 
           {/* Stat card */}
           <div className="lg:col-span-2">
-            <div className="relative rounded-2xl bg-white/5 border border-white/15 backdrop-blur-md p-8">
+            <div className="relative rounded-2xl bg-white border border-border p-8 shadow-sm">
               <div className="absolute -top-3 left-6 bg-brand-yellow text-brand-black text-[10px] font-black tracking-[0.2em] px-3 py-1 rounded-full">
                 PRIMARY PARTNER
               </div>
-              <div className="text-7xl md:text-8xl font-black tracking-tight">INNO</div>
+              <div className="text-7xl md:text-8xl font-black tracking-tight text-brand-black">INNO</div>
               <div className="mt-6 grid grid-cols-2 gap-4">
-                <Stat label="Years partnered" value="2+" />
-                <Stat label="Service center" value="01" />
-                <Stat label="States covered" value="AP+TG" />
-                <Stat label="Genuine spares" value="100%" />
+                <StatLight label="Years partnered" value="2+" />
+                <StatLight label="Service center" value="01" />
+                <StatLight label="States covered" value="AP+TG" />
+                <StatLight label="Genuine spares" value="100%" />
               </div>
-              <div className="mt-6 flex items-center gap-2 text-xs text-white/70">
+              <div className="mt-6 flex items-center gap-2 text-xs text-muted-foreground">
                 <MapPin className="h-3.5 w-3.5" /> Hyderabad · in-region support
               </div>
             </div>
