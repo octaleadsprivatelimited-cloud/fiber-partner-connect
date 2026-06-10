@@ -9,7 +9,7 @@ import {
 import {
   LayoutDashboard, Package, MessageSquare, Tag as TagIcon, Settings as SettingsIcon,
   LogOut, Plus, Pencil, Trash2, Upload, AlertCircle, CheckCircle2, X, Mail, Phone,
-  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Search, Bell, Wrench,
+  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Search, Bell, Wrench, Handshake, Star,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import {
@@ -19,6 +19,7 @@ import {
 } from "@/lib/admin-data";
 import { CATEGORIES, BRANDS, type Product, type Category, type Brand } from "@/lib/products";
 import { SERVICES } from "@/lib/services";
+import { loadPartners, savePartners, type Partner } from "@/lib/partners";
 import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/admin")({
@@ -26,7 +27,7 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "settings";
+type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "partners" | "settings";
 
 function AdminPage() {
   const { user, loading, login, logout } = useAuth();
@@ -101,6 +102,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
     { id: "services", label: "Services", icon: Wrench },
     { id: "inquiries", label: "Inquiries", icon: MessageSquare },
     { id: "brands", label: "Brands", icon: TagIcon },
+    { id: "partners", label: "Partners", icon: Handshake },
     { id: "settings", label: "Settings", icon: SettingsIcon },
   ];
 
@@ -212,6 +214,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
             {tab === "services" && <ServicesManager />}
             {tab === "inquiries" && <InquiriesManager inquiries={inquiries} updateStatus={updateStatus} remove={removeInquiry} />}
             {tab === "brands" && <BrandsManager />}
+            {tab === "partners" && <PartnersManager />}
             {tab === "settings" && <SettingsManager />}
           </section>
         </div>
