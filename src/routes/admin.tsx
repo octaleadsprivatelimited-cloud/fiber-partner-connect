@@ -9,7 +9,7 @@ import {
 import {
   LayoutDashboard, Package, MessageSquare, Tag as TagIcon, Settings as SettingsIcon,
   LogOut, Plus, Pencil, Trash2, Upload, AlertCircle, CheckCircle2, X, Mail, Phone,
-  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Search, Bell, Wrench, Handshake, Star,
+  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Wrench,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import {
@@ -17,9 +17,9 @@ import {
   DEMO_CREDENTIALS,
   type Inquiry,
 } from "@/lib/admin-data";
-import { CATEGORIES, BRANDS, type Product, type Category, type Brand } from "@/lib/products";
-import { SERVICES } from "@/lib/services";
-import { loadPartners, savePartners, type Partner } from "@/lib/partners";
+import { CATEGORIES, BRANDS, type Product } from "@/lib/products";
+import { useServicesStore, ICON_NAMES, ICONS, type ServiceItem } from "@/lib/services-data";
+import { compressImage } from "@/lib/image-compress";
 import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/admin")({
