@@ -101,8 +101,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
     { id: "products", label: "Products", icon: Package },
     { id: "services", label: "Services", icon: Wrench },
     { id: "inquiries", label: "Inquiries", icon: MessageSquare },
-    { id: "brands", label: "Brands", icon: TagIcon },
-    { id: "partners", label: "Partners", icon: Handshake },
+    { id: "brands", label: "Brands & Partners", icon: TagIcon },
     { id: "settings", label: "Settings", icon: SettingsIcon },
   ];
 
