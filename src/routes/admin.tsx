@@ -298,39 +298,39 @@ function DashboardOverview({ products, inquiries, onTab }: { products: Product[]
 
       {/* Charts row */}
       <div className="grid lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 bg-white rounded-xl border border-border p-5">
-          <div className="flex items-center justify-between">
+        <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 p-5">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <h2 className="font-black text-brand-black">Products by Category</h2>
-              <p className="text-xs text-muted-foreground mt-1">Distribution across your catalog</p>
+              <h2 className="font-bold text-slate-900">Products by Category</h2>
+              <p className="text-xs text-slate-500 mt-1">Distribution across your catalog</p>
             </div>
-            <div className="flex items-center gap-3 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-violet-500" /> Products</span>
-              <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-fuchsia-400" /> Featured</span>
+            <div className="flex items-center gap-3 text-xs text-slate-500">
+              <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-brand-red" /> Products</span>
+              <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-slate-300" /> Featured</span>
             </div>
           </div>
-          <div className="h-72 mt-4">
+          <div className="h-64 sm:h-72 mt-4">
             {chartData.length === 0 ? (
-              <div className="h-full flex items-center justify-center text-sm text-muted-foreground">No product data yet.</div>
+              <div className="h-full flex items-center justify-center text-sm text-slate-400">No product data yet.</div>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData} barGap={6}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eef0f4" />
                   <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={false} tickLine={false} />
-                  <Tooltip cursor={{ fill: "rgba(139,92,246,0.06)" }} contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb", fontSize: 12 }} />
-                  <Bar dataKey="products" fill="#8b5cf6" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="featured" fill="#e879f9" radius={[6, 6, 0, 0]} />
+                  <Tooltip cursor={{ fill: "rgba(220,38,38,0.06)" }} contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb", fontSize: 12 }} />
+                  <Bar dataKey="products" fill="#dc2626" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="featured" fill="#cbd5e1" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             )}
           </div>
         </div>
 
-        <div className="bg-white rounded-xl border border-border p-5">
-          <h2 className="font-black text-brand-black">Inquiry Status</h2>
-          <p className="text-xs text-muted-foreground mt-1">Breakdown of customer messages</p>
-          <div className="h-56 mt-2">
+        <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <h2 className="font-bold text-slate-900">Inquiry Status</h2>
+          <p className="text-xs text-slate-500 mt-1">Breakdown of customer messages</p>
+          <div className="h-48 sm:h-56 mt-2">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie data={pieFallback} dataKey="value" innerRadius={50} outerRadius={78} paddingAngle={2}>
@@ -342,13 +342,13 @@ function DashboardOverview({ products, inquiries, onTab }: { products: Product[]
           </div>
           <ul className="space-y-2 mt-2">
             {[
-              { name: "New", value: unread, color: "#ff6a88" },
-              { name: "Read", value: inquiries.filter((i) => i.status === "read").length, color: "#5b8def" },
-              { name: "Resolved", value: resolved, color: "#28d4a8" },
+              { name: "New", value: unread, color: "#dc2626" },
+              { name: "Read", value: inquiries.filter((i) => i.status === "read").length, color: "#3b82f6" },
+              { name: "Resolved", value: resolved, color: "#10b981" },
             ].map((d) => (
               <li key={d.name} className="flex items-center justify-between text-sm">
-                <span className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full" style={{ background: d.color }} /> {d.name}</span>
-                <span className="font-bold tabular-nums">{d.value}</span>
+                <span className="flex items-center gap-2 text-slate-600"><span className="h-2.5 w-2.5 rounded-full" style={{ background: d.color }} /> {d.name}</span>
+                <span className="font-semibold tabular-nums text-slate-900">{d.value}</span>
               </li>
             ))}
           </ul>
@@ -356,25 +356,25 @@ function DashboardOverview({ products, inquiries, onTab }: { products: Product[]
       </div>
 
       {/* Recent messages */}
-      <div className="bg-white rounded-xl border border-border">
-        <div className="p-5 border-b border-border flex items-center justify-between">
-          <h2 className="font-black text-brand-black">Recent Messages</h2>
-          <button onClick={() => onTab("inquiries")} className="text-sm font-bold text-violet-700 hover:underline">View all →</button>
+      <div className="bg-white rounded-xl border border-slate-200">
+        <div className="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between">
+          <h2 className="font-bold text-slate-900">Recent Messages</h2>
+          <button onClick={() => onTab("inquiries")} className="text-sm font-semibold text-brand-red hover:underline">View all →</button>
         </div>
         {inquiries.length === 0 ? (
-          <div className="p-10 text-center text-muted-foreground text-sm">No inquiries yet. Submissions from the contact form will appear here.</div>
+          <div className="p-10 text-center text-slate-400 text-sm">No inquiries yet. Submissions from the contact form will appear here.</div>
         ) : (
-          <ul className="divide-y divide-border">
+          <ul className="divide-y divide-slate-100">
             {inquiries.slice(0, 5).map((i) => (
-              <li key={i.id} className="p-5 flex items-start gap-4">
-                <div className={`h-9 w-9 rounded-full grid place-items-center text-white text-xs font-black bg-gradient-to-br ${i.status === "new" ? "from-rose-400 to-pink-500" : i.status === "resolved" ? "from-emerald-400 to-teal-500" : "from-sky-400 to-indigo-500"}`}>
+              <li key={i.id} className="p-4 sm:p-5 flex items-start gap-3 sm:gap-4">
+                <div className={`h-9 w-9 rounded-full grid place-items-center text-white text-xs font-bold shrink-0 ${i.status === "new" ? "bg-brand-red" : i.status === "resolved" ? "bg-emerald-500" : "bg-blue-500"}`}>
                   {i.name?.[0]?.toUpperCase() ?? "?"}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-brand-black">{i.name} <span className="font-normal text-xs text-muted-foreground">— {i.phone}</span></div>
-                  <div className="text-sm text-muted-foreground line-clamp-1">{i.message}</div>
+                  <div className="font-semibold text-slate-900 text-sm truncate">{i.name} <span className="font-normal text-xs text-slate-500">— {i.phone}</span></div>
+                  <div className="text-sm text-slate-500 line-clamp-1 mt-0.5">{i.message}</div>
                 </div>
-                <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded ${i.status === "new" ? "bg-rose-100 text-rose-700" : i.status === "resolved" ? "bg-emerald-100 text-emerald-700" : "bg-sky-100 text-sky-700"}`}>{i.status ?? "new"}</span>
+                <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded shrink-0 ${i.status === "new" ? "bg-red-50 text-brand-red" : i.status === "resolved" ? "bg-emerald-50 text-emerald-700" : "bg-blue-50 text-blue-700"}`}>{i.status ?? "new"}</span>
               </li>
             ))}
           </ul>
