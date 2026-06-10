@@ -20,9 +20,8 @@ export function Header() {
       {/* Top bar */}
       <div className="bg-brand-black text-white text-xs">
         <div className="mx-auto max-w-7xl container-px flex h-9 items-center justify-between gap-3">
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <Logo className="h-6" />
-            <span className="hidden sm:inline font-semibold tracking-wide">Satya Power Technologys</span>
+          <Link to="/" className="flex items-center shrink-0">
+            <Logo className="h-7 bg-white rounded px-1.5 py-0.5" />
           </Link>
           <a href={`tel:${SITE.phoneRaw}`} className="inline-flex items-center gap-1.5 font-bold hover:text-brand-red transition">
             <Phone className="h-3.5 w-3.5" /> {SITE.phone}
