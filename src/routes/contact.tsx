@@ -4,6 +4,8 @@ import { Phone, Mail, MapPin, MessageCircle, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { SITE, whatsappLink } from "@/lib/site";
 import { submitInquiry } from "@/lib/admin-data";
+import { PageHero } from "@/components/PageHero";
+import bgContact from "@/assets/bg-contact.jpg";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
