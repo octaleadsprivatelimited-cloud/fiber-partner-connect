@@ -18,7 +18,7 @@ export function WhyChoose() {
           <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">WHY SATYA POWER TECHNOLOGY'S</div>
           <h2 className="text-3xl md:text-5xl font-black text-brand-black">Built for engineers. Trusted by professionals.</h2>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-px bg-border">
           {items.map((it, idx) => (
             <motion.div
               key={it.t}
