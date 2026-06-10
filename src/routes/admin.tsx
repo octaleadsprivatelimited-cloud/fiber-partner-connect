@@ -521,14 +521,15 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
             <div className="flex flex-wrap items-center gap-3">
               {image && <img src={image} alt="" className="h-20 w-20 object-cover rounded-lg border border-slate-200" />}
               <label className="inline-flex items-center gap-2 border border-slate-200 rounded-lg px-4 py-2.5 font-semibold text-sm cursor-pointer hover:border-brand-red hover:text-brand-red transition">
-                <Upload className="h-4 w-4" /> {uploading ? "Uploading…" : "Upload"}
+                <Upload className="h-4 w-4" /> {uploading ? "Compressing…" : image ? "Replace image" : "Upload image"}
                 <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
                   const f = e.target.files?.[0]; if (!f) return;
                   setUploading(true);
-                  try { const url = await uploadImage(f); setValue("image", url); } finally { setUploading(false); }
+                  try { const url = await uploadImage(f); setValue("image", url, { shouldValidate: true }); } finally { setUploading(false); }
                 }} />
               </label>
-              <input {...register("image", { required: "Required" })} placeholder="or paste URL" className="flex-1 min-w-[200px] border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10" />
+              <span className="text-xs text-slate-500">Auto-compressed to ~1200px / 80% JPEG quality.</span>
+              <input type="hidden" {...register("image", { required: "Image required" })} />
             </div>
             {errors.image && <span className="text-xs text-brand-red mt-1 block">{errors.image.message}</span>}
           </Field>
