@@ -17,7 +17,7 @@ export function Footer() {
           </div>
 
           {/* Quick Links — collapsible on mobile */}
-          <details className="md:open group border-b border-white/10 md:border-0 pb-3 md:pb-0 [&[open]_.chev]:rotate-180" open>
+          <details className="md:open group border-b border-white/10 md:border-0 pb-3 md:pb-0 [&[open]_.chev]:rotate-180">
             <summary className="flex items-center justify-between md:block cursor-pointer md:cursor-default list-none md:pointer-events-none">
               <h4 className="font-bold text-sm uppercase tracking-wider mb-0 md:mb-4">Quick Links</h4>
               <ChevronDown className="chev h-4 w-4 transition md:hidden" />
@@ -30,7 +30,7 @@ export function Footer() {
           </details>
 
           {/* Categories — collapsible on mobile */}
-          <details className="border-b border-white/10 md:border-0 pb-3 md:pb-0 [&[open]_.chev]:rotate-180" open>
+          <details className="border-b border-white/10 md:border-0 pb-3 md:pb-0 [&[open]_.chev]:rotate-180">
             <summary className="flex items-center justify-between md:block cursor-pointer md:cursor-default list-none md:pointer-events-none">
               <h4 className="font-bold text-sm uppercase tracking-wider mb-0 md:mb-4">Categories</h4>
               <ChevronDown className="chev h-4 w-4 transition md:hidden" />
