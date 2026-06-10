@@ -6,7 +6,7 @@ import { useState } from "react";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
 import { submitInquiry } from "@/lib/admin-data";
-import { SERVICES } from "@/lib/services";
+import { loadServices, ICONS } from "@/lib/services-data";
 import bgServices from "@/assets/bg-services.jpg";
 
 export const Route = createFileRoute("/services")({
@@ -19,12 +19,11 @@ export const Route = createFileRoute("/services")({
   component: ServicesPage,
 });
 
-const services = SERVICES.map((s) => ({ icon: s.icon, t: s.title, d: s.description }));
-
 interface Form { name: string; phone: string; equipment: string; issue: string; }
 
 function ServicesPage() {
   const [sent, setSent] = useState(false);
+  const services = loadServices().map((s) => ({ icon: ICONS[s.iconName] ?? ICONS.Wrench, t: s.title, d: s.description }));
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Form>();
   const onSubmit = async (data: Form) => {
     try {

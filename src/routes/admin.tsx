@@ -9,7 +9,7 @@ import {
 import {
   LayoutDashboard, Package, MessageSquare, Tag as TagIcon, Settings as SettingsIcon,
   LogOut, Plus, Pencil, Trash2, Upload, AlertCircle, CheckCircle2, X, Mail, Phone,
-  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Search, Bell, Wrench, Handshake, Star,
+  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Wrench,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import {
@@ -17,9 +17,9 @@ import {
   DEMO_CREDENTIALS,
   type Inquiry,
 } from "@/lib/admin-data";
-import { CATEGORIES, BRANDS, type Product, type Category, type Brand } from "@/lib/products";
-import { SERVICES } from "@/lib/services";
-import { loadPartners, savePartners, type Partner } from "@/lib/partners";
+import { CATEGORIES, BRANDS, type Product } from "@/lib/products";
+import { useServicesStore, ICON_NAMES, ICONS, type ServiceItem } from "@/lib/services-data";
+import { compressImage } from "@/lib/image-compress";
 import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/admin")({
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "partners" | "settings";
+type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "settings";
 
 function AdminPage() {
   const { user, loading, login, logout } = useAuth();
@@ -101,8 +101,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
     { id: "products", label: "Products", icon: Package },
     { id: "services", label: "Services", icon: Wrench },
     { id: "inquiries", label: "Inquiries", icon: MessageSquare },
-    { id: "brands", label: "Brands", icon: TagIcon },
-    { id: "partners", label: "Partners", icon: Handshake },
+    { id: "brands", label: "Brands & Partners", icon: TagIcon },
     { id: "settings", label: "Settings", icon: SettingsIcon },
   ];
 
@@ -214,7 +213,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
             {tab === "services" && <ServicesManager />}
             {tab === "inquiries" && <InquiriesManager inquiries={inquiries} updateStatus={updateStatus} remove={removeInquiry} />}
             {tab === "brands" && <BrandsManager />}
-            {tab === "partners" && <PartnersManager />}
+            
             {tab === "settings" && <SettingsManager />}
           </section>
         </div>
@@ -522,14 +521,15 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
             <div className="flex flex-wrap items-center gap-3">
               {image && <img src={image} alt="" className="h-20 w-20 object-cover rounded-lg border border-slate-200" />}
               <label className="inline-flex items-center gap-2 border border-slate-200 rounded-lg px-4 py-2.5 font-semibold text-sm cursor-pointer hover:border-brand-red hover:text-brand-red transition">
-                <Upload className="h-4 w-4" /> {uploading ? "Uploading…" : "Upload"}
+                <Upload className="h-4 w-4" /> {uploading ? "Compressing…" : image ? "Replace image" : "Upload image"}
                 <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
                   const f = e.target.files?.[0]; if (!f) return;
                   setUploading(true);
-                  try { const url = await uploadImage(f); setValue("image", url); } finally { setUploading(false); }
+                  try { const url = await uploadImage(f); setValue("image", url, { shouldValidate: true }); } finally { setUploading(false); }
                 }} />
               </label>
-              <input {...register("image", { required: "Required" })} placeholder="or paste URL" className="flex-1 min-w-[200px] border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10" />
+              <span className="text-xs text-slate-500">Auto-compressed to ~1200px / 80% JPEG quality.</span>
+              <input type="hidden" {...register("image", { required: "Image required" })} />
             </div>
             {errors.image && <span className="text-xs text-brand-red mt-1 block">{errors.image.message}</span>}
           </Field>
@@ -706,8 +706,19 @@ function BrandEditor({ initial, isNew, onClose, onSave }: { initial: BrandItem; 
           <Field label="Description">
             <textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" />
           </Field>
-          <Field label="Logo URL (optional)">
-            <input value={form.logo ?? ""} onChange={(e) => setForm({ ...form, logo: e.target.value })} placeholder="https://…" className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" />
+          <Field label="Logo">
+            <div className="flex flex-wrap items-center gap-3">
+              {form.logo && <img src={form.logo} alt="" className="h-16 w-16 object-contain rounded-lg border border-border bg-white p-1" />}
+              <label className="inline-flex items-center gap-2 border border-input rounded px-4 py-2.5 font-semibold text-sm cursor-pointer hover:border-brand-red hover:text-brand-red transition">
+                <Upload className="h-4 w-4" /> {form.logo ? "Replace logo" : "Upload logo"}
+                <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
+                  const f = e.target.files?.[0]; if (!f) return;
+                  const url = await compressImage(f, { maxSize: 400, quality: 0.85 });
+                  setForm((p) => ({ ...p, logo: url }));
+                }} />
+              </label>
+              <span className="text-xs text-slate-500">Auto-compressed.</span>
+            </div>
           </Field>
           <div className="flex gap-3 pt-2">
             <button onClick={onClose} className="flex-1 border border-border font-bold py-2.5 rounded hover:bg-muted">Cancel</button>
@@ -813,122 +824,56 @@ function Field({ label, error, children }: { label: string; error?: string; chil
 
 /* ============ Services manager ============ */
 function ServicesManager() {
-  return (
-    <div className="space-y-6">
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-7">
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Services</h2>
-            <p className="text-sm text-slate-500 mt-1">
-              {SERVICES.length} services listed on the public site
-            </p>
-          </div>
-          <a
-            href="/services"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-red hover:underline"
-          >
-            <Eye className="h-4 w-4" /> View on site
-          </a>
-        </div>
-      </div>
-
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {SERVICES.map((s) => (
-          <div
-            key={s.id}
-            className="bg-white border border-slate-200 rounded-2xl p-5 hover:border-brand-red/40 hover:shadow-sm transition"
-          >
-            <div className="h-11 w-11 rounded-xl bg-brand-red/10 text-brand-red grid place-items-center mb-4">
-              <s.icon className="h-5 w-5" />
-            </div>
-            <h3 className="font-bold text-slate-900">{s.title}</h3>
-            <p className="mt-1.5 text-sm text-slate-500 leading-relaxed">{s.description}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ============ Partners manager ============ */
-function PartnersManager() {
-  const [items, setItems] = useState<Partner[]>([]);
-  const [editing, setEditing] = useState<{ index: number; item: Partner } | null>(null);
-  const [adding, setAdding] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const { uploadImage } = useProducts();
-
-  useEffect(() => {
-    setItems(loadPartners());
-  }, []);
-
-  const persist = (next: Partner[]) => {
-    setItems(next);
-    savePartners(next);
-  };
-  const saveItem = (i: number, item: Partner) => {
-    persist(i === -1 ? [...items, item] : items.map((it, idx) => (idx === i ? item : it)));
-    setEditing(null);
-    setAdding(false);
-  };
-  const removeItem = (i: number) => {
-    if (!confirm(`Delete partner "${items[i].name}"?`)) return;
-    persist(items.filter((_, idx) => idx !== i));
-  };
-  const togglePrimary = (i: number) => {
-    persist(items.map((it, idx) => (idx === i ? { ...it, primary: !it.primary } : it)));
-  };
-
+  const { items, upsert, remove } = useServicesStore();
+  const [editing, setEditing] = useState<ServiceItem | null>(null);
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-brand-black">Partners</h1>
-          <p className="text-sm text-muted-foreground mt-1">Logos shown in the home page partners marquee.</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Services</h2>
+          <p className="text-sm text-slate-500 mt-1">{items.length} services on the public site</p>
         </div>
-        <button onClick={() => setAdding(true)} className="inline-flex items-center gap-2 bg-brand-red text-white font-semibold px-4 py-2.5 rounded-md hover:opacity-90 transition">
-          <Plus className="h-4 w-4" /> Add Partner
+        <button
+          onClick={() => setEditing({ id: "", iconName: "Wrench", title: "", description: "" })}
+          className="inline-flex items-center gap-2 bg-brand-red text-white font-semibold px-4 py-2.5 rounded-lg hover:bg-brand-red-dark transition text-sm shadow-sm"
+        >
+          <Plus className="h-4 w-4" /> Add Service
         </button>
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {items.map((it, i) => (
-          <div key={it.name + i} className="group bg-white rounded-xl border border-border p-5 flex flex-col">
-            <div className="h-24 rounded-lg bg-gradient-to-br from-slate-50 to-slate-100 grid place-items-center overflow-hidden border border-border">
-              {it.logo
-                ? <img src={it.logo} alt={it.name} className="max-h-16 max-w-[80%] object-contain" />
-                : <span className="font-black text-brand-red text-2xl">{it.name}</span>}
+        {items.map((s) => {
+          const Icon = ICONS[s.iconName] ?? ICONS.Wrench;
+          return (
+            <div key={s.id} className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col">
+              <div className="h-11 w-11 rounded-xl bg-brand-red/10 text-brand-red grid place-items-center mb-4">
+                <Icon className="h-5 w-5" />
+              </div>
+              <h3 className="font-bold text-slate-900">{s.title}</h3>
+              <p className="mt-1.5 text-sm text-slate-500 leading-relaxed flex-1">{s.description}</p>
+              <div className="flex gap-2 mt-4 pt-4 border-t border-border">
+                <button onClick={() => setEditing(s)} className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:border-brand-red hover:text-brand-red transition">
+                  <Pencil className="h-3.5 w-3.5" /> Edit
+                </button>
+                <button onClick={() => { if (confirm(`Delete service "${s.title}"?`)) remove(s.id); }} className="inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:bg-brand-red hover:border-brand-red hover:text-white transition">
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
-            <div className="flex items-center justify-between mt-3">
-              <div className="font-bold text-brand-black truncate">{it.name}</div>
-              {it.primary && <span className="text-[10px] font-bold uppercase tracking-wider bg-brand-red text-white px-2 py-0.5 rounded">Primary</span>}
-            </div>
-            <div className="flex gap-2 mt-4 pt-4 border-t border-border">
-              <button onClick={() => togglePrimary(i)} className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:border-brand-red hover:text-brand-red transition">
-                <Star className={`h-3.5 w-3.5 ${it.primary ? "fill-brand-red text-brand-red" : ""}`} /> {it.primary ? "Unset" : "Primary"}
-              </button>
-              <button onClick={() => setEditing({ index: i, item: it })} className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:border-brand-red hover:text-brand-red transition">
-                <Pencil className="h-3.5 w-3.5" /> Edit
-              </button>
-              <button onClick={() => removeItem(i)} className="inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:bg-brand-red hover:border-brand-red hover:text-white transition">
-                <Trash2 className="h-3.5 w-3.5" />
-              </button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <AnimatePresence>
-        {(editing || adding) && (
-          <PartnerEditor
-            initial={editing?.item ?? { name: "", logo: "", primary: false }}
-            isNew={adding}
-            uploading={uploading}
-            uploadImage={async (f) => { setUploading(true); try { return await uploadImage(f); } finally { setUploading(false); } }}
-            onClose={() => { setEditing(null); setAdding(false); }}
-            onSave={(item) => saveItem(editing?.index ?? -1, item)}
+        {editing && (
+          <ServiceEditor
+            initial={editing}
+            onClose={() => setEditing(null)}
+            onSave={(s) => {
+              const id = s.id || s.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 50);
+              upsert({ ...s, id });
+              setEditing(null);
+            }}
           />
         )}
       </AnimatePresence>
@@ -936,47 +881,40 @@ function PartnersManager() {
   );
 }
 
-function PartnerEditor({ initial, isNew, uploading, uploadImage, onClose, onSave }: {
-  initial: Partner;
-  isNew: boolean;
-  uploading: boolean;
-  uploadImage: (f: File) => Promise<string>;
+function ServiceEditor({ initial, onClose, onSave }: {
+  initial: ServiceItem;
   onClose: () => void;
-  onSave: (item: Partner) => void;
+  onSave: (s: ServiceItem) => void;
 }) {
-  const [form, setForm] = useState<Partner>(initial);
+  const [form, setForm] = useState<ServiceItem>(initial);
+  const Icon = ICONS[form.iconName] ?? ICONS.Wrench;
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
       <motion.div initial={{ scale: 0.95, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 10 }} className="bg-white w-full max-w-lg rounded-xl overflow-hidden">
         <div className="p-5 border-b border-border flex items-center justify-between">
-          <h2 className="text-xl font-black text-brand-black">{isNew ? "Add Partner" : "Edit Partner"}</h2>
+          <h2 className="text-xl font-black text-brand-black">{initial.id ? "Edit Service" : "Add Service"}</h2>
           <button onClick={onClose} className="p-2 hover:bg-muted rounded"><X className="h-4 w-4" /></button>
         </div>
         <div className="p-5 space-y-4">
-          <Field label="Partner Name">
-            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" />
+          <Field label="Title">
+            <input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" />
           </Field>
-          <Field label="Logo">
-            <div className="flex flex-wrap items-center gap-3">
-              {form.logo && <img src={form.logo} alt="" className="h-16 w-16 object-contain rounded-lg border border-border bg-white p-1" />}
-              <label className="inline-flex items-center gap-2 border border-input rounded px-4 py-2.5 font-semibold text-sm cursor-pointer hover:border-brand-red hover:text-brand-red transition">
-                <Upload className="h-4 w-4" /> {uploading ? "Uploading…" : "Upload"}
-                <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
-                  const f = e.target.files?.[0]; if (!f) return;
-                  const url = await uploadImage(f);
-                  setForm((p) => ({ ...p, logo: url }));
-                }} />
-              </label>
-              <input value={form.logo ?? ""} onChange={(e) => setForm({ ...form, logo: e.target.value })} placeholder="or paste URL" className="flex-1 min-w-[160px] border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" />
+          <Field label="Description">
+            <textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" />
+          </Field>
+          <Field label="Icon">
+            <div className="flex items-center gap-3">
+              <div className="h-11 w-11 rounded-xl bg-brand-red/10 text-brand-red grid place-items-center shrink-0">
+                <Icon className="h-5 w-5" />
+              </div>
+              <select value={form.iconName} onChange={(e) => setForm({ ...form, iconName: e.target.value })} className="flex-1 border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded bg-white">
+                {ICON_NAMES.map((n) => <option key={n} value={n}>{n}</option>)}
+              </select>
             </div>
           </Field>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={!!form.primary} onChange={(e) => setForm({ ...form, primary: e.target.checked })} className="h-4 w-4 accent-brand-red" />
-            <span className="text-sm font-semibold">Mark as primary partner</span>
-          </label>
           <div className="flex gap-3 pt-2">
             <button onClick={onClose} className="flex-1 border border-border font-bold py-2.5 rounded hover:bg-muted">Cancel</button>
-            <button onClick={() => form.name.trim() && onSave(form)} className="flex-1 bg-brand-red text-white font-semibold py-2.5 rounded hover:opacity-90">Save</button>
+            <button onClick={() => form.title.trim() && form.description.trim() && onSave(form)} className="flex-1 bg-brand-red text-white font-semibold py-2.5 rounded hover:opacity-90">Save</button>
           </div>
         </div>
       </motion.div>
