@@ -27,12 +27,12 @@ const brands = [
 function BrandsPage() {
   return (
     <>
-      <section className="bg-brand-black text-white py-14 border-b-4 border-brand-red">
-        <div className="mx-auto max-w-7xl container-px">
-          <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">OUR PARTNERS</div>
-          <h1 className="text-4xl md:text-6xl font-black">Brands We Represent</h1>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="OUR PARTNERS"
+        title="Brands We Represent"
+        description="Genuine equipment from the world's most trusted fiber optic manufacturers."
+        bgImage={bgBrands}
+      />
 
       {/* INNO featured */}
       <section className="py-16 bg-brand-red text-white">
