@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   Wrench, Gauge, ClipboardCheck, MapPin, Package, Headphones,
-  Settings, Cpu, Zap, ShieldCheck, Truck, Tool, type LucideIcon,
+  Settings, Cpu, Zap, ShieldCheck, Truck, type LucideIcon,
 } from "lucide-react";
 import { SERVICES as SEED } from "./services";
 
