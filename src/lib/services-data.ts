@@ -16,8 +16,7 @@ export const ICONS: Record<string, LucideIcon> = {
   Wrench, Gauge, ClipboardCheck, MapPin, Package, Headphones,
   Settings, Cpu, Zap, ShieldCheck, Truck,
 };
-// fallback if "Tool" isn't exported in this lucide version
-if ((Tool as unknown)) ICONS.Tool = Tool as LucideIcon;
+// fallback if Tool isn't exported in this lucide version (it was removed)
 
 export const ICON_NAMES = Object.keys(ICONS);
 
