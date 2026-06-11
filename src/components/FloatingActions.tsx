@@ -35,9 +35,9 @@ export function FloatingActions() {
         rel="noreferrer"
         aria-label="Request Quote on WhatsApp"
         title="Request Quote on WhatsApp"
-        className="group relative h-12 w-12 md:h-14 md:w-14 rounded-full bg-[#25D366] text-white shadow-lg shadow-black/20 flex items-center justify-center hover:scale-110 transition-transform"
+        className="group relative h-10 w-10 md:h-11 md:w-11 rounded-full bg-[#25D366] text-white shadow-lg shadow-black/20 flex items-center justify-center hover:scale-110 transition-transform"
       >
-        <WhatsAppIcon className="h-7 w-7 md:h-8 md:w-8" />
+        <WhatsAppIcon className="h-5 w-5 md:h-6 md:w-6" />
         <span className="absolute right-full mr-3 whitespace-nowrap rounded-md bg-brand-black text-white text-xs font-bold px-3 py-1.5 opacity-0 group-hover:opacity-100 pointer-events-none transition">
           Request Quote
         </span>
@@ -47,9 +47,9 @@ export function FloatingActions() {
         href={`tel:${SITE.phoneRaw}`}
         aria-label="Call Now"
         title="Call Now"
-        className="group relative h-12 w-12 md:h-14 md:w-14 rounded-full bg-[#1a73e8] text-white shadow-lg shadow-black/20 flex items-center justify-center hover:scale-110 transition-transform"
+        className="group relative h-10 w-10 md:h-11 md:w-11 rounded-full bg-[#1a73e8] text-white shadow-lg shadow-black/20 flex items-center justify-center hover:scale-110 transition-transform"
       >
-        <PhoneIcon className="h-6 w-6 md:h-7 md:w-7" />
+        <PhoneIcon className="h-5 w-5 md:h-6 md:w-6" />
         <span className="absolute right-full mr-3 whitespace-nowrap rounded-md bg-brand-black text-white text-xs font-bold px-3 py-1.5 opacity-0 group-hover:opacity-100 pointer-events-none transition">
           Call Now
         </span>
@@ -58,18 +58,18 @@ export function FloatingActions() {
         href={`mailto:${SITE.email}`}
         aria-label="Email Us"
         title="Email Us"
-        className="group relative h-12 w-12 md:h-14 md:w-14 rounded-full bg-brand-red text-white shadow-lg shadow-black/20 flex items-center justify-center hover:scale-110 transition-transform"
+        className="group relative h-10 w-10 md:h-11 md:w-11 rounded-full bg-brand-red text-white shadow-lg shadow-black/20 flex items-center justify-center hover:scale-110 transition-transform"
       >
-        <Mail className="h-6 w-6" />
+        <Mail className="h-5 w-5" />
         <span className="absolute right-full mr-3 whitespace-nowrap rounded-md bg-brand-black text-white text-xs font-bold px-3 py-1.5 opacity-0 group-hover:opacity-100 pointer-events-none transition">
           Email Us
         </span>
       </a>
       <div className="mt-1 flex flex-col gap-2 items-center">
-        <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="h-9 w-9 rounded-full bg-white border border-border text-brand-black flex items-center justify-center hover:bg-brand-red hover:text-white hover:border-brand-red transition">
+        <a href="https://www.instagram.com/satya_power_technologys?igsh=NG1hdmZqYWIxZndn" target="_blank" rel="noreferrer" aria-label="Instagram" className="h-9 w-9 rounded-full bg-white border border-border text-brand-black flex items-center justify-center hover:bg-brand-red hover:text-white hover:border-brand-red transition">
           <Instagram className="h-4 w-4" />
         </a>
-        <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube" className="h-9 w-9 rounded-full bg-white border border-border text-brand-black flex items-center justify-center hover:bg-brand-red hover:text-white hover:border-brand-red transition">
+        <a href="https://youtube.com/@satyapowertechnologys?si=gHQ1dsrUEQWk_wRg" target="_blank" rel="noreferrer" aria-label="YouTube" className="h-9 w-9 rounded-full bg-white border border-border text-brand-black flex items-center justify-center hover:bg-brand-red hover:text-white hover:border-brand-red transition">
           <Youtube className="h-4 w-4" />
         </a>
         <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="h-9 w-9 rounded-full bg-white border border-border text-brand-black flex items-center justify-center hover:bg-brand-red hover:text-white hover:border-brand-red transition">

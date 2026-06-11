@@ -83,8 +83,8 @@ export function Footer() {
               <li className="flex gap-2"><Mail className="h-4 w-4 text-brand-red shrink-0 mt-0.5" />{SITE.email}</li>
             </ul>
             <div className="flex gap-3 mt-4">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="bg-white/10 p-2 hover:bg-brand-red transition"><Instagram className="h-4 w-4" /></a>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube" className="bg-white/10 p-2 hover:bg-brand-red transition"><Youtube className="h-4 w-4" /></a>
+              <a href="https://www.instagram.com/satya_power_technologys?igsh=NG1hdmZqYWIxZndn" target="_blank" rel="noreferrer" aria-label="Instagram" className="bg-white/10 p-2 hover:bg-brand-red transition"><Instagram className="h-4 w-4" /></a>
+              <a href="https://youtube.com/@satyapowertechnologys?si=gHQ1dsrUEQWk_wRg" target="_blank" rel="noreferrer" aria-label="YouTube" className="bg-white/10 p-2 hover:bg-brand-red transition"><Youtube className="h-4 w-4" /></a>
               <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="bg-white/10 p-2 hover:bg-brand-red transition"><Facebook className="h-4 w-4" /></a>
               <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="bg-white/10 p-2 hover:bg-brand-red transition"><Linkedin className="h-4 w-4" /></a>
             </div>
