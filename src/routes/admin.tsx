@@ -8,7 +8,7 @@ import {
 import {
   LayoutDashboard, Package, MessageSquare, Tag as TagIcon, Settings as SettingsIcon,
   LogOut, Plus, Pencil, Trash2, Upload, AlertCircle, CheckCircle2, X, Mail, Phone,
-  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Wrench,
+  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Wrench, Image as ImageIcon,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import {
@@ -18,11 +18,12 @@ import {
 } from "@/lib/admin-data";
 import { CATEGORIES, BRANDS, type Product } from "@/lib/products";
 import { useServicesStore, ICON_NAMES, ICONS, type ServiceItem } from "@/lib/services-data";
+import { useGallery, GALLERY_CATEGORIES, type GalleryItem } from "@/lib/gallery-data";
 import { compressImage } from "@/lib/image-compress";
 import { SITE } from "@/lib/site";
 
 
-type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "settings";
+type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "gallery" | "settings";
 
 function AdminPage() {
   const { user, loading, login, logout } = useAuth();
@@ -97,6 +98,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
     { id: "services", label: "Services", icon: Wrench },
     { id: "inquiries", label: "Inquiries", icon: MessageSquare },
     { id: "brands", label: "Brands & Partners", icon: TagIcon },
+    { id: "gallery", label: "Gallery", icon: ImageIcon },
     { id: "settings", label: "Settings", icon: SettingsIcon },
   ];
 
@@ -208,6 +210,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
             {tab === "services" && <ServicesManager />}
             {tab === "inquiries" && <InquiriesManager inquiries={inquiries} updateStatus={updateStatus} remove={removeInquiry} />}
             {tab === "brands" && <BrandsManager />}
+            {tab === "gallery" && <GalleryManager />}
             
             {tab === "settings" && <SettingsManager />}
           </section>
