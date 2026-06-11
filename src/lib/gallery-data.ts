@@ -1,10 +1,9 @@
-// Gallery data — Firebase Firestore + Storage with localStorage fallback.
+// Gallery data — Firestore-only (images stored as base64 data URLs in Firestore).
 import { useEffect, useState, useCallback } from "react";
 import {
   collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy,
   serverTimestamp, updateDoc,
 } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { getFirebase } from "./firebase";
 import { isFirebaseConfigured } from "./admin-data";
 import { compressImage } from "./image-compress";
@@ -13,8 +12,7 @@ export interface GalleryItem {
   id: string;
   title: string;
   category?: string;
-  image: string;          // download URL or data URL fallback
-  storagePath?: string;   // for deletion in Storage
+  image: string;          // base64 data URL stored in Firestore
   createdAt?: number | any;
 }
 
@@ -75,7 +73,15 @@ export function useGallery() {
   const items: GalleryItem[] = [...remote, ...local];
 
   const add = useCallback(async (data: { title: string; category?: string; file: File }) => {
-    const compressed = await compressImage(data.file, { maxSize: 1600, quality: 0.82 });
+    // Compress aggressively — Firestore document limit is ~1MB.
+    let compressed = await compressImage(data.file, { maxSize: 1280, quality: 0.75 });
+    if (compressed.length > 900_000) {
+      compressed = await compressImage(data.file, { maxSize: 1024, quality: 0.65 });
+    }
+    if (compressed.length > 900_000) {
+      compressed = await compressImage(data.file, { maxSize: 800, quality: 0.6 });
+    }
+
     const fb = getFirebase();
     if (!fb || !isFirebaseConfigured()) {
       const item: GalleryItem = {
@@ -89,20 +95,14 @@ export function useGallery() {
       return;
     }
     try {
-      const blob = await (await fetch(compressed)).blob();
-      const storagePath = `gallery/${Date.now()}-${data.file.name.replace(/\.[^.]+$/, "")}.jpg`;
-      const r = ref(fb.storage, storagePath);
-      await uploadBytes(r, blob);
-      const url = await getDownloadURL(r);
       await addDoc(collection(fb.db, "gallery"), {
         title: data.title,
         category: data.category ?? "",
-        image: url,
-        storagePath,
+        image: compressed,
         createdAt: serverTimestamp(),
       });
     } catch (e) {
-      console.warn("Gallery upload failed, saving locally:", e);
+      console.warn("Gallery save failed, saving locally:", e);
       const item: GalleryItem = {
         id: `local-${Date.now()}`,
         title: data.title,
@@ -131,15 +131,9 @@ export function useGallery() {
     }
     const fb = getFirebase();
     if (!fb || !isFirebaseConfigured()) return;
-    const item = remote.find((i) => i.id === id);
-    try {
-      await deleteDoc(doc(fb.db, "gallery", id));
-      if (item?.storagePath) {
-        try { await deleteObject(ref(fb.storage, item.storagePath)); }
-        catch (e) { /* file may already be gone */ }
-      }
-    } catch (e) { console.warn(e); }
-  }, [remote]);
+    try { await deleteDoc(doc(fb.db, "gallery", id)); }
+    catch (e) { console.warn(e); }
+  }, []);
 
   return { items, loading, add, update, remove };
 }
