@@ -28,8 +28,8 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
-      <div className="mx-auto max-w-7xl container-px flex h-16 items-center justify-between">
-        <Link to="/" className="shrink-0"><Logo className="h-12 md:h-14" /></Link>
+      <div className="mx-auto max-w-7xl container-px flex h-20 md:h-24 items-center justify-between">
+        <Link to="/" className="shrink-0"><Logo className="h-16 md:h-20" /></Link>
         <nav className="hidden lg:flex items-center gap-7">
           {nav.map((n) => (
             <NavLink
@@ -69,10 +69,10 @@ export function Header() {
       {open && (
         <>
           <div
-            className="lg:hidden fixed inset-0 top-16 bg-black/40 z-40"
+            className="lg:hidden fixed inset-0 top-20 md:top-24 bg-black/40 z-40"
             onClick={() => setOpen(false)}
           />
-          <div className="lg:hidden fixed left-0 right-0 top-16 bottom-0 bg-white z-40 overflow-y-auto">
+          <div className="lg:hidden fixed left-0 right-0 top-20 md:top-24 bottom-0 bg-white z-40 overflow-y-auto">
             <div className="mx-auto max-w-7xl container-px flex flex-col py-2">
               {nav.map((n) => (
                 <Link

@@ -44,6 +44,7 @@ function ContactPage() {
         <div className="mx-auto max-w-7xl container-px grid lg:grid-cols-[1fr_1.2fr] gap-12">
           <div className="space-y-6">
             <ContactRow icon={Phone} label="Phone" value={SITE.phone} href={`tel:${SITE.phoneRaw}`} />
+            <ContactRow icon={Phone} label="Alt. Phone" value={SITE.phoneAlt} href={`tel:8688151526`} />
             <ContactRow icon={MessageCircle} label="WhatsApp" value="Chat with us" href={whatsappLink()} accent />
             <ContactRow icon={Mail} label="Email" value={SITE.email} href={`mailto:${SITE.email}`} />
             <ContactRow icon={MapPin} label="Address" value={SITE.address} />
