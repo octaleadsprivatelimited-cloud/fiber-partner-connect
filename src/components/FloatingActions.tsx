@@ -66,10 +66,10 @@ export function FloatingActions() {
         </span>
       </a>
       <div className="mt-1 flex flex-col gap-2 items-center">
-        <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="h-9 w-9 rounded-full bg-white border border-border text-brand-black flex items-center justify-center hover:bg-brand-red hover:text-white hover:border-brand-red transition">
+        <a href="https://www.instagram.com/satya_power_technologys?igsh=NG1hdmZqYWIxZndn" target="_blank" rel="noreferrer" aria-label="Instagram" className="h-9 w-9 rounded-full bg-white border border-border text-brand-black flex items-center justify-center hover:bg-brand-red hover:text-white hover:border-brand-red transition">
           <Instagram className="h-4 w-4" />
         </a>
-        <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube" className="h-9 w-9 rounded-full bg-white border border-border text-brand-black flex items-center justify-center hover:bg-brand-red hover:text-white hover:border-brand-red transition">
+        <a href="https://youtube.com/@satyapowertechnologys?si=gHQ1dsrUEQWk_wRg" target="_blank" rel="noreferrer" aria-label="YouTube" className="h-9 w-9 rounded-full bg-white border border-border text-brand-black flex items-center justify-center hover:bg-brand-red hover:text-white hover:border-brand-red transition">
           <Youtube className="h-4 w-4" />
         </a>
         <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="h-9 w-9 rounded-full bg-white border border-border text-brand-black flex items-center justify-center hover:bg-brand-red hover:text-white hover:border-brand-red transition">
