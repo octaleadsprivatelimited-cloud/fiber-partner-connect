@@ -40,6 +40,8 @@ function Home() {
         </div>
       </section>
 
+      <ServiceBranches />
+
       <WhyChoose />
 
       <CTABanner />
