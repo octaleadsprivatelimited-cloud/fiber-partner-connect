@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import type { Product } from "@/lib/products";
 import { QuoteDialog } from "@/components/QuoteDialog";
+import { WatermarkedImage } from "@/components/WatermarkedImage";
 
 export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
   return (
@@ -12,16 +13,16 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
       transition={{ duration: 0.35, delay: idx * 0.04 }}
       className="group flex flex-col"
     >
-      {/* Image — Shopify-style: clean, square, edge-to-edge */}
+      {/* Image — Shopify-style: clean, square, edge-to-edge, with brand watermark */}
       <div className="relative aspect-square bg-[#f6f6f6] overflow-hidden">
-        <img
+        <WatermarkedImage
           src={p.image}
-          alt={p.name}
-          loading="lazy"
-          className="h-full w-full object-contain p-4 transition-transform duration-500 ease-out group-hover:scale-105"
+          alt={`${p.name} — ${p.brand} ${p.category} | SATYA POWER TECHNOLOGY'S`}
+          className="h-full w-full"
+          imgClassName="h-full w-full object-contain p-4 transition-transform duration-500 ease-out group-hover:scale-105"
         />
         {p.featured && (
-          <span className="absolute top-3 left-3 bg-brand-red text-white text-[10px] font-semibold uppercase tracking-wider px-2 py-1">
+          <span className="absolute top-3 left-3 z-10 bg-brand-red text-white text-[10px] font-semibold uppercase tracking-wider px-2 py-1">
             Featured
           </span>
         )}
