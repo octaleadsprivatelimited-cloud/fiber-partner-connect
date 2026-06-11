@@ -29,7 +29,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
       <div className="mx-auto max-w-7xl container-px flex h-16 items-center justify-between">
-        <Link to="/" className="shrink-0"><Logo className="h-12 md:h-14" /></Link>
+        <Link to="/" className="shrink-0"><Logo className="h-16 md:h-20" /></Link>
         <nav className="hidden lg:flex items-center gap-7">
           {nav.map((n) => (
             <NavLink

@@ -4,6 +4,7 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Toaster } from "../components/ui/sonner";
+import { FloatingActions } from "../components/FloatingActions";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ export default function RootLayout() {
         {!isAdmin && <Header />}
         <main className="flex-1"><Outlet /></main>
         {!isAdmin && <Footer />}
+        {!isAdmin && <FloatingActions />}
       </div>
       <Toaster />
     </QueryClientProvider>
