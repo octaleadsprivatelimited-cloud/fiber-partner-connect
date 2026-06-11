@@ -20,7 +20,10 @@ export type Category =
   | "Connectors & Adaptors"
   | "Spare Electrodes"
   | "Spare Cleaver Blades"
-  | "Splicer Spare Parts";
+  | "Splicer Spare Parts"
+  | "Power Supplies"
+  | "SMPS (1.5V to 110V)"
+  | "Adapters";
 
 export const CATEGORIES: Category[] = [
   "Fusion Splicers",
@@ -35,9 +38,12 @@ export const CATEGORIES: Category[] = [
   "Spare Electrodes",
   "Spare Cleaver Blades",
   "Splicer Spare Parts",
+  "Power Supplies",
+  "SMPS (1.5V to 110V)",
+  "Adapters",
 ];
 
-export const BRANDS = ["INNO", "Fujikura", "Sumitomo", "Grandway", "EXFO", "VIAVI", "Fiberfox", "SATYA POWER TECHNOLOGY'S", "SKL"] as const;
+export const BRANDS = ["INNO", "Grandway", "Claron", "EXFO", "Fujikura", "Sumitomo", "VIAVI", "Fiberfox", "SATYA POWER TECHNOLOGY'S", "SKL"] as const;
 export type Brand = (typeof BRANDS)[number];
 
 export interface Product {
