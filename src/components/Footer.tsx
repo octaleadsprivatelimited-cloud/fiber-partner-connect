@@ -8,6 +8,7 @@ const QUICK_LINKS: { to: string; label: string }[] = [
   { to: "/products", label: "Products" },
   { to: "/brands", label: "Brands" },
   { to: "/services", label: "Services" },
+  { to: "/gallery", label: "Gallery" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ];

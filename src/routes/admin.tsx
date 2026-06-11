@@ -8,7 +8,7 @@ import {
 import {
   LayoutDashboard, Package, MessageSquare, Tag as TagIcon, Settings as SettingsIcon,
   LogOut, Plus, Pencil, Trash2, Upload, AlertCircle, CheckCircle2, X, Mail, Phone,
-  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Wrench,
+  TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Wrench, Image as ImageIcon,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import {
@@ -18,11 +18,12 @@ import {
 } from "@/lib/admin-data";
 import { CATEGORIES, BRANDS, type Product } from "@/lib/products";
 import { useServicesStore, ICON_NAMES, ICONS, type ServiceItem } from "@/lib/services-data";
+import { useGallery, GALLERY_CATEGORIES, type GalleryItem } from "@/lib/gallery-data";
 import { compressImage } from "@/lib/image-compress";
 import { SITE } from "@/lib/site";
 
 
-type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "settings";
+type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "gallery" | "settings";
 
 function AdminPage() {
   const { user, loading, login, logout } = useAuth();
@@ -97,6 +98,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
     { id: "services", label: "Services", icon: Wrench },
     { id: "inquiries", label: "Inquiries", icon: MessageSquare },
     { id: "brands", label: "Brands & Partners", icon: TagIcon },
+    { id: "gallery", label: "Gallery", icon: ImageIcon },
     { id: "settings", label: "Settings", icon: SettingsIcon },
   ];
 
@@ -208,6 +210,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
             {tab === "services" && <ServicesManager />}
             {tab === "inquiries" && <InquiriesManager inquiries={inquiries} updateStatus={updateStatus} remove={removeInquiry} />}
             {tab === "brands" && <BrandsManager />}
+            {tab === "gallery" && <GalleryManager />}
             
             {tab === "settings" && <SettingsManager />}
           </section>
@@ -914,6 +917,168 @@ function ServiceEditor({ initial, onClose, onSave }: {
         </div>
       </motion.div>
     </motion.div>
+  );
+}
+
+/* ============ Gallery ============ */
+function GalleryManager() {
+  const { items, add, update, remove } = useGallery();
+  const [uploading, setUploading] = useState(false);
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState<string>(GALLERY_CATEGORIES[0]);
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string>("");
+  const [editing, setEditing] = useState<GalleryItem | null>(null);
+
+  const handleFile = (f: File | null) => {
+    setFile(f);
+    if (f) setPreview(URL.createObjectURL(f));
+    else setPreview("");
+  };
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!file || !title.trim()) return;
+    setUploading(true);
+    try {
+      await add({ title: title.trim(), category, file });
+      setTitle(""); setFile(null); setPreview(""); setCategory(GALLERY_CATEGORIES[0]);
+    } finally { setUploading(false); }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-black text-brand-black">Gallery</h1>
+          <p className="text-sm text-muted-foreground mt-1">Upload photos shown on the public Gallery page.</p>
+        </div>
+        <div className="text-xs text-slate-500">{items.length} {items.length === 1 ? "photo" : "photos"}</div>
+      </div>
+
+      {/* Upload form */}
+      <form onSubmit={submit} className="bg-white border border-border rounded-xl p-5 grid md:grid-cols-[180px_1fr] gap-5">
+        <div>
+          <div className="aspect-square rounded-lg border-2 border-dashed border-border bg-muted/40 overflow-hidden flex items-center justify-center text-muted-foreground text-xs">
+            {preview ? (
+              <img src={preview} alt="" className="h-full w-full object-cover" />
+            ) : (
+              <div className="flex flex-col items-center gap-2">
+                <ImageIcon className="h-6 w-6" />
+                <span>Preview</span>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="space-y-4">
+          <Field label="Title">
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g. Hyderabad service center"
+              className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded"
+              maxLength={120}
+            />
+          </Field>
+          <Field label="Category">
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded bg-white"
+            >
+              {GALLERY_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </Field>
+          <Field label="Photo">
+            <label className="inline-flex items-center gap-2 border border-input rounded px-4 py-2.5 font-semibold text-sm cursor-pointer hover:border-brand-red hover:text-brand-red transition">
+              <Upload className="h-4 w-4" /> {file ? file.name : "Choose image"}
+              <input type="file" accept="image/*" className="hidden" onChange={(e) => handleFile(e.target.files?.[0] ?? null)} />
+            </label>
+          </Field>
+          <button
+            type="submit"
+            disabled={!file || !title.trim() || uploading}
+            className="inline-flex items-center gap-2 bg-brand-red text-white font-semibold px-5 py-2.5 rounded-md hover:opacity-90 transition disabled:opacity-50"
+          >
+            <Plus className="h-4 w-4" /> {uploading ? "Uploading…" : "Add to gallery"}
+          </button>
+        </div>
+      </form>
+
+      {/* Existing items */}
+      {items.length === 0 ? (
+        <div className="bg-white border border-dashed border-border rounded-xl py-16 text-center text-muted-foreground">
+          No photos yet. Upload one above.
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {items.map((it) => (
+            <div key={it.id} className="group relative bg-white border border-border rounded-lg overflow-hidden">
+              <div className="aspect-square bg-muted overflow-hidden">
+                <img src={it.image} alt={it.title} className="h-full w-full object-cover" loading="lazy" />
+              </div>
+              <div className="p-3">
+                {it.category && (
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-brand-red truncate">{it.category}</div>
+                )}
+                <div className="text-sm font-semibold text-brand-black truncate">{it.title}</div>
+              </div>
+              <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition">
+                <button
+                  onClick={() => setEditing(it)}
+                  className="h-8 w-8 rounded-md bg-white/95 border border-border grid place-items-center hover:text-brand-red"
+                  aria-label="Edit"
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  onClick={() => { if (confirm(`Delete "${it.title}"?`)) remove(it.id); }}
+                  className="h-8 w-8 rounded-md bg-white/95 border border-border grid place-items-center hover:bg-brand-red hover:text-white"
+                  aria-label="Delete"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <AnimatePresence>
+        {editing && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+            <motion.div initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }}
+              className="bg-white w-full max-w-md rounded-xl overflow-hidden">
+              <div className="p-5 border-b border-border flex items-center justify-between">
+                <h2 className="text-xl font-black text-brand-black">Edit photo</h2>
+                <button onClick={() => setEditing(null)} className="p-2 hover:bg-muted rounded"><X className="h-4 w-4" /></button>
+              </div>
+              <div className="p-5 space-y-4">
+                <img src={editing.image} alt="" className="w-full h-48 object-cover rounded border border-border" />
+                <Field label="Title">
+                  <input value={editing.title} onChange={(e) => setEditing({ ...editing, title: e.target.value })}
+                    className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" />
+                </Field>
+                <Field label="Category">
+                  <select value={editing.category ?? ""} onChange={(e) => setEditing({ ...editing, category: e.target.value })}
+                    className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded bg-white">
+                    {GALLERY_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </Field>
+                <div className="flex gap-3 pt-1">
+                  <button onClick={() => setEditing(null)} className="flex-1 border border-border font-bold py-2.5 rounded hover:bg-muted">Cancel</button>
+                  <button
+                    onClick={async () => { await update(editing.id, { title: editing.title, category: editing.category }); setEditing(null); }}
+                    className="flex-1 bg-brand-red text-white font-semibold py-2.5 rounded hover:opacity-90"
+                  >Save</button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
