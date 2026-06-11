@@ -9,6 +9,7 @@ import About from "./routes/about";
 import Admin from "./routes/admin";
 import Brands from "./routes/brands";
 import Contact from "./routes/contact";
+import Gallery from "./routes/gallery";
 import Products from "./routes/products";
 import Services from "./routes/services";
 
@@ -26,6 +27,7 @@ createRoot(rootElement).render(
           <Route path="/brands" element={<Brands />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/services" element={<Services />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
