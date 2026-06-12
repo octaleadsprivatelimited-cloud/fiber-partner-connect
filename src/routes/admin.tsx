@@ -943,7 +943,10 @@ function GalleryManager() {
     setUploading(true);
     try {
       await add({ title: title.trim(), category, file });
+      toast.success("Photo added to gallery");
       setTitle(""); setFile(null); setPreview(""); setCategory(GALLERY_CATEGORIES[0]);
+    } catch (err: any) {
+      toast.error("Gallery upload failed", { description: err?.message ?? "Unknown error" });
     } finally { setUploading(false); }
   };
 
