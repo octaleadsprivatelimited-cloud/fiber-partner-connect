@@ -18,7 +18,7 @@ function Home() {
       <TrustIndicators />
       <BrandStrip />
 
-      <section className="py-20">
+      <section className="py-12 md:py-20">
         <div className="mx-auto max-w-7xl container-px">
           <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
             <div>

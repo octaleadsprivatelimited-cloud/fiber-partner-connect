@@ -28,7 +28,7 @@ function PhoneIcon({ className = "h-6 w-6" }: { className?: string }) {
 export function FloatingActions() {
   const wa = whatsappLink("Hello, I would like to request a quotation.");
   return (
-    <div className="fixed right-3 md:right-5 bottom-1/2 translate-y-1/2 z-50 flex flex-col gap-3">
+    <div className="fixed right-2 md:right-5 bottom-1/2 translate-y-1/2 z-50 flex flex-col gap-2 md:gap-3">
       <a
         href={wa}
         target="_blank"

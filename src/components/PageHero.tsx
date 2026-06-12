@@ -27,7 +27,7 @@ export function PageHero({ eyebrow, title, description, bgImage, children }: Pro
         <div className="absolute inset-0 bg-black/40" />
         <div className="absolute inset-0 bg-gradient-to-r from-brand-black/50 via-transparent to-transparent" />
       </div>
-      <div className="relative mx-auto max-w-7xl container-px py-20 md:py-24">
+      <div className="relative mx-auto max-w-7xl container-px py-12 md:py-24">
         {eyebrow && (
           <div className="text-xs font-bold tracking-[0.2em] text-primary mb-3">{eyebrow}</div>
         )}

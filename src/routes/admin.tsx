@@ -19,6 +19,7 @@ import {
 import { CATEGORIES, BRANDS, type Product } from "@/lib/products";
 import { useServicesStore, ICON_NAMES, ICONS, type ServiceItem } from "@/lib/services-data";
 import { useGallery, GALLERY_CATEGORIES, type GalleryItem } from "@/lib/gallery-data";
+import { useBrands } from "@/lib/brands-data";
 import { compressImage } from "@/lib/image-compress";
 import { SITE } from "@/lib/site";
 
@@ -608,29 +609,19 @@ function InquiriesManager({ inquiries, updateStatus, remove }: {
 }
 
 /* ============ Brands manager (grid) ============ */
-interface BrandItem { name: string; description: string; logo?: string }
 function BrandsManager() {
-  const KEY = "admin-brand-descriptions";
-  const [items, setItems] = useState<BrandItem[]>([]);
-  const [editing, setEditing] = useState<{ index: number; item: BrandItem } | null>(null);
+  const { items, add, update, remove } = useBrands();
+  const [editing, setEditing] = useState<{ id?: string; item: BrandItemType } | null>(null);
   const [adding, setAdding] = useState(false);
 
-  useEffect(() => {
-    const raw = typeof localStorage !== "undefined" ? localStorage.getItem(KEY) : null;
-    setItems(raw ? JSON.parse(raw) : BRANDS.map((b) => ({ name: b, description: "" })));
-  }, []);
-
-  const persist = (next: BrandItem[]) => {
-    setItems(next);
-    localStorage.setItem(KEY, JSON.stringify(next));
-  };
-  const saveItem = (i: number, item: BrandItem) => {
-    persist(i === -1 ? [...items, item] : items.map((it, idx) => idx === i ? item : it));
+  const saveItem = async (id: string | undefined, item: BrandItemType) => {
+    if (id) await update(id, item);
+    else await add(item);
     setEditing(null); setAdding(false);
   };
-  const removeItem = (i: number) => {
-    if (!confirm(`Delete brand "${items[i].name}"?`)) return;
-    persist(items.filter((_, idx) => idx !== i));
+  const removeItem = async (id: string, name: string) => {
+    if (!confirm(`Delete brand "${name}"?`)) return;
+    await remove(id);
   };
 
   return (
@@ -638,7 +629,7 @@ function BrandsManager() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-brand-black">Brands</h1>
-          <p className="text-sm text-muted-foreground mt-1">Manage brand logos and descriptions shown on the public Brands page.</p>
+          <p className="text-sm text-muted-foreground mt-1">Manage brand logos and descriptions. Saved to Firestore — persists across devices.</p>
         </div>
         <button onClick={() => setAdding(true)} className="inline-flex items-center gap-2 bg-brand-red text-white font-semibold px-4 py-2.5 rounded-md hover:opacity-90 transition">
           <Plus className="h-4 w-4" /> Add Brand
@@ -646,8 +637,8 @@ function BrandsManager() {
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {items.map((it, i) => (
-          <div key={it.name + i} className="group bg-white rounded-xl border border-border p-5 flex flex-col hover:shadow-lg hover:-translate-y-0.5 transition">
+        {items.map((it) => (
+          <div key={it.id} className="group bg-white rounded-xl border border-border p-5 flex flex-col hover:shadow-lg hover:-translate-y-0.5 transition">
             <div className="flex items-start gap-3">
               <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-red-50 to-rose-50 grid place-items-center overflow-hidden shrink-0 border border-border">
                 {it.logo
@@ -663,10 +654,10 @@ function BrandsManager() {
               {it.description || <span className="italic text-muted-foreground/70">No description yet.</span>}
             </p>
             <div className="flex gap-2 mt-4 pt-4 border-t border-border">
-              <button onClick={() => setEditing({ index: i, item: it })} className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:border-brand-red hover:text-brand-red transition">
+              <button onClick={() => setEditing({ id: it.id, item: it })} className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:border-brand-red hover:text-brand-red transition">
                 <Pencil className="h-3.5 w-3.5" /> Edit
               </button>
-              <button onClick={() => removeItem(i)} className="inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:bg-brand-red hover:border-brand-red hover:text-white transition">
+              <button onClick={() => removeItem(it.id!, it.name)} className="inline-flex items-center justify-center gap-1.5 text-xs font-bold border border-border px-3 py-2 rounded-md hover:bg-brand-red hover:border-brand-red hover:text-white transition">
                 <Trash2 className="h-3.5 w-3.5" />
               </button>
             </div>
@@ -680,7 +671,7 @@ function BrandsManager() {
             initial={editing?.item ?? { name: "", description: "", logo: "" }}
             isNew={adding}
             onClose={() => { setEditing(null); setAdding(false); }}
-            onSave={(item) => saveItem(editing?.index ?? -1, item)}
+            onSave={(item) => saveItem(editing?.id, item)}
           />
         )}
       </AnimatePresence>
@@ -688,8 +679,12 @@ function BrandsManager() {
   );
 }
 
-function BrandEditor({ initial, isNew, onClose, onSave }: { initial: BrandItem; isNew: boolean; onClose: () => void; onSave: (item: BrandItem) => void }) {
-  const [form, setForm] = useState<BrandItem>(initial);
+type BrandItemType = { name: string; description?: string; logo?: string };
+
+
+
+function BrandEditor({ initial, isNew, onClose, onSave }: { initial: BrandItemType; isNew: boolean; onClose: () => void; onSave: (item: BrandItemType) => void }) {
+  const [form, setForm] = useState<BrandItemType>(initial);
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
       <motion.div initial={{ scale: 0.95, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 10 }} className="bg-white w-full max-w-lg rounded-xl overflow-hidden">

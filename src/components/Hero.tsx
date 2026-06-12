@@ -6,9 +6,9 @@ const heroVideo = "/hero-bg.mp4";
 
 const slides = [
   {
-    eyebrow: { icon: Award, text: "AUTHORIZED INNO DISTRIBUTOR" },
+    eyebrow: { icon: Award, text: "AUTHORIZED DISTRIBUTOR" },
     title: "Fiber Optic Tools for AP & Telangana",
-    body: "The only authorized INNO partner for sales AND service across both states.",
+    body: "Authorized Distributor for Inno, Grandway, Claron & EXFO — sales and service across both states.",
   },
   {
     eyebrow: { icon: Wrench, text: "SALES + SERVICE" },
@@ -18,7 +18,7 @@ const slides = [
   {
     eyebrow: { icon: MapPin, text: "PREMIUM EQUIPMENT" },
     title: "Built for the Field, Trusted by Pros",
-    body: "INNO, Fujikura, Sumitomo, EXFO, VIAVI, Grandway — all under one trusted roof.",
+    body: "Inno, Grandway, Claron, EXFO, Fujikura, Sumitomo, VIAVI — all under one trusted roof.",
   },
 ];
 
@@ -56,16 +56,16 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl container-px pt-16 md:pt-28 pb-28 md:pb-44">
+      <div className="relative mx-auto max-w-7xl container-px pt-12 md:pt-28 pb-16 md:pb-44">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 mb-4">
+          <div className="inline-flex items-center gap-2 mb-3 md:mb-4">
             <Eyebrow className="h-3.5 w-3.5 text-white/90" />
-            <span className="text-[10px] md:text-[11px] font-bold tracking-[0.22em] text-white/90">{s.eyebrow.text}</span>
+            <span className="text-[10px] md:text-[11px] font-bold tracking-[0.18em] text-white/90">{s.eyebrow.text}</span>
           </div>
-          <h1 className="text-xl sm:text-3xl md:text-4xl font-black leading-[1.08] text-white">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-black leading-[1.1] text-white">
             {s.title}
           </h1>
-          <p className="mt-5 text-base sm:text-lg text-white/85 max-w-2xl mx-auto">{s.body}</p>
+          <p className="mt-3 md:mt-5 text-sm sm:text-base md:text-lg text-white/85 max-w-2xl mx-auto">{s.body}</p>
 
           <div className="mt-7 flex flex-wrap gap-3 justify-center">
             <Link

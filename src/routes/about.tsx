@@ -30,7 +30,7 @@ function AboutPage() {
       />
 
       {/* Mission / Vision / People */}
-      <section className="py-20 bg-muted/40">
+      <section className="py-12 md:py-20 bg-muted/40">
         <div className="mx-auto max-w-7xl container-px">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-2">WHAT DRIVES US</div>
@@ -74,7 +74,7 @@ function AboutPage() {
 
 
       {/* Timeline */}
-      <section className="py-20 bg-muted/40">
+      <section className="py-12 md:py-20 bg-muted/40">
         <div className="mx-auto max-w-7xl container-px">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-2">MILESTONES</div>
