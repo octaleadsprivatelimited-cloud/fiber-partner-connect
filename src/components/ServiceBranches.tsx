@@ -10,7 +10,7 @@ const branches = [
 
 export function ServiceBranches() {
   return (
-    <section className="py-20 bg-background">
+    <section className="py-12 md:py-20 bg-background">
       <div className="mx-auto max-w-7xl container-px">
         <div className="text-center max-w-2xl mx-auto mb-10">
           <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">OUR PRESENCE</div>

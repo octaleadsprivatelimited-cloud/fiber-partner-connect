@@ -12,7 +12,7 @@ const items = [
 
 export function WhyChoose() {
   return (
-    <section className="py-20 bg-muted/30">
+    <section className="py-12 md:py-20 bg-muted/30">
       <div className="mx-auto max-w-7xl container-px">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">WHY SATYA POWER TECHNOLOGYS</div>

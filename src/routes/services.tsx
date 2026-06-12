@@ -36,7 +36,7 @@ function ServicesPage() {
         bgImage={bgServices}
       />
 
-      <section className="py-20">
+      <section className="py-12 md:py-20">
         <div className="mx-auto max-w-7xl container-px">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {services.map((s, i) => (
@@ -59,7 +59,7 @@ function ServicesPage() {
         </div>
       </section>
 
-      <section className="py-20 bg-muted/30">
+      <section className="py-12 md:py-20 bg-muted/30">
         <div className="mx-auto max-w-7xl container-px grid lg:grid-cols-2 gap-12 items-start">
           <div>
             <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">COVERAGE</div>

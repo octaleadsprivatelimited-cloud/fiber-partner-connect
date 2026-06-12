@@ -36,7 +36,7 @@ function BrandsPage() {
       />
 
       {/* INNO featured */}
-      <section className="py-16 md:py-24 relative overflow-hidden">
+      <section className="py-10 md:py-24 relative overflow-hidden">
         <div className="relative mx-auto max-w-7xl container-px grid lg:grid-cols-5 gap-10 items-center">
           <div className="lg:col-span-3">
             <div className="inline-flex items-center gap-2 bg-brand-red text-white px-3 py-1.5 mb-5 text-[11px] font-bold tracking-[0.2em] rounded-full">
