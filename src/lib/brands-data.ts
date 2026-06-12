@@ -94,10 +94,15 @@ export function useBrands() {
       await addDoc(collection(fb.db, "brands"), {
         ...data, order: Date.now(), createdAt: serverTimestamp(),
       });
-    } catch (e) {
+    } catch (e: any) {
       console.warn("Brand save failed, saving locally:", e);
       const item: BrandItem = { ...data, id: `local-${Date.now()}` };
       writeLocal([...readLocal(), item]);
+      throw new Error(
+        e?.code === "permission-denied"
+          ? "Permission denied by Firestore rules. The brand was saved only on this device. Verify your admin UID exists in the /admins collection and that the brands rules allow admin writes."
+          : (e?.message || "Failed to save brand to Firestore. Saved locally only.")
+      );
     }
   }, []);
 
