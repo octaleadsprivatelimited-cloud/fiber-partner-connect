@@ -17,7 +17,7 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
       <div className="relative aspect-square bg-[#f6f6f6] overflow-hidden">
         <WatermarkedImage
           src={p.image}
-          alt={`${p.name} — ${p.brand} ${p.category} | SATYA POWER TECHNOLOGY'S`}
+          alt={`${p.name} — ${p.brand} ${p.category} | SATYA POWER TECHNOLOGYS`}
           className="h-full w-full"
           imgClassName="h-full w-full object-contain p-4 transition-transform duration-500 ease-out group-hover:scale-105"
         />

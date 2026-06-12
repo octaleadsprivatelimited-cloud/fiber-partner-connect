@@ -7,8 +7,8 @@ import bgAbout from "@/assets/bg-about.jpg";
 
 
 const timeline = [
-  { year: "2013", title: "Founded", body: "SATYA POWER TECHNOLOGY'S established under the leadership of Mr. Deepak Singh." },
-  { year: "2024", title: "Authorized INNO Distributor", body: "Awarded official distribution rights for INNO Instrument across AP & Telangana." },
+  { year: "2013", title: "Founded", body: "SATYA POWER TECHNOLOGYS established under the leadership of Mr. Deepak Singh." },
+  { year: "2024", title: "Authorized Distributor for Inno, Grandway, Claron & EXFO", body: "Awarded official distribution rights across AP & Telangana." },
   { year: "2024", title: "Service Center Launched", body: "In-house repair and calibration facility opened — the only authorized one in region." },
   { year: "2025", title: "Expanding Catalogue", body: "Added Fujikura, Sumitomo, Grandway, EXFO, VIAVI and Fiberfox to the brand portfolio." },
 ];
