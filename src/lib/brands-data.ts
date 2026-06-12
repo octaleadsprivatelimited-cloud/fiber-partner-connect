@@ -94,10 +94,15 @@ export function useBrands() {
       await addDoc(collection(fb.db, "brands"), {
         ...data, order: Date.now(), createdAt: serverTimestamp(),
       });
-    } catch (e) {
+    } catch (e: any) {
       console.warn("Brand save failed, saving locally:", e);
       const item: BrandItem = { ...data, id: `local-${Date.now()}` };
       writeLocal([...readLocal(), item]);
+      throw new Error(
+        e?.code === "permission-denied"
+          ? "Permission denied by Firestore rules. The brand was saved only on this device. Verify your admin UID exists in the /admins collection and that the brands rules allow admin writes."
+          : (e?.message || "Failed to save brand to Firestore. Saved locally only.")
+      );
     }
   }, []);
 
@@ -112,14 +117,26 @@ export function useBrands() {
       const fb = getFirebase();
       if (fb && isFirebaseConfigured()) {
         try { await addDoc(collection(fb.db, "brands"), { ...patch, order: Date.now(), createdAt: serverTimestamp() }); }
-        catch (e) { console.warn(e); }
+        catch (e: any) {
+          throw new Error(
+            e?.code === "permission-denied"
+              ? "Permission denied by Firestore rules. Saved locally only — verify your admin UID is in the /admins collection."
+              : (e?.message || "Failed to sync brand to Firestore.")
+          );
+        }
       }
       return;
     }
     const fb = getFirebase();
     if (!fb || !isFirebaseConfigured()) return;
     try { await updateDoc(doc(fb.db, "brands", id), patch as any); }
-    catch (e) { console.warn(e); }
+    catch (e: any) {
+      throw new Error(
+        e?.code === "permission-denied"
+          ? "Permission denied by Firestore rules. Brand was not updated. Verify your admin UID is in the /admins collection."
+          : (e?.message || "Failed to update brand in Firestore.")
+      );
+    }
   }, []);
 
   const remove = useCallback(async (id: string) => {

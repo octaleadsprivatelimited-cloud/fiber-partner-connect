@@ -22,6 +22,7 @@ import { useGallery, GALLERY_CATEGORIES, type GalleryItem } from "@/lib/gallery-
 import { useBrands } from "@/lib/brands-data";
 import { compressImage } from "@/lib/image-compress";
 import { SITE } from "@/lib/site";
+import { toast } from "sonner";
 
 
 type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "gallery" | "settings";
@@ -615,9 +616,14 @@ function BrandsManager() {
   const [adding, setAdding] = useState(false);
 
   const saveItem = async (id: string | undefined, item: BrandItemType) => {
-    if (id) await update(id, item);
-    else await add(item);
-    setEditing(null); setAdding(false);
+    try {
+      if (id) await update(id, item);
+      else await add(item);
+      toast.success(id ? "Brand updated" : "Brand added");
+      setEditing(null); setAdding(false);
+    } catch (e: any) {
+      toast.error("Brand upload failed", { description: e?.message ?? "Unknown error" });
+    }
   };
   const removeItem = async (id: string, name: string) => {
     if (!confirm(`Delete brand "${name}"?`)) return;
@@ -937,7 +943,10 @@ function GalleryManager() {
     setUploading(true);
     try {
       await add({ title: title.trim(), category, file });
+      toast.success("Photo added to gallery");
       setTitle(""); setFile(null); setPreview(""); setCategory(GALLERY_CATEGORIES[0]);
+    } catch (err: any) {
+      toast.error("Gallery upload failed", { description: err?.message ?? "Unknown error" });
     } finally { setUploading(false); }
   };
 

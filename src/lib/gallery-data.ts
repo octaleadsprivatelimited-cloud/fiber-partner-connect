@@ -101,7 +101,7 @@ export function useGallery() {
         image: compressed,
         createdAt: serverTimestamp(),
       });
-    } catch (e) {
+    } catch (e: any) {
       console.warn("Gallery save failed, saving locally:", e);
       const item: GalleryItem = {
         id: `local-${Date.now()}`,
@@ -111,6 +111,12 @@ export function useGallery() {
         createdAt: Date.now(),
       };
       writeLocal([item, ...readLocal()]);
+      // Re-throw so the UI can show a toast (e.g. Firestore permission denied).
+      throw new Error(
+        e?.code === "permission-denied"
+          ? "Permission denied by Firestore rules. The photo was saved only on this device. Verify your admin UID exists in the /admins collection and that the gallery rules allow admin writes."
+          : (e?.message || "Failed to save gallery item to Firestore. Saved locally only.")
+      );
     }
   }, []);
 
