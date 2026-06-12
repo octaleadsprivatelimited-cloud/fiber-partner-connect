@@ -616,9 +616,14 @@ function BrandsManager() {
   const [adding, setAdding] = useState(false);
 
   const saveItem = async (id: string | undefined, item: BrandItemType) => {
-    if (id) await update(id, item);
-    else await add(item);
-    setEditing(null); setAdding(false);
+    try {
+      if (id) await update(id, item);
+      else await add(item);
+      toast.success(id ? "Brand updated" : "Brand added");
+      setEditing(null); setAdding(false);
+    } catch (e: any) {
+      toast.error("Brand upload failed", { description: e?.message ?? "Unknown error" });
+    }
   };
   const removeItem = async (id: string, name: string) => {
     if (!confirm(`Delete brand "${name}"?`)) return;
