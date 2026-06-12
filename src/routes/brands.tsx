@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Award, ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
+import { useBrands } from "@/lib/brands-data";
 import bgBrands from "@/assets/bg-brands.jpg";
 
 
@@ -23,6 +24,8 @@ const innoHighlights = [
 ];
 
 function BrandsPage() {
+  const { items: adminBrands } = useBrands();
+  const adminWithLogos = adminBrands.filter((b) => b.logo);
   return (
     <>
       <PageHero
@@ -83,10 +86,30 @@ function BrandsPage() {
         </div>
       </section>
 
+      {/* Admin-managed brand logos */}
+      {adminWithLogos.length > 0 && (
+        <section className="py-14 md:py-20">
+          <div className="mx-auto max-w-7xl container-px">
+            <div className="text-center mb-8 md:mb-10">
+              <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-2">OUR BRANDS</div>
+              <h2 className="text-2xl md:text-4xl font-black text-brand-black">Authorized Brand Logos</h2>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
+              {adminWithLogos.map((b) => (
+                <div key={b.id} className="bg-white rounded-xl border border-border p-4 md:p-6 flex flex-col items-center gap-3 hover:border-brand-red hover:shadow-md transition">
+                  <img src={b.logo} alt={b.name} className="h-16 md:h-20 w-full object-contain" />
+                  <div className="text-sm md:text-base font-bold text-brand-black text-center">{b.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Additional brands */}
-      <section className="py-20 bg-muted/40">
+      <section className="py-14 md:py-20 bg-muted/40">
         <div className="mx-auto max-w-7xl container-px">
-          <div className="flex items-end justify-between mb-10 gap-4 flex-wrap">
+          <div className="flex items-end justify-between mb-8 md:mb-10 gap-4 flex-wrap">
             <div>
               <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-2">PORTFOLIO</div>
               <h2 className="text-2xl md:text-4xl font-black text-brand-black">Additional Authorized Brands</h2>
@@ -96,7 +119,7 @@ function BrandsPage() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
             {brands.map((b, i) => (
               <motion.div
                 key={b.name}
@@ -104,12 +127,12 @@ function BrandsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="group relative bg-white rounded-xl border border-border p-7 hover:border-brand-red hover:shadow-xl transition overflow-hidden"
+                className="group relative bg-white rounded-xl border border-border p-5 md:p-7 hover:border-brand-red hover:shadow-xl transition overflow-hidden"
               >
                 <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-brand-red to-brand-yellow scale-x-0 group-hover:scale-x-100 origin-left transition-transform" />
-                <div className="flex items-baseline justify-between mb-3">
-                  <h3 className="text-2xl md:text-3xl font-black text-brand-black group-hover:text-brand-red transition">{b.name}</h3>
-                  <span className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground bg-muted px-2 py-1 rounded">{b.tag}</span>
+                <div className="flex items-baseline justify-between mb-3 gap-2">
+                  <h3 className="text-xl md:text-3xl font-black text-brand-black group-hover:text-brand-red transition">{b.name}</h3>
+                  <span className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground bg-muted px-2 py-1 rounded shrink-0">{b.tag}</span>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed">{b.desc}</p>
               </motion.div>
@@ -117,6 +140,7 @@ function BrandsPage() {
           </div>
         </div>
       </section>
+
 
       <CTABanner />
     </>
