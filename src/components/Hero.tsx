@@ -84,7 +84,7 @@ export function Hero() {
 
           <div className="mt-6 flex items-center justify-center gap-2 text-xs sm:text-sm text-white/80">
             <ShieldCheck className="h-4 w-4 text-brand-yellow shrink-0" />
-            Authorized INNO Partner — 500+ happy customers
+            Authorized Distributor for Inno, Grandway, Claron & EXFO
           </div>
         </div>
 

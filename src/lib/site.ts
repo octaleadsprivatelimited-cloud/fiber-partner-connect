@@ -1,9 +1,9 @@
 export const SITE = {
-  name: "SATYA POWER TECHNOLOGY'S",
+  name: "SATYA POWER TECHNOLOGYS",
   tagline: "Service first, Sales next",
-  phone: "+91 95428 40444",
-  phoneAlt: "+91 86881 51526",
-  phoneRaw: "919542840444",
+  phone: "+91 86881 51526",
+  phoneAlt: "+91 95428 40444",
+  phoneRaw: "918688151526",
   email: "satyapowertechnologys@gmail.com",
   address:
     "House No. 49/50, Vayushakthi Nagar Road No.1, Dammaiguda, Hyderabad - 500083, Telangana, India",
@@ -11,7 +11,7 @@ export const SITE = {
   founded: 2013,
   ceo: "Mr. Deepak Singh",
   website: "www.satyapowertechnologys.in",
-  whatsappMsg: "Hello SATYA POWER TECHNOLOGY'S, I'd like a quote.",
+  whatsappMsg: "Hello SATYA POWER TECHNOLOGYS, I'd like a quote.",
 };
 
 export const whatsappLink = (msg = SITE.whatsappMsg) =>

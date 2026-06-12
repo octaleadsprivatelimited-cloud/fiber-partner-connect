@@ -29,7 +29,7 @@ export function WatermarkedImage({ src, alt, className = "", imgClassName = "" }
       >
         <div className="absolute inset-0 flex flex-wrap content-center justify-center gap-x-10 gap-y-6 rotate-[-22deg] scale-125 text-[10px] md:text-xs font-black tracking-[0.25em] text-brand-black uppercase">
           {Array.from({ length: 18 }).map((_, i) => (
-            <span key={i}>SATYA POWER TECHNOLOGY'S</span>
+            <span key={i}>SATYA POWER TECHNOLOGYS</span>
           ))}
         </div>
       </div>

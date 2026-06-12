@@ -29,7 +29,7 @@ export function Footer() {
         <div className="mx-auto max-w-7xl container-px py-14 grid gap-6 md:gap-10 md:grid-cols-4">
           <div>
             <Logo className="h-16" />
-            <p className="mt-4 text-sm text-white/70 max-w-xs">{SITE.tagline}. Authorized INNO Distributor for Andhra Pradesh & Telangana.</p>
+            <p className="mt-4 text-sm text-white/70 max-w-xs">{SITE.tagline}. Authorized Distributor for Inno, Grandway, Claron & EXFO across Andhra Pradesh & Telangana.</p>
           </div>
 
           {/* Quick Links — collapsible on mobile, always open on desktop */}

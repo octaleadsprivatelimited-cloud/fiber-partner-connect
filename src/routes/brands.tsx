@@ -46,7 +46,7 @@ function BrandsPage() {
               </span>
             </h2>
             <p className="mt-5 text-base md:text-lg text-muted-foreground max-w-xl">
-              SATYA POWER TECHNOLOGY'S is the authorized distributor of INNO Instrument across Andhra Pradesh and Telangana — covering full sales, service and warranty support.
+              SATYA POWER TECHNOLOGYS is the Authorized Distributor for Inno, Grandway, Claron & EXFO across Andhra Pradesh and Telangana — covering full sales, service and warranty support.
             </p>
             <ul className="mt-7 grid sm:grid-cols-2 gap-3">
               {innoHighlights.map((h) => (
