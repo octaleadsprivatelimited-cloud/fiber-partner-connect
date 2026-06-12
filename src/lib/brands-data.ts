@@ -117,14 +117,26 @@ export function useBrands() {
       const fb = getFirebase();
       if (fb && isFirebaseConfigured()) {
         try { await addDoc(collection(fb.db, "brands"), { ...patch, order: Date.now(), createdAt: serverTimestamp() }); }
-        catch (e) { console.warn(e); }
+        catch (e: any) {
+          throw new Error(
+            e?.code === "permission-denied"
+              ? "Permission denied by Firestore rules. Saved locally only — verify your admin UID is in the /admins collection."
+              : (e?.message || "Failed to sync brand to Firestore.")
+          );
+        }
       }
       return;
     }
     const fb = getFirebase();
     if (!fb || !isFirebaseConfigured()) return;
     try { await updateDoc(doc(fb.db, "brands", id), patch as any); }
-    catch (e) { console.warn(e); }
+    catch (e: any) {
+      throw new Error(
+        e?.code === "permission-denied"
+          ? "Permission denied by Firestore rules. Brand was not updated. Verify your admin UID is in the /admins collection."
+          : (e?.message || "Failed to update brand in Firestore.")
+      );
+    }
   }, []);
 
   const remove = useCallback(async (id: string) => {
