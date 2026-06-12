@@ -22,6 +22,7 @@ import { useGallery, GALLERY_CATEGORIES, type GalleryItem } from "@/lib/gallery-
 import { useBrands } from "@/lib/brands-data";
 import { compressImage } from "@/lib/image-compress";
 import { SITE } from "@/lib/site";
+import { toast } from "sonner";
 
 
 type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "gallery" | "settings";
