@@ -69,7 +69,7 @@ export function Header() {
               href={whatsappLink()}
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex items-center h-10 px-4 sm:px-5 rounded-md bg-brand-black text-white text-[13px] font-semibold tracking-tight border border-brand-black hover:bg-primary hover:border-primary transition-colors duration-200 shadow-sm"
+              className="group inline-flex items-center h-10 px-4 sm:px-5 rounded-md bg-primary text-white text-[13px] font-semibold tracking-tight border border-primary hover:bg-brand-red-dark hover:border-brand-red-dark transition-colors duration-200 shadow-sm"
             >
               <span className="hidden sm:inline">Get a Quote</span>
               <span className="sm:hidden">Quote</span>
