@@ -42,7 +42,7 @@ export function Footer() {
       <div className="absolute -top-32 left-1/3 h-72 w-72 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
       <div className="relative mx-auto max-w-7xl container-px pt-16 md:pt-20 pb-8">
         {/* top row: brand + columns */}
-        <div className="grid gap-12 md:gap-10 md:grid-cols-12">
+        <div className="grid gap-6 md:gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
             <Logo className="h-14" />
             <p className="mt-5 text-sm text-white/65 max-w-xs leading-relaxed">
