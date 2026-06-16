@@ -88,7 +88,8 @@
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01", "cv11";
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.025em; font-feature-settings: "ss01"; }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.035em; font-weight: 700; }
+  h1 { letter-spacing: -0.045em; }
 }
 
 @utility container-px {
