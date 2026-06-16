@@ -1,4 +1,5 @@
 import { useBrands } from "@/lib/brands-data";
+import { getBrandLogo } from "@/lib/brand-logos";
 
 export function BrandStrip() {
   const { items } = useBrands();
@@ -26,24 +27,28 @@ export function BrandStrip() {
           }}
         >
           <div className="flex gap-3 md:gap-6 animate-marquee w-max">
-            {loop.map((b, idx) => (
-              <div
-                key={`${b.id ?? b.name}-${idx}`}
-                className="shrink-0 w-32 md:w-48 h-20 md:h-24 flex flex-col items-center justify-center text-center py-2 px-2 md:py-3 md:px-3 border bg-card border-border hover:border-primary transition"
-              >
-                {b.logo ? (
-                  <img
-                    src={b.logo}
-                    alt={b.name}
-                    className="max-h-10 md:max-h-12 max-w-full object-contain"
-                  />
-                ) : (
-                  <div className="font-light text-sm md:text-lg text-foreground/80">
-                    {b.name}
-                  </div>
-                )}
-              </div>
-            ))}
+            {loop.map((b, idx) => {
+              const logo = b.logo || getBrandLogo(b.name);
+              return (
+                <div
+                  key={`${b.id ?? b.name}-${idx}`}
+                  className="shrink-0 w-32 md:w-48 h-20 md:h-24 flex flex-col items-center justify-center text-center py-2 px-2 md:py-3 md:px-3 border bg-card border-border hover:border-primary transition"
+                >
+                  {logo ? (
+                    <img
+                      src={logo}
+                      alt={b.name}
+                      loading="lazy"
+                      className="max-h-10 md:max-h-14 max-w-full object-contain"
+                    />
+                  ) : (
+                    <div className="font-light text-sm md:text-lg text-foreground/80">
+                      {b.name}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

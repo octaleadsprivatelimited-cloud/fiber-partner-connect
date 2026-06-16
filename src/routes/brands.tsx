@@ -4,6 +4,7 @@ import { Award, ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
 import { useBrands } from "@/lib/brands-data";
+import { getBrandLogo } from "@/lib/brand-logos";
 
 
 
@@ -25,9 +26,9 @@ const innoHighlights = [
 
 function BrandsPage() {
   const { items: adminBrands } = useBrands();
-  const logoByName = new Map(adminBrands.filter((b) => b.logo).map((b) => [b.name.toLowerCase(), b.logo]));
-  const portfolioBrands = brands.map((b) => ({ ...b, logo: logoByName.get(b.name.toLowerCase()) }));
-  const innoLogo = logoByName.get("inno") || logoByName.get("inno instrument");
+  const logoByName = new Map(adminBrands.filter((b) => b.logo).map((b) => [b.name.toLowerCase(), b.logo as string]));
+  const portfolioBrands = brands.map((b) => ({ ...b, logo: logoByName.get(b.name.toLowerCase()) || getBrandLogo(b.name) }));
+  const innoLogo = logoByName.get("inno") || logoByName.get("inno instrument") || getBrandLogo("inno");
   return (
     <>
       <PageHero
@@ -101,18 +102,21 @@ function BrandsPage() {
               <h2 className="text-2xl md:text-4xl font-light text-foreground">Authorized Brand Logos</h2>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
-              {adminBrands.map((b) => (
-                <div key={b.id} className="bg-card border border-border p-4 md:p-6 flex flex-col items-center gap-3 hover:border-primary transition">
-                  {b.logo ? (
-                    <img src={b.logo} alt={`${b.name} logo`} className="h-16 md:h-20 w-full object-contain" />
-                  ) : (
-                    <div className="h-16 md:h-20 w-full grid place-items-center text-2xl md:text-3xl font-light text-primary bg-muted">
-                      {b.name.slice(0, 2).toUpperCase()}
-                    </div>
-                  )}
-                  <div className="text-sm md:text-base font-medium text-foreground text-center">{b.name}</div>
-                </div>
-              ))}
+              {adminBrands.map((b) => {
+                const logo = b.logo || getBrandLogo(b.name);
+                return (
+                  <div key={b.id} className="bg-card border border-border p-4 md:p-6 flex flex-col items-center gap-3 hover:border-primary transition">
+                    {logo ? (
+                      <img src={logo} alt={`${b.name} logo`} loading="lazy" className="h-16 md:h-20 w-full object-contain" />
+                    ) : (
+                      <div className="h-16 md:h-20 w-full grid place-items-center text-2xl md:text-3xl font-light text-primary bg-muted">
+                        {b.name.slice(0, 2).toUpperCase()}
+                      </div>
+                    )}
+                    <div className="text-sm md:text-base font-medium text-foreground text-center">{b.name}</div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
