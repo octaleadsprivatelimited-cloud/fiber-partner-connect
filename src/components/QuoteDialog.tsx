@@ -84,7 +84,7 @@ export function QuoteDialog({ trigger, productName }: { trigger: React.ReactNode
             <Label htmlFor="q-addr">Address</Label>
             <Textarea id="q-addr" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} maxLength={300} rows={2} required />
           </div>
-          <button type="submit" className="w-full bg-brand-red text-white font-bold py-2.5 hover:bg-brand-red-dark transition">
+          <button type="submit" className="btn-premium w-full">
             Send via WhatsApp
           </button>
         </form>

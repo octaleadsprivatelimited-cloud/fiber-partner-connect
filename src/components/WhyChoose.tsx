@@ -25,13 +25,15 @@ export function WhyChoose() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((it) => (
-            <div key={it.t} className="bg-brand-black p-8 group hover:bg-primary transition-colors cursor-default">
-              <it.icon className="h-8 w-8 text-primary group-hover:text-white mb-8 transition-colors" />
+            <div key={it.t} className="group relative p-8 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-primary/50 hover:bg-gradient-to-br hover:from-primary/15 hover:to-white/[0.04] transition-all duration-500 cursor-default backdrop-blur">
+              <div className="h-12 w-12 rounded-xl bg-primary/15 text-primary flex items-center justify-center mb-7 group-hover:bg-primary group-hover:text-white transition-colors">
+                <it.icon className="h-6 w-6" />
+              </div>
               <h3 className="font-bold text-xl md:text-2xl leading-tight mb-3">{it.t}</h3>
               <p className="text-sm text-white/65 group-hover:text-white/85 leading-relaxed mb-6">{it.d}</p>
-              <ArrowUpRight className="h-5 w-5 text-white/40 group-hover:text-white transition-colors" />
+              <ArrowUpRight className="h-5 w-5 text-white/40 group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
             </div>
           ))}
         </div>
