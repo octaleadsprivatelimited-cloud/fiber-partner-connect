@@ -69,7 +69,7 @@ export function Header() {
               href={whatsappLink()}
               target="_blank"
               rel="noreferrer"
-              className="btn-premium"
+              className="group inline-flex items-center gap-2 h-10 px-4 sm:px-5 rounded-md bg-brand-black text-white text-[13px] font-semibold tracking-tight border border-brand-black hover:bg-primary hover:border-primary transition-colors duration-200 shadow-sm"
             >
               <MessageCircle className="h-4 w-4" />
               <span className="hidden sm:inline">Get a Quote</span>
