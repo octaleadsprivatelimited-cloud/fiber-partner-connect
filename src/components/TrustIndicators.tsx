@@ -17,9 +17,9 @@ export function TrustIndicators() {
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-border">
           {stats.map((s) => (
-            <div key={s.label} className="bg-white p-5 md:p-8 flex flex-col justify-between min-h-[140px] md:min-h-[180px]">
-              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-brand-black leading-none whitespace-nowrap">{s.value}</div>
-              <div className="mt-4 text-[11px] md:text-sm text-muted-foreground font-medium uppercase tracking-wide">{s.label}</div>
+            <div key={s.label} className="bg-white p-4 sm:p-6 md:p-8 flex flex-col justify-between min-h-[120px] sm:min-h-[140px] md:min-h-[180px]">
+              <div className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-black text-brand-black leading-[1.05] break-words">{s.value}</div>
+              <div className="mt-3 md:mt-4 text-[10px] sm:text-[11px] md:text-sm text-muted-foreground font-medium uppercase tracking-wide">{s.label}</div>
             </div>
           ))}
         </div>
