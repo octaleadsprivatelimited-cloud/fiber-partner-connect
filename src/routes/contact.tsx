@@ -40,8 +40,8 @@ function ContactPage() {
         
       />
 
-      <section className="py-16">
-        <div className="mx-auto max-w-7xl container-px grid lg:grid-cols-[1fr_1.2fr] gap-12">
+      <section className="py-12 md:py-16 bg-background">
+        <div className="mx-auto max-w-[1920px] px-6 md:px-16 grid lg:grid-cols-[1fr_1.2fr] gap-12">
           <div className="space-y-6">
             <ContactRow icon={Phone} label="Phone" value={SITE.phone} href={`tel:${SITE.phoneRaw}`} />
             <ContactRow icon={Phone} label="Alt. Phone" value={SITE.phoneAlt} href={`tel:8688151526`} />
@@ -62,34 +62,34 @@ function ContactPage() {
           <div className="bg-white border border-border p-7">
             <h2 className="text-2xl font-black text-brand-black">Send a message</h2>
             {sent ? (
-              <div className="mt-6 bg-brand-red/10 border border-brand-red p-5 flex items-start gap-3">
-                <CheckCircle2 className="h-5 w-5 text-brand-red shrink-0 mt-0.5" />
-                <div><div className="font-bold text-brand-red">Message sent</div><div className="text-sm text-muted-foreground">We'll get back to you shortly.</div></div>
+              <div className="mt-6 bg-accent border border-primary p-5 flex items-start gap-3">
+                <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                <div><div className="font-medium text-primary">Message sent</div><div className="text-sm text-muted-foreground">We'll get back to you shortly.</div></div>
               </div>
             ) : (
               <form onSubmit={handleSubmit(onSubmit)} className="mt-5 grid sm:grid-cols-2 gap-4">
                 <Field label="Name" error={errors.name?.message}>
-                  <input {...register("name", { required: "Required", maxLength: 100 })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+                  <input {...register("name", { required: "Required", maxLength: 100 })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-primary" />
                 </Field>
                 <Field label="Phone" error={errors.phone?.message}>
-                  <input {...register("phone", { required: "Required" })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+                  <input {...register("phone", { required: "Required" })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-primary" />
                 </Field>
                 <div className="sm:col-span-2">
                   <Field label="Email" error={errors.email?.message}>
-                    <input {...register("email", { required: "Required", pattern: { value: /^\S+@\S+\.\S+$/, message: "Invalid email" } })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+                    <input {...register("email", { required: "Required", pattern: { value: /^\S+@\S+\.\S+$/, message: "Invalid email" } })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-primary" />
                   </Field>
                 </div>
                 <div className="sm:col-span-2">
                   <Field label="Subject" error={errors.subject?.message}>
-                    <input {...register("subject", { required: "Required", maxLength: 150 })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+                    <input {...register("subject", { required: "Required", maxLength: 150 })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-primary" />
                   </Field>
                 </div>
                 <div className="sm:col-span-2">
                   <Field label="Message" error={errors.message?.message}>
-                    <textarea rows={5} {...register("message", { required: "Required", maxLength: { value: 1000, message: "Max 1000 chars" } })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+                    <textarea rows={5} {...register("message", { required: "Required", maxLength: { value: 1000, message: "Max 1000 chars" } })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-primary" />
                   </Field>
                 </div>
-                <button type="submit" className="sm:col-span-2 bg-brand-red text-white font-bold py-3 hover:bg-brand-red-dark transition">Send Message</button>
+                <button type="submit" className="sm:col-span-2 bg-primary text-primary-foreground font-normal py-3 hover:bg-brand-red-dark transition">Send Message</button>
               </form>
             )}
           </div>
@@ -101,11 +101,11 @@ function ContactPage() {
 
 function ContactRow({ icon: Icon, label, value, href, accent }: { icon: any; label: string; value: string; href?: string; accent?: boolean }) {
   const inner = (
-    <div className={`flex items-start gap-4 p-5 border ${accent ? "bg-brand-red text-white border-brand-red" : "bg-white border-border hover:border-brand-red"} transition`}>
+    <div className={`flex items-start gap-4 p-5 border ${accent ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border hover:border-primary"} transition`}>
       <Icon className="h-6 w-6 shrink-0 mt-0.5" />
       <div>
-        <div className={`text-xs font-bold tracking-[0.2em] uppercase ${accent ? "text-white/80" : "text-brand-red"}`}>{label}</div>
-        <div className="font-bold mt-0.5">{value}</div>
+        <div className={`text-xs font-normal ${accent ? "text-primary-foreground/80" : "text-primary"}`}>{label}</div>
+        <div className="font-medium mt-0.5">{value}</div>
       </div>
     </div>
   );
@@ -115,9 +115,9 @@ function ContactRow({ icon: Icon, label, value, href, accent }: { icon: any; lab
 function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-xs font-bold uppercase tracking-wider text-brand-black">{label}</span>
+      <span className="text-xs font-medium text-foreground">{label}</span>
       <div className="mt-1.5">{children}</div>
-      {error && <span className="text-xs text-brand-red mt-1 block">{error}</span>}
+      {error && <span className="text-xs text-destructive mt-1 block">{error}</span>}
     </label>
   );
 }

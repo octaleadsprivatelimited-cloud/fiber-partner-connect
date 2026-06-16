@@ -36,8 +36,8 @@ function ServicesPage() {
         
       />
 
-      <section className="py-12 md:py-20">
-        <div className="mx-auto max-w-7xl container-px">
+      <section className="py-12 md:py-16 bg-background">
+        <div className="mx-auto max-w-[1920px] px-6 md:px-16">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {services.map((s, i) => (
               <motion.div
@@ -46,12 +46,12 @@ function ServicesPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="bg-white border border-border p-7 hover:border-brand-red transition group"
+                className="bg-card border border-border p-7 hover:border-primary transition group"
               >
-                <div className="h-12 w-12 bg-brand-red text-white flex items-center justify-center mb-4 group-hover:bg-brand-black transition">
+                <div className="h-12 w-12 bg-accent text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition">
                   <s.icon className="h-6 w-6" />
                 </div>
-                <h3 className="text-lg font-bold text-brand-black">{s.t}</h3>
+                <h3 className="text-lg font-normal text-foreground">{s.t}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
               </motion.div>
             ))}
@@ -59,42 +59,42 @@ function ServicesPage() {
         </div>
       </section>
 
-      <section className="py-12 md:py-20 bg-muted/30">
-        <div className="mx-auto max-w-7xl container-px grid lg:grid-cols-2 gap-12 items-start">
+      <section className="py-12 md:py-16 bg-muted border-y border-border">
+        <div className="mx-auto max-w-[1920px] px-6 md:px-16 grid lg:grid-cols-2 gap-12 items-start">
           <div>
-            <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">COVERAGE</div>
-            <h2 className="text-3xl md:text-5xl font-black text-brand-black">Service across Andhra Pradesh & Telangana</h2>
+            <div className="text-sm font-normal text-muted-foreground mb-3">Coverage</div>
+            <h2 className="text-3xl md:text-5xl font-light text-foreground">Service across Andhra Pradesh & Telangana</h2>
             <p className="mt-4 text-muted-foreground">Our authorized service network reaches every major city and industrial hub. Typical turnaround: 48 hours for diagnosis, same-week resolution.</p>
             <div className="mt-6 grid grid-cols-2 gap-3">
               {["Hyderabad", "Vijayawada", "Visakhapatnam", "Warangal", "Guntur", "Tirupati", "Nellore", "Kakinada"].map((c) => (
-                <div key={c} className="bg-white border-l-4 border-brand-red px-4 py-3 font-semibold text-sm">{c}</div>
+                <div key={c} className="bg-card border-l-4 border-primary px-4 py-3 font-normal text-sm">{c}</div>
               ))}
             </div>
           </div>
 
-          <div className="bg-white p-7 border border-border">
-            <h3 className="text-2xl font-black text-brand-black">Book a Service</h3>
+          <div className="bg-card p-7 border border-border">
+            <h3 className="text-2xl font-light text-foreground">Book a Service</h3>
             <p className="text-sm text-muted-foreground mt-1">Tell us about your equipment — we'll get back within hours.</p>
             {sent ? (
-              <div className="mt-6 bg-brand-red/10 border border-brand-red p-5 flex items-start gap-3">
-                <CheckCircle2 className="h-5 w-5 text-brand-red shrink-0 mt-0.5" />
-                <div><div className="font-bold text-brand-red">Request received</div><div className="text-sm text-muted-foreground">Our team will contact you shortly.</div></div>
+              <div className="mt-6 bg-accent border border-primary p-5 flex items-start gap-3">
+                <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                <div><div className="font-medium text-primary">Request received</div><div className="text-sm text-muted-foreground">Our team will contact you shortly.</div></div>
               </div>
             ) : (
               <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-4">
                 <Field label="Your name" error={errors.name?.message}>
-                  <input {...register("name", { required: "Required" })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+                  <input {...register("name", { required: "Required" })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-primary" />
                 </Field>
                 <Field label="Phone" error={errors.phone?.message}>
-                  <input {...register("phone", { required: "Required", pattern: { value: /^[0-9+\s-]{8,}$/, message: "Invalid phone" } })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+                  <input {...register("phone", { required: "Required", pattern: { value: /^[0-9+\s-]{8,}$/, message: "Invalid phone" } })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-primary" />
                 </Field>
                 <Field label="Equipment (brand + model)" error={errors.equipment?.message}>
-                  <input {...register("equipment", { required: "Required" })} placeholder="e.g. INNO View 7" className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+                  <input {...register("equipment", { required: "Required" })} placeholder="e.g. INNO View 7" className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-primary" />
                 </Field>
                 <Field label="Issue / service required" error={errors.issue?.message}>
-                  <textarea rows={3} {...register("issue", { required: "Required", maxLength: { value: 1000, message: "Max 1000 chars" } })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red" />
+                  <textarea rows={3} {...register("issue", { required: "Required", maxLength: { value: 1000, message: "Max 1000 chars" } })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-primary" />
                 </Field>
-                <button type="submit" className="w-full bg-brand-red text-white font-bold py-3 hover:bg-brand-red-dark transition">Submit Request</button>
+                <button type="submit" className="w-full bg-primary text-primary-foreground font-normal py-3 hover:bg-brand-red-dark transition">Submit Request</button>
               </form>
             )}
           </div>
@@ -108,9 +108,9 @@ function ServicesPage() {
 function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="text-xs font-bold uppercase tracking-wider text-brand-black">{label}</span>
+      <span className="text-xs font-medium text-foreground">{label}</span>
       <div className="mt-1.5">{children}</div>
-      {error && <span className="text-xs text-brand-red mt-1 block">{error}</span>}
+      {error && <span className="text-xs text-destructive mt-1 block">{error}</span>}
     </label>
   );
 }
