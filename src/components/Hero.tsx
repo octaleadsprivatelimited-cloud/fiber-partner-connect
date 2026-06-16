@@ -35,10 +35,11 @@ export function Hero() {
     <section className="relative bg-brand-black text-white overflow-hidden">
       {/* full-bleed visual */}
       <div className="absolute inset-0">
-        <video className="absolute inset-0 h-full w-full object-cover opacity-70" autoPlay muted loop playsInline poster={heroPoster}>
+        <video className="absolute inset-0 h-full w-full object-cover" autoPlay muted loop playsInline poster={heroPoster}>
           <source src={heroVideo} type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/80 to-brand-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-black/80 via-brand-black/45 to-brand-black/5" />
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-black/50 via-transparent to-transparent" />
       </div>
 
       <div className="relative mx-auto max-w-7xl container-px py-20 md:py-36 lg:py-44">
