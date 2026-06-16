@@ -38,15 +38,15 @@ function BrandsPage() {
       />
 
       {/* INNO featured */}
-      <section className="py-10 md:py-24 relative overflow-hidden">
-        <div className="relative mx-auto max-w-7xl container-px grid lg:grid-cols-5 gap-10 items-center">
+      <section className="py-12 md:py-20 relative overflow-hidden bg-background">
+        <div className="relative mx-auto max-w-[1920px] px-6 md:px-16 grid lg:grid-cols-5 gap-10 items-center">
           <div className="lg:col-span-3">
-            <div className="inline-flex items-center gap-2 bg-brand-red text-white px-3 py-1.5 mb-5 text-[11px] font-bold tracking-[0.2em] rounded-full">
+            <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-3 py-1.5 mb-5 text-sm font-normal">
               <Award className="h-3.5 w-3.5" /> AUTHORIZED DISTRIBUTOR
             </div>
-            <h2 className="text-4xl md:text-6xl font-black leading-tight text-brand-black">
+            <h2 className="text-4xl md:text-6xl font-light leading-tight text-foreground">
               INNO Instrument
-              <span className="block text-brand-red text-lg md:text-xl font-bold tracking-[0.2em] mt-3">
+              <span className="block text-primary text-lg md:text-xl font-normal mt-3">
                 AP & TELANGANA · SALES + SERVICE
               </span>
             </h2>
@@ -56,15 +56,15 @@ function BrandsPage() {
             <ul className="mt-7 grid sm:grid-cols-2 gap-3">
               {innoHighlights.map((h) => (
                 <li key={h} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                  <CheckCircle2 className="h-4 w-4 text-brand-red shrink-0 mt-0.5" /> {h}
+                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" /> {h}
                 </li>
               ))}
             </ul>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/products" className="inline-flex items-center gap-2 bg-brand-red text-white px-6 py-3 font-bold rounded-md hover:bg-brand-red-dark transition">
+              <Link to="/products" className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 font-normal hover:bg-brand-red-dark transition">
                 Shop INNO Products <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link to="/services" className="inline-flex items-center gap-2 border border-border px-6 py-3 font-bold rounded-md hover:bg-muted transition text-brand-black">
+              <Link to="/services" className="inline-flex items-center gap-2 border border-border px-6 py-3 font-normal hover:bg-accent hover:border-primary transition text-foreground">
                 Service & Repair
               </Link>
             </div>
@@ -72,11 +72,11 @@ function BrandsPage() {
 
           {/* Stat card */}
           <div className="lg:col-span-2">
-            <div className="relative rounded-2xl bg-white border border-border p-8 shadow-sm">
+            <div className="relative bg-card border border-border p-8">
               {innoLogo ? (
                 <img src={innoLogo} alt="INNO Instrument logo" className="h-24 md:h-28 w-full object-contain object-left" />
               ) : (
-                <div className="text-7xl md:text-8xl font-black tracking-tight text-brand-black">INNO</div>
+                <div className="text-7xl md:text-8xl font-light text-foreground">INNO</div>
               )}
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <StatLight label="Years partnered" value="2+" />
