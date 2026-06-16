@@ -40,7 +40,7 @@ export function Footer() {
     <footer className="relative bg-gradient-to-b from-[#0b1424] via-brand-black to-[#070b14] text-white overflow-hidden">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
       <div className="absolute -top-32 left-1/3 h-72 w-72 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
-      <div className="mx-auto max-w-7xl container-px pt-16 md:pt-20 pb-8">
+      <div className="relative mx-auto max-w-7xl container-px pt-16 md:pt-20 pb-8">
         {/* top row: brand + columns */}
         <div className="grid gap-12 md:gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
