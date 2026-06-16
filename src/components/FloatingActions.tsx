@@ -1,4 +1,4 @@
-import { Mail, Instagram, Youtube, Facebook } from "lucide-react";
+import { Instagram } from "lucide-react";
 import { SITE, whatsappLink } from "@/lib/site";
 
 // Official WhatsApp glyph (from WhatsApp brand assets)
@@ -19,7 +19,7 @@ function PhoneIcon({ className = "h-6 w-6" }: { className?: string }) {
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
       <path
         fill="currentColor"
-        d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.02l-2.21 2.2z"
+        d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1 1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.02l-2.21 2.2z"
       />
     </svg>
   );
@@ -55,27 +55,18 @@ export function FloatingActions() {
         </span>
       </a>
       <a
-        href={`mailto:${SITE.email}`}
-        aria-label="Email Us"
-        title="Email Us"
-        className="group relative h-10 w-10 md:h-11 md:w-11 rounded-full bg-brand-red text-white shadow-lg shadow-black/20 flex items-center justify-center hover:scale-110 transition-transform"
+        href="https://www.instagram.com/satya_power_technologys?igsh=NG1hdmZqYWIxZndn"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Instagram"
+        title="Instagram"
+        className="group relative h-10 w-10 md:h-11 md:w-11 rounded-full bg-gradient-to-br from-[#f09433] via-[#dc2743] to-[#bc1888] text-white shadow-lg shadow-black/20 flex items-center justify-center hover:scale-110 transition-transform"
       >
-        <Mail className="h-5 w-5" />
+        <Instagram className="h-5 w-5" />
         <span className="absolute right-full mr-3 whitespace-nowrap rounded-md bg-brand-black text-white text-xs font-bold px-3 py-1.5 opacity-0 group-hover:opacity-100 pointer-events-none transition">
-          Email Us
+          Instagram
         </span>
       </a>
-      <div className="mt-1 flex flex-col gap-2 items-center">
-        <a href="https://www.instagram.com/satya_power_technologys?igsh=NG1hdmZqYWIxZndn" target="_blank" rel="noreferrer" aria-label="Instagram" className="h-9 w-9 rounded-full bg-white border border-border text-brand-black flex items-center justify-center hover:bg-brand-red hover:text-white hover:border-brand-red transition">
-          <Instagram className="h-4 w-4" />
-        </a>
-        <a href="https://youtube.com/@satyapowertechnologys?si=gHQ1dsrUEQWk_wRg" target="_blank" rel="noreferrer" aria-label="YouTube" className="h-9 w-9 rounded-full bg-white border border-border text-brand-black flex items-center justify-center hover:bg-brand-red hover:text-white hover:border-brand-red transition">
-          <Youtube className="h-4 w-4" />
-        </a>
-        <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="h-9 w-9 rounded-full bg-white border border-border text-brand-black flex items-center justify-center hover:bg-brand-red hover:text-white hover:border-brand-red transition">
-          <Facebook className="h-4 w-4" />
-        </a>
-      </div>
     </div>
   );
 }
