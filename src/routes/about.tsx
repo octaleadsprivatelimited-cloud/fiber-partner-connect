@@ -3,7 +3,7 @@ import { Award, Target, Users, Quote, MapPin, Calendar } from "lucide-react";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
 import { SITE } from "@/lib/site";
-import bgAbout from "@/assets/bg-about.jpg";
+
 
 
 const timeline = [
@@ -26,7 +26,7 @@ function AboutPage() {
         eyebrow="OUR STORY"
         title="Built on trust. Backed by service."
         description={SITE.tagline}
-        bgImage={bgAbout}
+        
       />
 
       {/* Mission / Vision / People */}

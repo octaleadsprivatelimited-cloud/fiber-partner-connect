@@ -6,7 +6,7 @@ import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
 import { submitInquiry } from "@/lib/admin-data";
 import { loadServices, ICONS } from "@/lib/services-data";
-import bgServices from "@/assets/bg-services.jpg";
+
 
 
 interface Form { name: string; phone: string; equipment: string; issue: string; }
@@ -33,7 +33,7 @@ function ServicesPage() {
         eyebrow="OUR DIFFERENTIATOR"
         title={<>We Don't Just Sell — <span className="text-primary">We Service.</span></>}
         description="Competitors stop at the sale. We go further — providing authorized repair, calibration and on-site support for every product we deliver."
-        bgImage={bgServices}
+        
       />
 
       <section className="py-12 md:py-20">

@@ -5,7 +5,7 @@ import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
 import { CATEGORIES, BRANDS } from "@/lib/products";
 import { useProducts } from "@/lib/admin-data";
-import bgProducts from "@/assets/bg-products.jpg";
+
 
 
 function ProductsPage() {
@@ -29,7 +29,7 @@ function ProductsPage() {
         eyebrow="CATALOGUE"
         title="All Products"
         description="Browse our full range of fiber optic equipment and accessories. Tap any product for a WhatsApp quote."
-        bgImage={bgProducts}
+        
       />
 
       <section className="py-12">

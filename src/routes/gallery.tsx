@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ImageIcon } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { useGallery, GALLERY_CATEGORIES, type GalleryItem } from "@/lib/gallery-data";
-import bgAbout from "@/assets/bg-about.jpg";
+
 
 function GalleryPage() {
   const { items, loading } = useGallery();
@@ -24,7 +24,7 @@ function GalleryPage() {
         eyebrow="OUR WORK"
         title="Gallery"
         description="Photos from our service center, field installations, training sessions and events across AP & Telangana."
-        bgImage={bgAbout}
+        
       />
 
       <section className="py-12">

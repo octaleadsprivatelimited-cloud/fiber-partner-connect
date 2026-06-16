@@ -4,7 +4,7 @@ import { Award, ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
 import { useBrands } from "@/lib/brands-data";
-import bgBrands from "@/assets/bg-brands.jpg";
+
 
 
 const brands = [
@@ -34,7 +34,7 @@ function BrandsPage() {
         eyebrow="OUR PARTNERS"
         title="Brands We Represent"
         description="Genuine equipment from the world's most trusted fiber optic manufacturers."
-        bgImage={bgBrands}
+        
       />
 
       {/* INNO featured */}
