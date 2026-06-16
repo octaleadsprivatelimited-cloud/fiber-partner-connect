@@ -94,11 +94,12 @@ export function Header() {
               transition={{ duration: 0.25, ease: "easeInOut" }}
             />
             <motion.div
-              className="lg:hidden fixed left-0 right-0 top-16 bottom-0 bg-white z-40 overflow-y-auto"
+              className="lg:hidden fixed right-0 top-16 bottom-0 w-full max-w-[320px] bg-white z-50 overflow-y-auto shadow-2xl"
               initial={{ x: "100%", opacity: 0.5 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0.5 }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
             >
               <div className="mx-auto max-w-7xl container-px flex flex-col py-2">
                 {nav.map((n, i) => (
