@@ -1,6 +1,7 @@
 import { NavLink, Link } from "react-router-dom";
 import { Phone, MessageCircle, Menu, X, Search, ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Logo } from "./Logo";
 import { SITE, whatsappLink } from "@/lib/site";
 
