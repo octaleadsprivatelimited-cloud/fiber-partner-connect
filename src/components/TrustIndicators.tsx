@@ -1,7 +1,7 @@
 const stats = [
   { value: "15+", label: "Years experience" },
   { value: "10K+", label: "Customers served" },
-  { value: "PAN India", label: "Sales & service" },
+  { value: "Pan-India", label: "Sales & service" },
   { value: "24/7", label: "Support" },
 ];
 
