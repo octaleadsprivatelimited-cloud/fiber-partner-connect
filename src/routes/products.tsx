@@ -1,15 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
-import { PRODUCTS, CATEGORIES, BRANDS } from "@/lib/products";
+import { CATEGORIES, BRANDS } from "@/lib/products";
+import { useProducts } from "@/lib/admin-data";
 import bgProducts from "@/assets/bg-products.jpg";
 
 
 function ProductsPage() {
-  const [cat, setCat] = useState<string>("All");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { products } = useProducts();
+  const [cat, setCatState] = useState<string>(searchParams.get("category") || "All");
   const [brand, setBrand] = useState<string>("All");
-  const filtered = PRODUCTS.filter((p) =>
+  useEffect(() => {
+    setCatState(searchParams.get("category") || "All");
+  }, [searchParams]);
+  const setCat = (value: string) => {
+    setCatState(value);
+    setSearchParams(value === "All" ? {} : { category: value });
+  };
+  const filtered = products.filter((p) =>
     (cat === "All" || p.category === cat) && (brand === "All" || p.brand === brand)
   );
   return (

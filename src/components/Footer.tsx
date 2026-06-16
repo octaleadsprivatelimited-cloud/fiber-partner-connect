@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Linkedin, Facebook, Instagram, Youtube } from "lucide-react";
+import { Phone, Mail, MapPin, Linkedin, Facebook, Instagram, Youtube, ChevronDown } from "lucide-react";
+import { useState } from "react";
 import { Logo } from "./Logo";
 import { SITE } from "@/lib/site";
 
@@ -33,6 +34,8 @@ const COLUMNS: { title: string; links: { to: string; label: string }[] }[] = [
 ];
 
 export function Footer() {
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+
   return (
     <footer className="bg-brand-black text-white">
       <div className="mx-auto max-w-7xl container-px pt-16 md:pt-20 pb-8">
@@ -52,11 +55,19 @@ export function Footer() {
 
           {COLUMNS.map((c) => (
             <div key={c.title} className="md:col-span-2">
-              <h4 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/50 mb-5">{c.title}</h4>
-              <ul className="space-y-3 text-sm text-white/85">
+              <button
+                type="button"
+                onClick={() => setOpenMenu((current) => current === c.title ? null : c.title)}
+                className="mb-3 flex w-full items-center justify-between gap-3 text-left text-[11px] font-bold uppercase tracking-[0.18em] text-white/50 hover:text-white transition"
+                aria-expanded={openMenu === c.title}
+              >
+                {c.title}
+                <ChevronDown className={`h-4 w-4 transition ${openMenu === c.title ? "rotate-180" : ""}`} />
+              </button>
+              <ul className={`${openMenu === c.title ? "grid" : "hidden"} space-y-3 text-sm text-white/85 pb-4`}>
                 {c.links.map((l) => (
                   <li key={l.label}>
-                    <Link to={l.to} className="hover:text-primary transition-colors">{l.label}</Link>
+                    <Link to={l.to} onClick={() => setOpenMenu(null)} className="hover:text-primary transition-colors">{l.label}</Link>
                   </li>
                 ))}
               </ul>

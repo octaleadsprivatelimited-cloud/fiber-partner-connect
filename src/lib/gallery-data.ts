@@ -57,7 +57,9 @@ export function useGallery() {
         unsub = onSnapshot(
           q,
           (snap) => {
-            setRemote(snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) })));
+            const list = snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) })) as GalleryItem[];
+            setRemote(list);
+            if (list.length) writeLocal(list);
             setLoading(false);
           },
           (e) => { console.warn("Gallery read failed:", e); setLoading(false); },
@@ -70,7 +72,8 @@ export function useGallery() {
     };
   }, []);
 
-  const items: GalleryItem[] = [...remote, ...local];
+  const remoteKeys = new Set(remote.map((i) => `${i.title}|${i.image}`));
+  const items: GalleryItem[] = [...remote, ...local.filter((i) => !remoteKeys.has(`${i.title}|${i.image}`))];
 
   const add = useCallback(async (data: { title: string; category?: string; file: File }) => {
     // Compress aggressively — Firestore document limit is ~1MB.
@@ -82,16 +85,17 @@ export function useGallery() {
       compressed = await compressImage(data.file, { maxSize: 800, quality: 0.6 });
     }
 
+    const item: GalleryItem = {
+      id: `local-${Date.now()}`,
+      title: data.title,
+      category: data.category,
+      image: compressed,
+      createdAt: Date.now(),
+    };
+    writeLocal([item, ...readLocal()]);
+
     const fb = getFirebase();
     if (!fb || !isFirebaseConfigured()) {
-      const item: GalleryItem = {
-        id: `local-${Date.now()}`,
-        title: data.title,
-        category: data.category,
-        image: compressed,
-        createdAt: Date.now(),
-      };
-      writeLocal([item, ...readLocal()]);
       return;
     }
     try {
@@ -103,14 +107,6 @@ export function useGallery() {
       });
     } catch (e: any) {
       console.warn("Gallery save failed, saving locally:", e);
-      const item: GalleryItem = {
-        id: `local-${Date.now()}`,
-        title: data.title,
-        category: data.category,
-        image: compressed,
-        createdAt: Date.now(),
-      };
-      writeLocal([item, ...readLocal()]);
       // Re-throw so the UI can show a toast (e.g. Firestore permission denied).
       throw new Error(
         e?.code === "permission-denied"
