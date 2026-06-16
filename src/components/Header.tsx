@@ -104,8 +104,8 @@ export function Header() {
                 {nav.map((n, i) => (
                   <motion.div
                     key={n.to}
-                    initial={{ x: 30, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: i * 0.05, duration: 0.35, ease: "easeOut" }}
                   >
                     <Link
