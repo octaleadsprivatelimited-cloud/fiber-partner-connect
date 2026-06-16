@@ -43,7 +43,7 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
         <QuoteDialog
           productName={p.name}
           trigger={
-            <button type="button" className="mt-4 inline-flex items-center gap-1 self-start text-sm font-normal text-primary hover:text-brand-red-dark group/btn">
+            <button type="button" className="mt-4 inline-flex items-center gap-1 self-start text-sm font-normal bg-yellow-500 text-black px-3 py-1.5 hover:bg-yellow-400 group/btn">
               Get a quote
               <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 group-hover/btn:translate-x-1 transition-transform" />
             </button>
