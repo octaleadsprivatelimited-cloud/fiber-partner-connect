@@ -1,18 +1,8 @@
 import { NavLink, Link } from "react-router-dom";
 import { Phone, MessageCircle, Menu, X, Search, ChevronDown } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
 import { SITE, whatsappLink } from "@/lib/site";
-
-const PRODUCT_MENU = [
-  { label: "Fusion Splicers", to: "/products?category=Fusion%20Splicers" },
-  { label: "OTDR", to: "/products?category=OTDR" },
-  { label: "Power Meters", to: "/products?category=Power%20Meters" },
-  { label: "Cleavers", to: "/products?category=Cleavers" },
-  { label: "Visual Fault Locators", to: "/products?category=Visual%20Fault%20Locators" },
-  { label: "Cleaning Kits", to: "/products?category=Cleaning%20Kits" },
-  { label: "Spare Parts & Service", to: "/services" },
-];
 
 const nav = [
   { to: "/", label: "Home" },
@@ -26,8 +16,6 @@ const nav = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [productsOpen, setProductsOpen] = useState(false);
-  const productsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (open) {
@@ -37,13 +25,6 @@ export function Header() {
     }
   }, [open]);
 
-  useEffect(() => {
-    const close = (event: MouseEvent) => {
-      if (!productsRef.current?.contains(event.target as Node)) setProductsOpen(false);
-    };
-    document.addEventListener("mousedown", close);
-    return () => document.removeEventListener("mousedown", close);
-  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-white">
