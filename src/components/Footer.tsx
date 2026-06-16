@@ -25,9 +25,9 @@ const COLUMNS: { title: string; links: { to: string; label: string }[] }[] = [
   {
     title: "Categories",
     links: [
-      { to: "/products", label: "Fusion Splicers" },
-      { to: "/products", label: "OTDR & Power Meters" },
-      { to: "/products", label: "Cleavers & VFL" },
+      { to: "/products?category=Fusion%20Splicers", label: "Fusion Splicers" },
+      { to: "/products?category=OTDR", label: "OTDR & Power Meters" },
+      { to: "/products?category=Cleavers", label: "Cleavers & VFL" },
       { to: "/services", label: "Spare Parts & Service" },
     ],
   },
@@ -37,7 +37,9 @@ export function Footer() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   return (
-    <footer className="bg-brand-black text-white">
+    <footer className="relative bg-gradient-to-b from-[#0b1424] via-brand-black to-[#070b14] text-white overflow-hidden">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+      <div className="absolute -top-32 left-1/3 h-72 w-72 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
       <div className="mx-auto max-w-7xl container-px pt-16 md:pt-20 pb-8">
         {/* top row: brand + columns */}
         <div className="grid gap-12 md:gap-10 md:grid-cols-12">
@@ -64,10 +66,10 @@ export function Footer() {
                 {c.title}
                 <ChevronDown className={`h-4 w-4 transition ${openMenu === c.title ? "rotate-180" : ""}`} />
               </button>
-              <ul className={`${openMenu === c.title ? "grid" : "hidden"} space-y-3 text-sm text-white/85 pb-4`}>
+              <ul className={`${openMenu === c.title ? "flex" : "hidden"} flex-col gap-3 text-sm text-white/85 pb-4 pl-1`}>
                 {c.links.map((l) => (
                   <li key={l.label}>
-                    <Link to={l.to} onClick={() => setOpenMenu(null)} className="hover:text-primary transition-colors">{l.label}</Link>
+                    <Link to={l.to} onClick={() => setOpenMenu(null)} className="inline-flex items-center gap-1.5 hover:text-primary hover:translate-x-0.5 transition-all">{l.label}</Link>
                   </li>
                 ))}
               </ul>
