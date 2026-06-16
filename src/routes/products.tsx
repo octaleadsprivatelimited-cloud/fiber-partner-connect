@@ -49,20 +49,6 @@ function ProductsPage() {
                 ))}
               </div>
             </div>
-            <div>
-              <h3 className="font-medium text-sm mb-3 text-foreground">Brand</h3>
-              <div className="flex flex-wrap lg:flex-col gap-2">
-                {["All", ...BRANDS].map((b) => (
-                  <button
-                    key={b}
-                    onClick={() => setBrand(b)}
-                    className={`text-left text-sm px-3 py-2 border transition ${brand === b ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border hover:border-primary hover:text-primary"}`}
-                  >
-                    {b}
-                  </button>
-                ))}
-              </div>
-            </div>
           </aside>
 
           <div>
