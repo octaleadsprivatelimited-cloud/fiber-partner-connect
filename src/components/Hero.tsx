@@ -57,7 +57,7 @@ export function Hero() {
             </h1>
             <p className="mt-7 text-base md:text-xl text-white/70 max-w-2xl leading-relaxed">{s.body}</p>
 
-            <div className="mt-10 flex flex-wrap gap-4 items-center">
+            <div className="mt-10 flex gap-3 items-center">
               <Link to="/products" className="group btn-premium">
                 Explore Products
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
