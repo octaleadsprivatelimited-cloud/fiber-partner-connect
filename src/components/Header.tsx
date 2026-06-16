@@ -93,10 +93,10 @@ export function Header() {
               transition={{ duration: 0.25, ease: "easeInOut" }}
             />
             <motion.div
-              className="lg:hidden fixed right-0 top-[52px] bottom-0 w-full max-w-[320px] bg-card z-50 overflow-y-auto shadow-2xl"
-              initial={{ x: "100%", opacity: 0.5 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: "100%", opacity: 0.5 }}
+              className="lg:hidden fixed left-0 right-0 top-[52px] bg-card z-50 overflow-y-auto shadow-2xl border-b border-border"
+              initial={{ y: "-100%", opacity: 0.5 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: "-100%", opacity: 0.5 }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -104,8 +104,8 @@ export function Header() {
                 {nav.map((n, i) => (
                   <motion.div
                     key={n.to}
-                    initial={{ x: 30, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: i * 0.05, duration: 0.35, ease: "easeOut" }}
                   >
                     <Link
@@ -121,8 +121,8 @@ export function Header() {
                 <motion.a
                   href={`tel:${SITE.phoneRaw}`}
                   className="py-4 text-sm font-normal text-primary"
-                  initial={{ x: 30, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: nav.length * 0.05, duration: 0.35, ease: "easeOut" }}
                 >
                   <Headphones className="inline h-4 w-4 mr-2" />{SITE.phone}
