@@ -82,25 +82,56 @@ export function Header() {
         </div>
       </div>
 
-      {open && (
-        <>
-          <div className="lg:hidden fixed inset-0 top-16 bg-black/40 z-40" onClick={() => setOpen(false)} />
-          <div className="lg:hidden fixed left-0 right-0 top-16 bottom-0 bg-white z-40 overflow-y-auto">
-            <div className="mx-auto max-w-7xl container-px flex flex-col py-2">
-              {nav.map((n) => (
-                <Link key={n.to} to={n.to} onClick={() => setOpen(false)}
-                  className="py-4 text-sm font-semibold uppercase tracking-wide text-brand-black border-b border-border last:border-0 flex items-center justify-between">
-                  {n.label}
-                  <ChevronDown className="h-4 w-4 -rotate-90 opacity-50" />
-                </Link>
-              ))}
-              <a href={`tel:${SITE.phoneRaw}`} className="py-4 text-sm font-semibold text-primary">
-                <Phone className="inline h-4 w-4 mr-2" />{SITE.phone}
-              </a>
-            </div>
-          </div>
-        </>
-      )}
+      <AnimatePresence>
+        {open && (
+          <>
+            <motion.div
+              className="lg:hidden fixed inset-0 top-16 bg-black/40 z-40"
+              onClick={() => setOpen(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="lg:hidden fixed left-0 right-0 top-16 bottom-0 bg-white z-40 overflow-y-auto"
+              initial={{ x: "100%", opacity: 0.5 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: "100%", opacity: 0.5 }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            >
+              <div className="mx-auto max-w-7xl container-px flex flex-col py-2">
+                {nav.map((n, i) => (
+                  <motion.div
+                    key={n.to}
+                    initial={{ x: 30, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: i * 0.05, duration: 0.35, ease: "easeOut" }}
+                  >
+                    <Link
+                      to={n.to}
+                      onClick={() => setOpen(false)}
+                      className="py-4 text-sm font-semibold uppercase tracking-wide text-brand-black border-b border-border last:border-0 flex items-center justify-between"
+                    >
+                      {n.label}
+                      <ChevronDown className="h-4 w-4 -rotate-90 opacity-50" />
+                    </Link>
+                  </motion.div>
+                ))}
+                <motion.a
+                  href={`tel:${SITE.phoneRaw}`}
+                  className="py-4 text-sm font-semibold text-primary"
+                  initial={{ x: 30, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: nav.length * 0.05, duration: 0.35, ease: "easeOut" }}
+                >
+                  <Phone className="inline h-4 w-4 mr-2" />{SITE.phone}
+                </motion.a>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
