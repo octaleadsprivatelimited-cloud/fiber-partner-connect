@@ -59,8 +59,8 @@ function ContactPage() {
             </div>
           </div>
 
-          <div className="bg-white border border-border p-7">
-            <h2 className="text-2xl font-black text-brand-black">Send a message</h2>
+          <div className="bg-card border border-border p-7">
+            <h2 className="text-2xl font-light text-foreground">Send a message</h2>
             {sent ? (
               <div className="mt-6 bg-accent border border-primary p-5 flex items-start gap-3">
                 <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
