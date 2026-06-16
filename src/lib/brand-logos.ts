@@ -8,6 +8,7 @@ import fujikura from "@/assets/brands/fujikura.png";
 import fiberfox from "@/assets/brands/fiberfox.png";
 import claron from "@/assets/brands/claron.png";
 import skl from "@/assets/brands/skl.png";
+import satya from "@/assets/brands/satya.png";
 
 export const BRAND_LOGOS: Record<string, string> = {
   inno,
@@ -23,6 +24,10 @@ export const BRAND_LOGOS: Record<string, string> = {
   fiberfox,
   claron,
   skl,
+  satya,
+  "satya power": satya,
+  "satya power technologys": satya,
+  "satya power technologies": satya,
 };
 
 export function getBrandLogo(name: string | undefined): string | undefined {
