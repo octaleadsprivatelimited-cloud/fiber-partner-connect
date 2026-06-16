@@ -1,8 +1,8 @@
-import { Headphones } from "lucide-react";
+import { Headphones, Instagram, Phone } from "lucide-react";
 import { SITE, whatsappLink } from "@/lib/site";
 
 // Official WhatsApp glyph (from WhatsApp brand assets)
-function WhatsAppIcon({ className = "h-7 w-7" }: { className?: string }) {
+function WhatsAppGlyph({ className = "h-7 w-7" }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" className={className} aria-hidden="true">
       <path
@@ -27,27 +27,64 @@ function PhoneIcon({ className = "h-6 w-6" }: { className?: string }) {
 
 export function FloatingActions() {
   const wa = whatsappLink("Hello, I would like to request a quotation.");
+  const instagramUrl = "https://www.instagram.com/satya_power_technologys?igsh=NG1hdmZqYWIxZndn";
+
   return (
-    <div className="fixed right-4 md:right-8 bottom-4 md:bottom-6 z-50 flex items-center shadow-lg">
-      <a
-        href={wa}
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Request Quote on WhatsApp"
-        title="Request Quote on WhatsApp"
-        className="group h-12 px-5 bg-primary text-primary-foreground flex items-center gap-3 hover:bg-brand-red-dark transition-colors"
-      >
-        <Headphones className="h-4 w-4" />
-        <span className="text-sm font-normal">Contact Us</span>
-      </a>
-      <a
-        href={`tel:${SITE.phoneRaw}`}
-        aria-label="Call Now"
-        title="Call Now"
-        className="h-12 w-12 bg-brand-red-dark text-primary-foreground flex items-center justify-center hover:bg-primary transition-colors"
-      >
-        <PhoneIcon className="h-5 w-5" />
-      </a>
-    </div>
+    <>
+      {/* Left side social floating buttons */}
+      <div className="fixed left-4 md:left-8 bottom-4 md:bottom-6 z-50 flex flex-col gap-3">
+        <a
+          href={wa}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="WhatsApp"
+          title="WhatsApp"
+          className="h-12 w-12 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg hover:bg-green-600 transition-colors"
+        >
+          <WhatsAppGlyph className="h-6 w-6" />
+        </a>
+        <a
+          href={instagramUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Instagram"
+          title="Instagram"
+          className="h-12 w-12 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
+        >
+          <Instagram className="h-6 w-6" />
+        </a>
+        <a
+          href={`tel:${SITE.phoneRaw}`}
+          aria-label="Call"
+          title="Call"
+          className="h-12 w-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg hover:bg-primary/90 transition-colors"
+        >
+          <Phone className="h-6 w-6" />
+        </a>
+      </div>
+
+      {/* Right side contact bar (existing) */}
+      <div className="fixed right-4 md:right-8 bottom-4 md:bottom-6 z-50 flex items-center shadow-lg">
+        <a
+          href={wa}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Request Quote on WhatsApp"
+          title="Request Quote on WhatsApp"
+          className="group h-12 px-5 bg-primary text-primary-foreground flex items-center gap-3 hover:bg-brand-red-dark transition-colors"
+        >
+          <Headphones className="h-4 w-4" />
+          <span className="text-sm font-normal">Contact Us</span>
+        </a>
+        <a
+          href={`tel:${SITE.phoneRaw}`}
+          aria-label="Call Now"
+          title="Call Now"
+          className="h-12 w-12 bg-brand-red-dark text-primary-foreground flex items-center justify-center hover:bg-primary transition-colors"
+        >
+          <PhoneIcon className="h-5 w-5" />
+        </a>
+      </div>
+    </>
   );
 }
