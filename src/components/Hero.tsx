@@ -49,8 +49,8 @@ export function Hero() {
             </h1>
             <p className="mt-5 text-base md:text-lg text-primary-foreground/80 max-w-xl font-normal leading-relaxed">{s.body}</p>
 
-            <div className="mt-8 flex gap-3 items-center">
-              <Link to="/products" className="group inline-flex items-center justify-center gap-2 h-10 px-8 bg-primary text-primary-foreground text-sm font-normal hover:bg-brand-red-dark transition-colors min-w-36">
+            <div className="mt-8 flex flex-wrap gap-3 items-center">
+              <Link to="/products" className="group inline-flex items-center justify-center gap-2 h-10 px-8 bg-yellow-500 text-black text-sm font-medium hover:bg-yellow-400 transition-colors min-w-36">
                 Shop products
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
