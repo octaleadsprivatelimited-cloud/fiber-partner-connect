@@ -5,7 +5,7 @@ import { SITE, whatsappLink } from "@/lib/site";
 import { submitInquiry } from "@/lib/admin-data";
 import { sendToFormspree } from "@/lib/formspree";
 import { PageHero } from "@/components/PageHero";
-import bgContact from "@/assets/bg-contact.jpg";
+
 
 
 interface Form { name: string; email: string; phone: string; subject: string; message: string; }
@@ -37,7 +37,7 @@ function ContactPage() {
         eyebrow="GET IN TOUCH"
         title="Let's talk fiber."
         description="Quotes, service requests, partnership enquiries — we typically reply within hours."
-        bgImage={bgContact}
+        
       />
 
       <section className="py-16">
