@@ -1,34 +1,62 @@
-import { MapPin } from "lucide-react";
+import { MapPin, Phone } from "lucide-react";
+import hyderabadImg from "@/assets/hyderabad.jpg";
+import vijayawadaImg from "@/assets/vijayawada.jpg";
+import kakinadaImg from "@/assets/kakinada.jpg";
+import srikakulamImg from "@/assets/srikakulam.jpg";
+import tirupatiImg from "@/assets/tirupati.jpg";
 
 const branches = [
-  { city: "Hyderabad", role: "Head Office & Service Center" },
-  { city: "Vijayawada", role: "Sales & Service Branch" },
-  { city: "Kakinada", role: "Sales & Service Branch" },
-  { city: "Srikakulam", role: "Service Support" },
-  { city: "Tirupati", role: "Service Support" },
+  { city: "Hyderabad", role: "Head Office & Service Center", image: hyderabadImg, phone: "+91 40 2956 7890" },
+  { city: "Vijayawada", role: "Sales & Service Branch", image: vijayawadaImg, phone: "+91 866 247 8901" },
+  { city: "Kakinada", role: "Sales & Service Branch", image: kakinadaImg, phone: "+91 884 234 5678" },
+  { city: "Srikakulam", role: "Service Support", image: srikakulamImg, phone: "+91 894 245 6789" },
+  { city: "Tirupati", role: "Service Support", image: tirupatiImg, phone: "+91 877 228 9012" },
 ];
 
 export function ServiceBranches() {
   return (
-    <section className="py-14 md:py-20 bg-card">
-      <div className="mx-auto max-w-[1920px] px-6 md:px-16">
-        <div className="grid md:grid-cols-3 gap-10 mb-10 md:mb-12 items-end">
+    <section className="py-12 md:py-20 bg-card">
+      <div className="mx-auto max-w-[1920px] px-4 sm:px-6 md:px-16">
+        <div className="grid md:grid-cols-3 gap-6 md:gap-10 mb-8 md:mb-12 items-end">
           <div className="md:col-span-2">
-            <div className="text-sm font-normal text-muted-foreground mb-3">Our presence</div>
-            <h2 className="text-3xl md:text-5xl font-light text-foreground leading-[1.15]">Our Service Branches</h2>
+            <div className="text-xs sm:text-sm font-normal text-muted-foreground mb-2 md:mb-3">Our presence</div>
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-light text-foreground leading-[1.15]">Our Service Branches</h2>
           </div>
-          <p className="text-muted-foreground text-base md:text-lg">
+          <p className="text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed">
             Five locations across Andhra Pradesh & Telangana for fast on-site support.
           </p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5">
           {branches.map((b) => (
-            <div key={b.city} className="group card-premium p-5 md:p-6 cursor-default">
-              <div className="h-10 w-10 bg-accent text-primary flex items-center justify-center mb-5 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                <MapPin className="h-5 w-5" />
+            <div
+              key={b.city}
+              className="group cursor-default bg-card border border-border overflow-hidden hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-shadow duration-300"
+            >
+              <div className="relative h-40 sm:h-44 md:h-48 overflow-hidden">
+                <img
+                  src={b.image}
+                  alt={`${b.city} branch`}
+                  loading="lazy"
+                  width={400}
+                  height={300}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                  <div className="flex items-center gap-1.5 text-white">
+                    <MapPin className="h-3.5 w-3.5 text-white" />
+                    <span className="text-xs sm:text-sm font-medium">{b.city}</span>
+                  </div>
+                </div>
               </div>
-              <div className="text-lg md:text-xl font-light text-foreground">{b.city}</div>
-              <div className="mt-1.5 text-xs text-muted-foreground">{b.role}</div>
+              <div className="p-3 sm:p-4 md:p-5">
+                <div className="text-base sm:text-lg font-light text-foreground leading-tight">{b.city}</div>
+                <div className="mt-1 text-xs sm:text-sm text-muted-foreground">{b.role}</div>
+                <div className="mt-2.5 sm:mt-3 flex items-center gap-1.5 text-xs text-primary">
+                  <Phone className="h-3 w-3" />
+                  <span>{b.phone}</span>
+                </div>
+              </div>
             </div>
           ))}
         </div>
