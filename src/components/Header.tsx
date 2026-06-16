@@ -62,7 +62,7 @@ export function Header() {
       {/* main bar */}
       <div className="border-b border-border">
         <div className="mx-auto max-w-7xl container-px flex h-16 md:h-20 items-center justify-between gap-6">
-          <Link to="/" className="shrink-0"><Logo className="h-12 md:h-14" /></Link>
+          <Link to="/" className="shrink-0 flex items-center"><Logo className="h-14 md:h-20 w-auto" /></Link>
 
           <nav className="hidden lg:flex items-center gap-8 flex-1 justify-center">
             {nav.slice(1, 6).map((n) => (
