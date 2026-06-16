@@ -29,31 +29,32 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white">
-      {/* thin utility top bar (HCLTech style) */}
-      <div className="hidden md:block bg-brand-black text-white/80 text-[11px]">
-        <div className="mx-auto max-w-7xl container-px flex h-8 items-center justify-end gap-6">
-          <a href={`tel:${SITE.phoneRaw}`} className="hover:text-white inline-flex items-center gap-1.5">
+      {/* Dell-style thin utility top bar — light gray */}
+      <div className="hidden md:block bg-[#f3f3f3] text-[#444] text-[11px] border-b border-[#e5e5e5]">
+        <div className="mx-auto max-w-7xl container-px flex h-7 items-center justify-end gap-5">
+          <a href={`tel:${SITE.phoneRaw}`} className="hover:text-primary inline-flex items-center gap-1.5">
             <Phone className="h-3 w-3" /> {SITE.phone}
           </a>
-          <Link to="/about" className="hover:text-white">About</Link>
-          <Link to="/contact" className="hover:text-white">Contact</Link>
-          <Link to="/gallery" className="hover:text-white">Gallery</Link>
+          <span className="text-[#ccc]">|</span>
+          <Link to="/about" className="hover:text-primary">About</Link>
+          <Link to="/contact" className="hover:text-primary">Contact</Link>
+          <Link to="/gallery" className="hover:text-primary">Gallery</Link>
         </div>
       </div>
 
-      {/* main bar */}
-      <div className="border-b border-border">
-        <div className="mx-auto max-w-7xl container-px flex h-16 md:h-20 items-center justify-between gap-6">
-          <Link to="/" className="shrink-0 flex items-center"><Logo className="h-14 md:h-20 w-auto" /></Link>
+      {/* main bar — Dell-style slim, clean */}
+      <div className="border-b border-[#e5e5e5]">
+        <div className="mx-auto max-w-7xl container-px flex h-14 md:h-16 items-center justify-between gap-6">
+          <Link to="/" className="shrink-0 flex items-center"><Logo className="h-12 md:h-14 w-auto" /></Link>
 
-          <nav className="hidden lg:flex items-center gap-8 flex-1 justify-center">
+          <nav className="hidden lg:flex items-center gap-7 flex-1 justify-center">
             {nav.slice(1, 6).map((n) => (
               <NavLink
                 key={n.to}
                 to={n.to}
                 end={n.to === "/"}
                 className={({ isActive }) =>
-                  `text-[13px] font-semibold tracking-wide uppercase hover:text-primary transition ${isActive ? "text-primary" : "text-brand-black"}`
+                  `relative text-[14px] font-normal text-[#1a1a1a] hover:text-primary transition py-1 after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-[2px] after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left ${isActive ? "text-primary after:scale-x-100" : ""}`
                 }
               >
                 {n.label}
@@ -61,15 +62,15 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
-            <button aria-label="Search" className="hidden md:inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted">
-              <Search className="h-4 w-4 text-brand-black" />
+          <div className="flex items-center gap-2">
+            <button aria-label="Search" className="hidden md:inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-[#f3f3f3]">
+              <Search className="h-4 w-4 text-[#1a1a1a]" />
             </button>
             <a
               href={whatsappLink()}
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex items-center h-10 px-4 sm:px-5 rounded-md bg-primary text-white text-[13px] font-semibold tracking-tight border border-primary hover:bg-brand-red-dark hover:border-brand-red-dark transition-colors duration-200 shadow-sm"
+              className="inline-flex items-center h-9 px-4 sm:px-5 rounded-sm bg-primary text-white text-[13px] font-semibold hover:bg-brand-red-dark transition-colors duration-200"
             >
               <span className="hidden sm:inline">Get a Quote</span>
               <span className="sm:hidden">Quote</span>
@@ -81,11 +82,12 @@ export function Header() {
         </div>
       </div>
 
+
       <AnimatePresence>
         {open && (
           <>
             <motion.div
-              className="lg:hidden fixed inset-0 top-16 bg-black/40 z-40"
+              className="lg:hidden fixed inset-0 top-14 bg-black/40 z-40"
               onClick={() => setOpen(false)}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -93,7 +95,7 @@ export function Header() {
               transition={{ duration: 0.25, ease: "easeInOut" }}
             />
             <motion.div
-              className="lg:hidden fixed right-0 top-16 bottom-0 w-full max-w-[320px] bg-white z-50 overflow-y-auto shadow-2xl"
+              className="lg:hidden fixed right-0 top-14 bottom-0 w-full max-w-[320px] bg-white z-50 overflow-y-auto shadow-2xl"
               initial={{ x: "100%", opacity: 0.5 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0.5 }}

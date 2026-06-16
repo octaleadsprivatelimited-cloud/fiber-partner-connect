@@ -37,21 +37,18 @@ export function Footer() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   return (
-    <footer className="relative bg-gradient-to-b from-[#0b1424] via-brand-black to-[#070b14] text-white overflow-hidden">
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
-      <div className="absolute -top-32 left-1/3 h-72 w-72 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
-      <div className="relative mx-auto max-w-7xl container-px pt-16 md:pt-20 pb-8">
-        {/* top row: brand + columns */}
+    <footer className="bg-[#1a1a1a] text-white/85">
+      <div className="mx-auto max-w-7xl container-px pt-14 md:pt-16 pb-6">
         <div className="grid gap-6 md:gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
-            <Logo className="h-14" />
-            <p className="mt-5 text-sm text-white/65 max-w-xs leading-relaxed">
+            <Logo className="h-12" />
+            <p className="mt-5 text-[13px] text-white/60 max-w-xs leading-relaxed">
               {SITE.tagline}. Authorized Distributor for Inno, Grandway, Claron & EXFO across Andhra Pradesh & Telangana.
             </p>
-            <ul className="mt-6 space-y-3 text-sm text-white/70">
-              <li className="flex gap-2.5"><MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />{SITE.address}</li>
-              <li className="flex gap-2.5"><Phone className="h-4 w-4 text-primary shrink-0 mt-0.5" />{SITE.phone}</li>
-              <li className="flex gap-2.5"><Mail className="h-4 w-4 text-primary shrink-0 mt-0.5" />{SITE.email}</li>
+            <ul className="mt-6 space-y-2.5 text-[13px] text-white/70">
+              <li className="flex gap-2.5"><MapPin className="h-4 w-4 text-white/50 shrink-0 mt-0.5" />{SITE.address}</li>
+              <li className="flex gap-2.5"><Phone className="h-4 w-4 text-white/50 shrink-0 mt-0.5" />{SITE.phone}</li>
+              <li className="flex gap-2.5"><Mail className="h-4 w-4 text-white/50 shrink-0 mt-0.5" />{SITE.email}</li>
             </ul>
           </div>
 
@@ -60,16 +57,16 @@ export function Footer() {
               <button
                 type="button"
                 onClick={() => setOpenMenu((current) => current === c.title ? null : c.title)}
-                className="md:mb-3 flex w-full items-center justify-between gap-3 text-left text-[11px] font-bold uppercase tracking-[0.18em] text-white/60 hover:text-white transition py-3 md:py-0"
+                className="md:mb-4 flex w-full items-center justify-between gap-3 text-left text-[13px] font-semibold text-white hover:text-white/80 transition py-3 md:py-0"
                 aria-expanded={openMenu === c.title}
               >
                 {c.title}
                 <ChevronDown className={`h-4 w-4 transition md:hidden ${openMenu === c.title ? "rotate-180" : ""}`} />
               </button>
-              <ul className={`${openMenu === c.title ? "flex" : "hidden"} md:flex flex-col gap-3 text-sm text-white/85 pb-4 md:pb-0 pl-1`}>
+              <ul className={`${openMenu === c.title ? "flex" : "hidden"} md:flex flex-col gap-2.5 text-[13px] text-white/65 pb-4 md:pb-0`}>
                 {c.links.map((l) => (
                   <li key={l.label}>
-                    <Link to={l.to} onClick={() => setOpenMenu(null)} className="inline-flex items-center gap-1.5 hover:text-primary hover:translate-x-0.5 transition-all">{l.label}</Link>
+                    <Link to={l.to} onClick={() => setOpenMenu(null)} className="hover:text-white hover:underline transition">{l.label}</Link>
                   </li>
                 ))}
               </ul>
@@ -77,17 +74,17 @@ export function Footer() {
           ))}
 
           <div className="md:col-span-2">
-            <h4 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/50 mb-5">Follow</h4>
+            <h4 className="text-[13px] font-semibold text-white mb-4">Follow</h4>
             <div className="flex gap-2">
-              <a href="https://www.instagram.com/satya_power_technologys?igsh=NG1hdmZqYWIxZndn" target="_blank" rel="noreferrer" aria-label="Instagram" className="h-9 w-9 border border-white/20 flex items-center justify-center hover:bg-primary hover:border-primary transition"><Instagram className="h-4 w-4" /></a>
-              <a href="https://youtube.com/@satyapowertechnologys?si=gHQ1dsrUEQWk_wRg" target="_blank" rel="noreferrer" aria-label="YouTube" className="h-9 w-9 border border-white/20 flex items-center justify-center hover:bg-primary hover:border-primary transition"><Youtube className="h-4 w-4" /></a>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="h-9 w-9 border border-white/20 flex items-center justify-center hover:bg-primary hover:border-primary transition"><Facebook className="h-4 w-4" /></a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="h-9 w-9 border border-white/20 flex items-center justify-center hover:bg-primary hover:border-primary transition"><Linkedin className="h-4 w-4" /></a>
+              <a href="https://www.instagram.com/satya_power_technologys?igsh=NG1hdmZqYWIxZndn" target="_blank" rel="noreferrer" aria-label="Instagram" className="h-9 w-9 rounded-sm border border-white/20 flex items-center justify-center hover:bg-white/10 transition"><Instagram className="h-4 w-4" /></a>
+              <a href="https://youtube.com/@satyapowertechnologys?si=gHQ1dsrUEQWk_wRg" target="_blank" rel="noreferrer" aria-label="YouTube" className="h-9 w-9 rounded-sm border border-white/20 flex items-center justify-center hover:bg-white/10 transition"><Youtube className="h-4 w-4" /></a>
+              <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="h-9 w-9 rounded-sm border border-white/20 flex items-center justify-center hover:bg-white/10 transition"><Facebook className="h-4 w-4" /></a>
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="h-9 w-9 rounded-sm border border-white/20 flex items-center justify-center hover:bg-white/10 transition"><Linkedin className="h-4 w-4" /></a>
             </div>
           </div>
         </div>
 
-        <div className="mt-14 pt-6 border-t border-white/10 flex flex-wrap justify-between gap-3 text-xs text-white/50">
+        <div className="mt-12 pt-5 border-t border-white/10 flex flex-wrap justify-between gap-3 text-[12px] text-white/50">
           <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</span>
           <span>{SITE.website}</span>
         </div>
@@ -95,3 +92,4 @@ export function Footer() {
     </footer>
   );
 }
+
