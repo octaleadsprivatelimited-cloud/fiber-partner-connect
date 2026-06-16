@@ -28,7 +28,7 @@ export function Header() {
 
 
   return (
-    <header className="sticky top-0 z-50 bg-card text-foreground shadow-[0_1px_0_hsl(var(--border))]">
+    <header className="sticky top-0 z-50 bg-card text-foreground shadow-[0_1px_0_var(--border)]">
       <div className="border-b border-border">
         <div className="mx-auto max-w-[1920px] px-4 md:px-8 flex h-[52px] items-center gap-6">
           <Link to="/" className="shrink-0 flex items-center"><Logo className="h-9" /></Link>
