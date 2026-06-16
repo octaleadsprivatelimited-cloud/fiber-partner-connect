@@ -42,7 +42,7 @@ export function Hero() {
       </div>
 
       <div className="relative mx-auto max-w-7xl container-px py-20 md:py-36 lg:py-44">
-        <div className="max-w-2xl">
+        <div className="max-w-2xl pr-14 md:pr-0">
           <div className="inline-flex items-center gap-2 mb-5 border-l-2 border-primary pl-3">
             <Eyebrow className="h-3.5 w-3.5 text-primary" />
             <span className="text-[11px] font-bold tracking-[0.22em] text-white/85">{s.eyebrow.text}</span>
