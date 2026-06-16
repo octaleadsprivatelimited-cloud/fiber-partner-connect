@@ -7,11 +7,12 @@ import { ServiceBranches } from "@/components/ServiceBranches";
 import { WhyChoose } from "@/components/WhyChoose";
 import { ProductCard } from "@/components/ProductCard";
 import { CTABanner } from "@/components/CTABanner";
-import { PRODUCTS } from "@/lib/products";
+import { useProducts } from "@/lib/admin-data";
 
 
 function Home() {
-  const featured = PRODUCTS.filter((p) => p.featured).slice(0, 8);
+  const { products } = useProducts();
+  const featured = products.filter((p) => p.featured).slice(0, 8);
   return (
     <>
       <Hero />
