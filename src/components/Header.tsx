@@ -5,13 +5,13 @@ import { Logo } from "./Logo";
 import { SITE, whatsappLink } from "@/lib/site";
 
 const PRODUCT_MENU = [
-  "Fusion Splicers",
-  "OTDR",
-  "Power Meters",
-  "Cleavers",
-  "Visual Fault Locators",
-  "Cleaning Kits",
-  "Spare Parts & Service",
+  { label: "Fusion Splicers", to: "/products?category=Fusion%20Splicers" },
+  { label: "OTDR", to: "/products?category=OTDR" },
+  { label: "Power Meters", to: "/products?category=Power%20Meters" },
+  { label: "Cleavers", to: "/products?category=Cleavers" },
+  { label: "Visual Fault Locators", to: "/products?category=Visual%20Fault%20Locators" },
+  { label: "Cleaning Kits", to: "/products?category=Cleaning%20Kits" },
+  { label: "Spare Parts & Service", to: "/services" },
 ];
 
 const nav = [
@@ -86,14 +86,14 @@ export function Header() {
                   {productsOpen && (
                     <div className="absolute left-1/2 top-full z-50 mt-6 w-[320px] -translate-x-1/2 border border-border bg-white shadow-2xl">
                       <div className="grid gap-1 p-3">
-                        {PRODUCT_MENU.map((label) => (
+                        {PRODUCT_MENU.map((item) => (
                           <Link
-                            key={label}
-                            to={`/products?category=${encodeURIComponent(label)}`}
+                            key={item.label}
+                            to={item.to}
                             onClick={() => setProductsOpen(false)}
                             className="flex items-center justify-between px-4 py-3 text-sm font-semibold text-brand-black hover:bg-muted hover:text-primary transition"
                           >
-                            {label}
+                            {item.label}
                             <ChevronDown className="h-3.5 w-3.5 -rotate-90 opacity-40" />
                           </Link>
                         ))}
@@ -143,11 +143,38 @@ export function Header() {
           <div className="lg:hidden fixed left-0 right-0 top-16 bottom-0 bg-white z-40 overflow-y-auto">
             <div className="mx-auto max-w-7xl container-px flex flex-col py-2">
               {nav.map((n) => (
-                <Link key={n.to} to={n.to} onClick={() => setOpen(false)}
-                  className="py-4 text-sm font-semibold uppercase tracking-wide text-brand-black border-b border-border last:border-0 flex items-center justify-between">
-                  {n.label}
-                  <ChevronDown className="h-4 w-4 -rotate-90 opacity-50" />
-                </Link>
+                n.to === "/products" ? (
+                  <div key={n.to} className="border-b border-border">
+                    <button
+                      type="button"
+                      onClick={() => setProductsOpen((v) => !v)}
+                      className="w-full py-4 text-sm font-semibold uppercase tracking-wide text-brand-black flex items-center justify-between"
+                    >
+                      {n.label}
+                      <ChevronDown className={`h-4 w-4 opacity-50 transition ${productsOpen ? "rotate-180" : "-rotate-90"}`} />
+                    </button>
+                    {productsOpen && (
+                      <div className="grid gap-1 pb-3">
+                        {PRODUCT_MENU.map((item) => (
+                          <Link
+                            key={item.label}
+                            to={item.to}
+                            onClick={() => { setProductsOpen(false); setOpen(false); }}
+                            className="px-4 py-3 text-sm font-medium text-muted-foreground bg-muted/50"
+                          >
+                            {item.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link key={n.to} to={n.to} onClick={() => setOpen(false)}
+                    className="py-4 text-sm font-semibold uppercase tracking-wide text-brand-black border-b border-border last:border-0 flex items-center justify-between">
+                    {n.label}
+                    <ChevronDown className="h-4 w-4 -rotate-90 opacity-50" />
+                  </Link>
+                )
               ))}
               <a href={`tel:${SITE.phoneRaw}`} className="py-4 text-sm font-semibold text-primary">
                 <Phone className="inline h-4 w-4 mr-2" />{SITE.phone}
