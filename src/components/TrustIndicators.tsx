@@ -40,29 +40,26 @@ export function TrustIndicators() {
           </p>
         </div>
 
-        {/* Stat row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur overflow-hidden">
+        {/* Stat row — single horizontal line on mobile */}
+        <div className="grid grid-cols-4 rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur overflow-hidden">
           {stats.map(({ value, label, sub, Icon }, i) => (
             <div
               key={label}
-              className={`group relative p-5 md:p-8 transition-colors duration-300 hover:bg-white/[0.04]
-                ${i < 2 ? "border-b border-white/10 md:border-b-0" : ""}
-                ${i % 2 === 0 ? "border-r border-white/10" : ""}
-                ${i === 1 ? "md:border-r md:border-white/10" : ""}
-                ${i === 2 ? "md:border-r md:border-white/10" : ""}
+              className={`group relative p-3 sm:p-5 md:p-8 transition-colors duration-300 hover:bg-white/[0.04]
+                ${i < 3 ? "border-r border-white/10" : ""}
               `}
             >
-              <div className="flex items-center justify-between mb-4 md:mb-6">
-                <Icon className="h-4 w-4 md:h-5 md:w-5 text-primary" strokeWidth={1.75} />
-                <span className="text-[10px] font-mono text-white/30">0{i + 1}</span>
+              <div className="flex items-center justify-between mb-2 md:mb-6">
+                <Icon className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 text-primary" strokeWidth={1.75} />
+                <span className="hidden sm:inline text-[10px] font-mono text-white/30">0{i + 1}</span>
               </div>
-              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-none tracking-tight bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent">
+              <div className="text-lg sm:text-3xl md:text-5xl lg:text-6xl font-black leading-none tracking-tight bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent">
                 {value}
               </div>
-              <div className="mt-3 md:mt-4 text-[11px] md:text-xs font-semibold uppercase tracking-[0.16em] text-white">
+              <div className="mt-1 md:mt-4 text-[9px] sm:text-[11px] md:text-xs font-semibold uppercase tracking-[0.16em] text-white">
                 {label}
               </div>
-              <div className="mt-1 text-[11px] md:text-xs text-white/40">{sub}</div>
+              <div className="hidden sm:block mt-1 text-[11px] md:text-xs text-white/40">{sub}</div>
               <div className="absolute left-0 right-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
           ))}
