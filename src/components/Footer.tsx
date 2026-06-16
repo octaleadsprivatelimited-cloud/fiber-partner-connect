@@ -56,17 +56,17 @@ export function Footer() {
           </div>
 
           {COLUMNS.map((c) => (
-            <div key={c.title} className="md:col-span-2">
+            <div key={c.title} className="md:col-span-2 border-b border-white/10 md:border-0 py-1 md:py-0">
               <button
                 type="button"
                 onClick={() => setOpenMenu((current) => current === c.title ? null : c.title)}
-                className="mb-3 flex w-full items-center justify-between gap-3 text-left text-[11px] font-bold uppercase tracking-[0.18em] text-white/50 hover:text-white transition"
+                className="md:mb-3 flex w-full items-center justify-between gap-3 text-left text-[11px] font-bold uppercase tracking-[0.18em] text-white/60 hover:text-white transition py-3 md:py-0"
                 aria-expanded={openMenu === c.title}
               >
                 {c.title}
-                <ChevronDown className={`h-4 w-4 transition ${openMenu === c.title ? "rotate-180" : ""}`} />
+                <ChevronDown className={`h-4 w-4 transition md:hidden ${openMenu === c.title ? "rotate-180" : ""}`} />
               </button>
-              <ul className={`${openMenu === c.title ? "flex" : "hidden"} flex-col gap-3 text-sm text-white/85 pb-4 pl-1`}>
+              <ul className={`${openMenu === c.title ? "flex" : "hidden"} md:flex flex-col gap-3 text-sm text-white/85 pb-4 md:pb-0 pl-1`}>
                 {c.links.map((l) => (
                   <li key={l.label}>
                     <Link to={l.to} onClick={() => setOpenMenu(null)} className="inline-flex items-center gap-1.5 hover:text-primary hover:translate-x-0.5 transition-all">{l.label}</Link>
