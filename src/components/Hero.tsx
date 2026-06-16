@@ -32,44 +32,69 @@ export function Hero() {
 
   return (
     <section className="relative bg-brand-black text-white overflow-hidden">
-      {/* full-bleed visual */}
       <div className="absolute inset-0">
-        <img src={heroBg.url} alt="" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-black/75 via-brand-black/45 to-brand-black/10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-black/40 via-transparent to-transparent" />
+        <img src={heroBg.url} alt="" className="absolute inset-0 h-full w-full object-cover opacity-70" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/80 to-brand-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/30 to-transparent" />
+        {/* red accent glow */}
+        <div className="absolute -top-40 -right-40 h-[40rem] w-[40rem] rounded-full bg-primary/25 blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl container-px py-20 md:py-36 lg:py-44">
-        <div className="max-w-2xl pr-14 md:pr-0">
-          <div className="inline-flex items-center gap-2 mb-5 border-l-2 border-primary pl-3">
-            <Eyebrow className="h-3.5 w-3.5 text-primary" />
-            <span className="text-[11px] font-bold tracking-[0.22em] text-white/85">{s.eyebrow.text}</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.02] text-white">
-            {s.title}
-          </h1>
-          <p className="mt-6 text-base md:text-lg text-white/75 max-w-xl">{s.body}</p>
+      <div className="relative mx-auto max-w-7xl container-px py-20 md:py-32 lg:py-40">
+        <div className="grid lg:grid-cols-12 gap-12 items-end">
+          <div className="lg:col-span-8">
+            <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full bg-white/5 border border-white/15 backdrop-blur">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+              <Eyebrow className="h-3.5 w-3.5 text-primary" />
+              <span className="text-[10px] font-semibold tracking-[0.2em] text-white/90 uppercase">{s.eyebrow.text}</span>
+            </div>
+            <h1 className="text-[2.5rem] sm:text-6xl md:text-7xl lg:text-[5.75rem] font-bold leading-[0.98] text-white">
+              {s.title.split(" ").slice(0, -2).join(" ")}{" "}
+              <span className="bg-gradient-to-r from-primary via-[#ff6b3d] to-primary bg-clip-text text-transparent">
+                {s.title.split(" ").slice(-2).join(" ")}
+              </span>
+            </h1>
+            <p className="mt-7 text-base md:text-xl text-white/70 max-w-2xl leading-relaxed">{s.body}</p>
 
-          <div className="mt-10 flex flex-wrap gap-4 items-center">
-            <Link to="/products" className="group btn-premium">
-              Explore Products
-              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link to="/services" className="group inline-flex items-center gap-2 px-6 py-3.5 text-xs font-bold uppercase tracking-[0.08em] text-white border border-white/30 rounded-lg backdrop-blur hover:bg-white/10 hover:border-white/60 transition-all">
-              Our Services
-              <ArrowRight className="h-3.5 w-3.5 opacity-70 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            <div className="mt-10 flex flex-wrap gap-4 items-center">
+              <Link to="/products" className="group btn-premium">
+                Explore Products
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link to="/services" className="group inline-flex items-center gap-2 px-6 py-3.5 text-xs font-bold uppercase tracking-[0.08em] text-white border border-white/25 rounded-lg backdrop-blur hover:bg-white/10 hover:border-white/60 transition-all">
+                Our Services
+                <ArrowRight className="h-3.5 w-3.5 opacity-70 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Side bento stat card */}
+          <div className="hidden lg:flex lg:col-span-4 flex-col gap-3">
+            <div className="rounded-2xl bg-gradient-to-br from-white/10 to-white/[0.02] border border-white/15 backdrop-blur p-6">
+              <div className="text-[10px] font-semibold tracking-[0.2em] uppercase text-primary mb-3">Authorized for</div>
+              <div className="text-2xl font-bold leading-tight">Inno · Grandway · Claron · EXFO</div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur p-5">
+                <div className="text-3xl font-bold">15+</div>
+                <div className="mt-1 text-[10px] tracking-[0.18em] uppercase text-white/60">Years</div>
+              </div>
+              <div className="rounded-2xl bg-primary/15 border border-primary/30 backdrop-blur p-5">
+                <div className="text-3xl font-bold">24/7</div>
+                <div className="mt-1 text-[10px] tracking-[0.18em] uppercase text-white/80">Support</div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* slide indicators */}
-        <div className="mt-16 flex gap-2">
+        <div className="mt-14 flex gap-2">
           {slides.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setI(idx)}
               aria-label={`Slide ${idx + 1}`}
-              className={`h-0.5 transition-all ${idx === i ? "w-16 bg-primary" : "w-8 bg-white/30"}`}
+              className={`h-0.5 transition-all ${idx === i ? "w-20 bg-primary" : "w-8 bg-white/25 hover:bg-white/50"}`}
             />
           ))}
         </div>
