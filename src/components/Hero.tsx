@@ -31,70 +31,62 @@ export function Hero() {
   const Eyebrow = s.eyebrow.icon;
 
   return (
-    <section className="relative bg-brand-black text-white overflow-hidden">
+    <section className="relative bg-[#1a1a1a] text-white overflow-hidden">
       <div className="absolute inset-0">
-        <img src={heroBg.url} alt="" className="absolute inset-0 h-full w-full object-cover opacity-70" />
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/80 to-brand-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/30 to-transparent" />
-        {/* red accent glow */}
-        <div className="absolute -top-40 -right-40 h-[40rem] w-[40rem] rounded-full bg-primary/25 blur-3xl" />
-        <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
+        <img src={heroBg.url} alt="" className="absolute inset-0 h-full w-full object-cover opacity-55" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0d0d0d] via-[#1a1a1a]/80 to-[#1a1a1a]/30" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl container-px py-20 md:py-32 lg:py-40">
-        <div className="grid lg:grid-cols-12 gap-12 items-end">
+      <div className="relative mx-auto max-w-7xl container-px py-16 md:py-24 lg:py-28">
+        <div className="grid lg:grid-cols-12 gap-10 items-center">
           <div className="lg:col-span-8">
-            <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full bg-white/5 border border-white/15 backdrop-blur">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+            <div className="inline-flex items-center gap-2 mb-5">
               <Eyebrow className="h-3.5 w-3.5 text-primary" />
-              <span className="text-[10px] font-semibold tracking-[0.2em] text-white/90 uppercase">{s.eyebrow.text}</span>
+              <span className="text-[12px] font-semibold text-primary">{s.eyebrow.text}</span>
             </div>
-            <h1 className="text-[2.5rem] sm:text-6xl md:text-7xl lg:text-[5.75rem] font-bold leading-[0.98] text-white">
-              {s.title.split(" ").slice(0, -2).join(" ")}{" "}
-              <span className="bg-gradient-to-r from-primary via-[#ff6b3d] to-primary bg-clip-text text-transparent">
-                {s.title.split(" ").slice(-2).join(" ")}
-              </span>
+            <h1 className="text-[2rem] sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.05] tracking-tight text-white">
+              {s.title}
             </h1>
-            <p className="mt-7 text-base md:text-xl text-white/70 max-w-2xl leading-relaxed">{s.body}</p>
+            <p className="mt-5 text-base md:text-lg text-white/75 max-w-2xl font-light leading-relaxed">{s.body}</p>
 
-            <div className="mt-10 flex gap-3 items-center">
-              <Link to="/products" className="group btn-premium">
-                Explore Products
+            <div className="mt-8 flex gap-3 items-center">
+              <Link to="/products" className="group inline-flex items-center gap-2 h-11 px-6 rounded-sm bg-primary text-white text-sm font-semibold hover:bg-brand-red-dark transition-colors">
+                Shop products
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link to="/services" className="group inline-flex items-center gap-2 px-6 py-3.5 text-xs font-bold uppercase tracking-[0.08em] text-white border border-white/25 rounded-lg backdrop-blur hover:bg-white/10 hover:border-white/60 transition-all">
-                Our Services
+              <Link to="/services" className="group inline-flex items-center gap-2 h-11 px-6 text-sm font-semibold text-white border border-white/30 rounded-sm hover:border-white transition-colors">
+                Our services
                 <ArrowRight className="h-3.5 w-3.5 opacity-70 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>
 
-          {/* Side bento stat card */}
-          <div className="hidden lg:flex lg:col-span-4 flex-col gap-3">
-            <div className="rounded-2xl bg-gradient-to-br from-white/10 to-white/[0.02] border border-white/15 backdrop-blur p-6">
-              <div className="text-[10px] font-semibold tracking-[0.2em] uppercase text-primary mb-3">Authorized for</div>
-              <div className="text-2xl font-bold leading-tight">Inno · Grandway · Claron · EXFO</div>
+          {/* Side stat card — Dell-style flat tiles */}
+          <div className="hidden lg:flex lg:col-span-4 flex-col gap-2">
+            <div className="rounded-sm bg-white/[0.06] border border-white/10 p-5">
+              <div className="text-[12px] font-semibold uppercase text-primary mb-2">Authorized for</div>
+              <div className="text-xl font-semibold leading-tight">Inno · Grandway · Claron · EXFO</div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur p-5">
-                <div className="text-3xl font-bold">15+</div>
-                <div className="mt-1 text-[10px] tracking-[0.18em] uppercase text-white/60">Years</div>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="rounded-sm bg-white/[0.04] border border-white/10 p-4">
+                <div className="text-3xl font-semibold">15+</div>
+                <div className="mt-1 text-[11px] uppercase text-white/60">Years</div>
               </div>
-              <div className="rounded-2xl bg-primary/15 border border-primary/30 backdrop-blur p-5">
-                <div className="text-3xl font-bold">24/7</div>
-                <div className="mt-1 text-[10px] tracking-[0.18em] uppercase text-white/80">Support</div>
+              <div className="rounded-sm bg-primary/15 border border-primary/30 p-4">
+                <div className="text-3xl font-semibold">24/7</div>
+                <div className="mt-1 text-[11px] uppercase text-white/80">Support</div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-14 flex gap-2">
+        <div className="mt-10 flex gap-2">
           {slides.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setI(idx)}
               aria-label={`Slide ${idx + 1}`}
-              className={`h-0.5 transition-all ${idx === i ? "w-20 bg-primary" : "w-8 bg-white/25 hover:bg-white/50"}`}
+              className={`h-0.5 transition-all ${idx === i ? "w-16 bg-primary" : "w-6 bg-white/25 hover:bg-white/50"}`}
             />
           ))}
         </div>
@@ -102,3 +94,4 @@ export function Hero() {
     </section>
   );
 }
+
