@@ -18,21 +18,21 @@ function Home() {
       <TrustIndicators />
       <BrandStrip />
 
-      <section className="py-12 md:py-20">
+      <section className="py-16 md:py-28 bg-white">
         <div className="mx-auto max-w-7xl container-px">
-          <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
-            <div>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="text-xs font-bold tracking-[0.2em] text-brand-red">FEATURED PRODUCTS</div>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-red text-white text-[11px] font-bold px-3 py-1">
-                  <Package className="h-3.5 w-3.5" /> 500+ Products Available
-                </span>
-              </div>
-              <h2 className="text-3xl md:text-5xl font-black text-brand-black">Top picks from our catalogue</h2>
+          <div className="grid md:grid-cols-3 gap-10 mb-12 md:mb-16 items-end">
+            <div className="md:col-span-2">
+              <div className="text-[11px] font-bold tracking-[0.22em] text-primary mb-4">FEATURED PRODUCTS</div>
+              <h2 className="text-3xl md:text-5xl font-black text-brand-black leading-[1.05]">Top picks from our catalogue</h2>
             </div>
-            <Link to="/products" className="inline-flex items-center gap-2 font-bold text-brand-black hover:text-brand-red">
-              View all products <ArrowRight className="h-4 w-4" />
-            </Link>
+            <div className="flex md:justify-end items-center gap-4">
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                <Package className="h-3.5 w-3.5 text-primary" /> 500+ products
+              </span>
+              <Link to="/products" className="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-brand-black hover:text-primary border-b-2 border-primary pb-1">
+                View all <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {featured.map((p, i) => <ProductCard key={p.id} p={p} idx={i} />)}
