@@ -1,100 +1,82 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Linkedin, Facebook, Instagram, Youtube, ChevronDown } from "lucide-react";
+import { Phone, Mail, MapPin, Linkedin, Facebook, Instagram, Youtube } from "lucide-react";
 import { Logo } from "./Logo";
 import { SITE } from "@/lib/site";
-import bg from "@/assets/bg-about.jpg";
 
-const QUICK_LINKS: { to: string; label: string }[] = [
-  { to: "/products", label: "Products" },
-  { to: "/brands", label: "Brands" },
-  { to: "/services", label: "Services" },
-  { to: "/gallery", label: "Gallery" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
-];
-
-const CATEGORIES = [
-  "Fusion Splicers",
-  "OTDR & Power Meters",
-  "Cleavers & VFL",
-  "Spare Parts & Service",
+const COLUMNS: { title: string; links: { to: string; label: string }[] }[] = [
+  {
+    title: "Explore",
+    links: [
+      { to: "/products", label: "Products" },
+      { to: "/brands", label: "Brands" },
+      { to: "/services", label: "Services" },
+      { to: "/gallery", label: "Gallery" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { to: "/about", label: "About Us" },
+      { to: "/contact", label: "Contact" },
+      { to: "/services", label: "Service Centers" },
+    ],
+  },
+  {
+    title: "Categories",
+    links: [
+      { to: "/products", label: "Fusion Splicers" },
+      { to: "/products", label: "OTDR & Power Meters" },
+      { to: "/products", label: "Cleavers & VFL" },
+      { to: "/services", label: "Spare Parts & Service" },
+    ],
+  },
 ];
 
 export function Footer() {
   return (
-    <footer className="relative bg-brand-black text-white overflow-hidden">
-      <img src={bg} alt="" className="absolute inset-0 h-full w-full object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-b from-brand-black/85 via-brand-black/80 to-brand-black/90" />
-      <div className="relative">
-        <div className="mx-auto max-w-7xl container-px py-14 grid gap-6 md:gap-10 md:grid-cols-4">
-          <div>
-            <Logo className="h-16" />
-            <p className="mt-4 text-sm text-white/70 max-w-xs">{SITE.tagline}. Authorized Distributor for Inno, Grandway, Claron & EXFO across Andhra Pradesh & Telangana.</p>
-          </div>
-
-          {/* Quick Links — collapsible on mobile, always open on desktop */}
-          <div>
-            <details className="md:hidden border-b border-white/10 pb-3 [&[open]_.chev]:rotate-180">
-              <summary className="flex items-center justify-between cursor-pointer list-none">
-                <h4 className="font-bold text-sm uppercase tracking-wider">Quick Links</h4>
-                <ChevronDown className="chev h-4 w-4 transition" />
-              </summary>
-              <ul className="space-y-2 text-sm text-white/70 mt-3">
-                {QUICK_LINKS.map((l) => (
-                  <li key={l.to}><Link to={l.to} className="hover:text-brand-red">{l.label}</Link></li>
-                ))}
-              </ul>
-            </details>
-            <div className="hidden md:block">
-              <h4 className="font-bold text-sm uppercase tracking-wider mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm text-white/70">
-                {QUICK_LINKS.map((l) => (
-                  <li key={l.to}><Link to={l.to} className="hover:text-brand-red">{l.label}</Link></li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Categories — collapsible on mobile, always open on desktop */}
-          <div>
-            <details className="md:hidden border-b border-white/10 pb-3 [&[open]_.chev]:rotate-180">
-              <summary className="flex items-center justify-between cursor-pointer list-none">
-                <h4 className="font-bold text-sm uppercase tracking-wider">Categories</h4>
-                <ChevronDown className="chev h-4 w-4 transition" />
-              </summary>
-              <ul className="space-y-2 text-sm text-white/70 mt-3">
-                {CATEGORIES.map((c) => <li key={c}>{c}</li>)}
-              </ul>
-            </details>
-            <div className="hidden md:block">
-              <h4 className="font-bold text-sm uppercase tracking-wider mb-4">Categories</h4>
-              <ul className="space-y-2 text-sm text-white/70">
-                {CATEGORIES.map((c) => <li key={c}>{c}</li>)}
-              </ul>
-            </div>
-          </div>
-
-          {/* Get in Touch — always expanded */}
-          <div>
-            <h4 className="font-bold mb-4 text-sm uppercase tracking-wider">Get in Touch</h4>
-            <ul className="space-y-3 text-sm text-white/70">
-              <li className="flex gap-2"><MapPin className="h-4 w-4 text-brand-red shrink-0 mt-0.5" />{SITE.address}</li>
-              <li className="flex gap-2"><Phone className="h-4 w-4 text-brand-red shrink-0 mt-0.5" />{SITE.phone}</li>
-              <li className="flex gap-2"><Mail className="h-4 w-4 text-brand-red shrink-0 mt-0.5" />{SITE.email}</li>
+    <footer className="bg-brand-black text-white">
+      <div className="mx-auto max-w-7xl container-px pt-16 md:pt-20 pb-8">
+        {/* top row: brand + columns */}
+        <div className="grid gap-12 md:gap-10 md:grid-cols-12">
+          <div className="md:col-span-4">
+            <Logo className="h-14" />
+            <p className="mt-5 text-sm text-white/65 max-w-xs leading-relaxed">
+              {SITE.tagline}. Authorized Distributor for Inno, Grandway, Claron & EXFO across Andhra Pradesh & Telangana.
+            </p>
+            <ul className="mt-6 space-y-3 text-sm text-white/70">
+              <li className="flex gap-2.5"><MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />{SITE.address}</li>
+              <li className="flex gap-2.5"><Phone className="h-4 w-4 text-primary shrink-0 mt-0.5" />{SITE.phone}</li>
+              <li className="flex gap-2.5"><Mail className="h-4 w-4 text-primary shrink-0 mt-0.5" />{SITE.email}</li>
             </ul>
-            <div className="flex gap-3 mt-4">
-              <a href="https://www.instagram.com/satya_power_technologys?igsh=NG1hdmZqYWIxZndn" target="_blank" rel="noreferrer" aria-label="Instagram" className="bg-white/10 p-2 hover:bg-brand-red transition"><Instagram className="h-4 w-4" /></a>
-              <a href="https://youtube.com/@satyapowertechnologys?si=gHQ1dsrUEQWk_wRg" target="_blank" rel="noreferrer" aria-label="YouTube" className="bg-white/10 p-2 hover:bg-brand-red transition"><Youtube className="h-4 w-4" /></a>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="bg-white/10 p-2 hover:bg-brand-red transition"><Facebook className="h-4 w-4" /></a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="bg-white/10 p-2 hover:bg-brand-red transition"><Linkedin className="h-4 w-4" /></a>
+          </div>
+
+          {COLUMNS.map((c) => (
+            <div key={c.title} className="md:col-span-2">
+              <h4 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/50 mb-5">{c.title}</h4>
+              <ul className="space-y-3 text-sm text-white/85">
+                {c.links.map((l) => (
+                  <li key={l.label}>
+                    <Link to={l.to} className="hover:text-primary transition-colors">{l.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          <div className="md:col-span-2">
+            <h4 className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/50 mb-5">Follow</h4>
+            <div className="flex gap-2">
+              <a href="https://www.instagram.com/satya_power_technologys?igsh=NG1hdmZqYWIxZndn" target="_blank" rel="noreferrer" aria-label="Instagram" className="h-9 w-9 border border-white/20 flex items-center justify-center hover:bg-primary hover:border-primary transition"><Instagram className="h-4 w-4" /></a>
+              <a href="https://youtube.com/@satyapowertechnologys?si=gHQ1dsrUEQWk_wRg" target="_blank" rel="noreferrer" aria-label="YouTube" className="h-9 w-9 border border-white/20 flex items-center justify-center hover:bg-primary hover:border-primary transition"><Youtube className="h-4 w-4" /></a>
+              <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="h-9 w-9 border border-white/20 flex items-center justify-center hover:bg-primary hover:border-primary transition"><Facebook className="h-4 w-4" /></a>
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="h-9 w-9 border border-white/20 flex items-center justify-center hover:bg-primary hover:border-primary transition"><Linkedin className="h-4 w-4" /></a>
             </div>
           </div>
         </div>
-        <div className="border-t border-white/10">
-          <div className="mx-auto max-w-7xl container-px py-4 text-xs text-white/50 flex flex-wrap justify-between gap-2">
-            <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</span>
-            <span>{SITE.website}</span>
-          </div>
+
+        <div className="mt-14 pt-6 border-t border-white/10 flex flex-wrap justify-between gap-3 text-xs text-white/50">
+          <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</span>
+          <span>{SITE.website}</span>
         </div>
       </div>
     </footer>

@@ -1,5 +1,4 @@
-import { motion } from "framer-motion";
-import { Building2, Users, ShieldCheck, Scale, Tag, Globe } from "lucide-react";
+import { ArrowUpRight, Building2, Users, ShieldCheck, Scale, Tag, Globe } from "lucide-react";
 
 const items = [
   { icon: Building2, t: "Advance Infrastructure", d: "Modern facilities and inventory ready for immediate dispatch." },
@@ -12,32 +11,30 @@ const items = [
 
 export function WhyChoose() {
   return (
-    <section className="py-12 md:py-20 bg-muted/30">
+    <section className="py-16 md:py-28 bg-brand-black text-white">
       <div className="mx-auto max-w-7xl container-px">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="text-xs font-bold tracking-[0.2em] text-brand-red mb-3">WHY SATYA POWER TECHNOLOGYS</div>
-          <h2 className="text-3xl md:text-5xl font-black text-brand-black">Built for engineers. Trusted by professionals.</h2>
+        <div className="grid md:grid-cols-3 gap-10 mb-12 md:mb-20 items-end">
+          <div className="md:col-span-2">
+            <div className="text-[11px] font-bold tracking-[0.22em] text-primary mb-4">WHY SATYA POWER TECHNOLOGYS</div>
+            <h2 className="text-3xl md:text-5xl font-black leading-[1.05]">
+              Built for engineers.<br />Trusted by professionals.
+            </h2>
+          </div>
+          <p className="text-white/65 text-base md:text-lg">
+            Six reasons customers across two states keep coming back for sales, service and support.
+          </p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
-          {items.map((it, idx) => (
-            <motion.div
-              key={it.t}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.05 }}
-              className="bg-white p-7 group hover:bg-brand-black hover:text-white transition-colors"
-            >
-              <div className="h-12 w-12 bg-brand-red text-white flex items-center justify-center mb-4">
-                <it.icon className="h-6 w-6" />
-              </div>
-              <h3 className="font-bold text-lg">{it.t}</h3>
-              <p className="text-sm text-muted-foreground group-hover:text-white/70 mt-2">{it.d}</p>
-            </motion.div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10">
+          {items.map((it) => (
+            <div key={it.t} className="bg-brand-black p-8 group hover:bg-primary transition-colors cursor-default">
+              <it.icon className="h-8 w-8 text-primary group-hover:text-white mb-8 transition-colors" />
+              <h3 className="font-bold text-xl md:text-2xl leading-tight mb-3">{it.t}</h3>
+              <p className="text-sm text-white/65 group-hover:text-white/85 leading-relaxed mb-6">{it.d}</p>
+              <ArrowUpRight className="h-5 w-5 text-white/40 group-hover:text-white transition-colors" />
+            </div>
           ))}
         </div>
-
-
       </div>
     </section>
   );
