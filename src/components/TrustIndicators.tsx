@@ -1,8 +1,8 @@
 const stats = [
-  { value: "15+", label: "Years industry experience" },
-  { value: "10,000+", label: "Happy customers served" },
-  { value: "All India", label: "Sales & service support" },
-  { value: "24/7", label: "Service support availability" },
+  { value: "15+", label: "Years experience" },
+  { value: "10K+", label: "Customers served" },
+  { value: "PAN India", label: "Sales & service" },
+  { value: "24/7", label: "Support" },
 ];
 
 export function TrustIndicators() {
