@@ -17,9 +17,10 @@ export function PageHero({ eyebrow, title, description, bgImage, children }: Pro
         <img
           src={bg}
           alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-60"
+          className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/85 to-brand-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-black/75 via-brand-black/45 to-brand-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-black/40 via-transparent to-transparent" />
       </div>
       <div className="relative mx-auto max-w-7xl container-px py-16 md:py-28 lg:py-32 pr-14 md:pr-8">
         {eyebrow && (
