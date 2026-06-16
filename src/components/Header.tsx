@@ -87,7 +87,7 @@ export function Header() {
         {open && (
           <>
             <motion.div
-              className="lg:hidden fixed inset-0 top-16 bg-black/40 z-40"
+              className="lg:hidden fixed inset-0 top-14 bg-black/40 z-40"
               onClick={() => setOpen(false)}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -95,7 +95,7 @@ export function Header() {
               transition={{ duration: 0.25, ease: "easeInOut" }}
             />
             <motion.div
-              className="lg:hidden fixed right-0 top-16 bottom-0 w-full max-w-[320px] bg-white z-50 overflow-y-auto shadow-2xl"
+              className="lg:hidden fixed right-0 top-14 bottom-0 w-full max-w-[320px] bg-white z-50 overflow-y-auto shadow-2xl"
               initial={{ x: "100%", opacity: 0.5 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0.5 }}
