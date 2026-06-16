@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import {
-  useAuth, useProducts, useInquiries, isFirebaseConfigured, getSettings, saveSettings,
+  useAuth, useProducts, useInquiries, isFirebaseConfigured,
   DEMO_CREDENTIALS,
   type Inquiry,
 } from "@/lib/admin-data";
@@ -742,21 +742,14 @@ const defaultCompany = (): CompanyInfo => ({
 });
 
 function SettingsManager() {
-  const [watermarkEnabled, setWE] = useState(true);
-  const [saved, setSaved] = useState(false);
   const [company, setCompany] = useState<CompanyInfo>(defaultCompany);
   const [companySaved, setCompanySaved] = useState(false);
 
   useEffect(() => {
-    getSettings().then((s) => setWE(s.watermarkEnabled));
     const raw = typeof localStorage !== "undefined" ? localStorage.getItem(COMPANY_KEY) : null;
     if (raw) { try { setCompany({ ...defaultCompany(), ...JSON.parse(raw) }); } catch {} }
   }, []);
 
-  const persistWM = async (v: boolean) => {
-    setWE(v); await saveSettings({ watermarkEnabled: v });
-    setSaved(true); setTimeout(() => setSaved(false), 1500);
-  };
   const saveCompany = () => {
     localStorage.setItem(COMPANY_KEY, JSON.stringify(company));
     setCompanySaved(true); setTimeout(() => setCompanySaved(false), 1800);
@@ -796,16 +789,6 @@ function SettingsManager() {
         </div>
       </div>
 
-      {/* Watermark */}
-      <div className="bg-white rounded-xl border border-border p-6 max-w-2xl">
-        <h2 className="font-black text-brand-black">Product Image Watermark</h2>
-        <p className="text-sm text-muted-foreground mt-1">Overlay the company logo and phone number on product images.</p>
-        <label className="flex items-center gap-3 mt-5 cursor-pointer">
-          <input type="checkbox" checked={watermarkEnabled} onChange={(e) => persistWM(e.target.checked)} className="h-5 w-5 accent-brand-red" />
-          <span className="font-bold">Enable watermark overlay</span>
-        </label>
-        {saved && <div className="mt-3 text-xs text-emerald-600 font-bold">Saved ✓</div>}
-      </div>
     </div>
   );
 }
