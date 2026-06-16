@@ -32,16 +32,16 @@ export function FloatingActions() {
   return (
     <>
       {/* Right side social floating buttons (middle) */}
-      <div className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3">
+      <div className="fixed right-3 md:right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2 md:gap-3">
         <a
           href={wa}
           target="_blank"
           rel="noreferrer"
           aria-label="WhatsApp"
           title="WhatsApp"
-          className="h-12 w-12 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg hover:bg-green-600 transition-colors"
+          className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg hover:bg-green-600 transition-colors"
         >
-          <WhatsAppGlyph className="h-6 w-6" />
+          <WhatsAppGlyph className="h-5 w-5 md:h-6 md:w-6" />
         </a>
         <a
           href={instagramUrl}
@@ -49,17 +49,17 @@ export function FloatingActions() {
           rel="noreferrer"
           aria-label="Instagram"
           title="Instagram"
-          className="h-12 w-12 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
+          className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
         >
-          <Instagram className="h-6 w-6" />
+          <Instagram className="h-5 w-5 md:h-6 md:w-6" />
         </a>
         <a
           href={`tel:${SITE.phoneRaw}`}
           aria-label="Call"
           title="Call"
-          className="h-12 w-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg hover:bg-primary/90 transition-colors"
+          className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg hover:bg-primary/90 transition-colors"
         >
-          <Phone className="h-6 w-6" />
+          <Phone className="h-5 w-5 md:h-6 md:w-6" />
         </a>
       </div>
 
