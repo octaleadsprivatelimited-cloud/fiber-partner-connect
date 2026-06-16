@@ -42,7 +42,7 @@ function ProductsPage() {
                   <button
                     key={c}
                     onClick={() => setCat(c)}
-                    className={`text-left text-sm px-3 py-2 border transition ${cat === c ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border hover:border-primary hover:text-primary"}`}
+                    className={`text-left text-sm px-3 py-2 border transition ${cat === c ? "bg-yellow-500 text-black border-yellow-500" : "bg-card border-border hover:border-yellow-500 hover:text-yellow-600"}`}
                   >
                     {c}
                   </button>
