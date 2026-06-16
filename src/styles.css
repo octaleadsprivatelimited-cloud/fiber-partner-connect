@@ -34,8 +34,8 @@
   --color-brand-yellow: var(--brand-yellow);
   --color-brand-orange: var(--brand-orange);
 
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-display: "Inter", system-ui, sans-serif;
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-display: "Space Grotesk", "DM Sans", system-ui, sans-serif;
 }
 
 :root {
