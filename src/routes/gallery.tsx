@@ -27,8 +27,8 @@ function GalleryPage() {
         
       />
 
-      <section className="py-12">
-        <div className="mx-auto max-w-7xl container-px">
+      <section className="py-12 md:py-16 bg-background">
+        <div className="mx-auto max-w-[1920px] px-6 md:px-16">
           {/* Filter pills */}
           {categories.length > 1 && (
             <div className="flex flex-wrap gap-2 mb-8">
@@ -36,10 +36,10 @@ function GalleryPage() {
                 <button
                   key={c}
                   onClick={() => setCat(c)}
-                  className={`text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border transition ${
+                  className={`text-sm font-normal px-4 py-2 border transition ${
                     cat === c
-                      ? "bg-brand-red text-white border-brand-red"
-                      : "bg-white text-brand-black border-border hover:border-brand-red hover:text-brand-red"
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-card text-foreground border-border hover:border-primary hover:text-primary"
                   }`}
                 >
                   {c}
@@ -66,7 +66,7 @@ function GalleryPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.3, delay: (idx % 8) * 0.04 }}
-                  className="group relative aspect-square overflow-hidden rounded-lg border border-border bg-muted"
+                  className="group relative aspect-square overflow-hidden border border-border bg-muted"
                 >
                   <img
                     src={it.image}
@@ -74,14 +74,14 @@ function GalleryPage() {
                     loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/0 to-foreground/0 opacity-0 group-hover:opacity-100 transition" />
                   <div className="absolute inset-x-0 bottom-0 p-3 text-left opacity-0 group-hover:opacity-100 transition">
                     {it.category && (
-                      <div className="text-[9px] font-bold uppercase tracking-[0.18em] text-brand-red">
+                      <div className="text-[11px] font-normal text-primary-foreground/80">
                         {it.category}
                       </div>
                     )}
-                    <div className="text-xs font-bold text-white line-clamp-2">{it.title}</div>
+                    <div className="text-xs font-medium text-primary-foreground line-clamp-2">{it.title}</div>
                   </div>
                 </motion.button>
               ))}
@@ -112,11 +112,11 @@ function GalleryPage() {
               <img src={lightbox.image} alt={lightbox.title} className="w-full max-h-[80vh] object-contain rounded" />
               <div className="text-center mt-4 text-white">
                 {lightbox.category && (
-                  <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-red">
+                   <div className="text-xs font-normal text-primary">
                     {lightbox.category}
                   </div>
                 )}
-                <div className="font-bold mt-1">{lightbox.title}</div>
+                 <div className="font-medium mt-1">{lightbox.title}</div>
               </div>
             </motion.div>
           </motion.div>
