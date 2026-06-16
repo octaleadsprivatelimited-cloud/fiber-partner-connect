@@ -79,32 +79,67 @@ export function useAuth() {
 }
 
 /* ------------- Products ------------- */
+const PRODUCTS_LOCAL_KEY = "admin-products-v2";
+
+function readLocalProducts(): Product[] {
+  if (typeof localStorage === "undefined") return SEED_PRODUCTS;
+  try {
+    const raw = localStorage.getItem(PRODUCTS_LOCAL_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as Product[];
+      if (Array.isArray(parsed) && parsed.length) return parsed;
+    }
+  } catch { /* noop */ }
+  return SEED_PRODUCTS;
+}
+
+function writeLocalProducts(list: Product[]) {
+  if (typeof localStorage !== "undefined") {
+    localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(list));
+    window.dispatchEvent(new StorageEvent("storage", { key: PRODUCTS_LOCAL_KEY }));
+  }
+}
+
 export function useProducts() {
-  const [products, setProducts] = useState<Product[]>(SEED_PRODUCTS);
+  const [products, setProducts] = useState<Product[]>(() => readLocalProducts());
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const sync = () => setProducts(readLocalProducts());
+    if (typeof window !== "undefined") window.addEventListener("storage", sync);
     const fb = getFirebase();
-    if (!fb || !isFirebaseConfigured()) return;
+    if (!fb || !isFirebaseConfigured()) {
+      return () => {
+        if (typeof window !== "undefined") window.removeEventListener("storage", sync);
+      };
+    }
     setLoading(true);
     const q = query(collection(fb.db, "products"), orderBy("name"));
-    return onSnapshot(q, (snap) => {
+    const unsub = onSnapshot(q, (snap) => {
       const list = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Product, "id">) }));
       // If Firestore is empty, fall back to the seeded demo catalog so the
       // admin and storefront still show content out of the box.
-      setProducts(list.length ? list : SEED_PRODUCTS);
+      const next = list.length ? list : readLocalProducts();
+      setProducts(next);
+      if (list.length) writeLocalProducts(next);
       setLoading(false);
     }, () => {
       // Read failed (rules/offline) — keep seed data visible.
-      setProducts(SEED_PRODUCTS);
+      setProducts(readLocalProducts());
       setLoading(false);
     });
+    return () => {
+      if (typeof window !== "undefined") window.removeEventListener("storage", sync);
+      unsub();
+    };
   }, []);
 
   const save = async (p: Product) => {
     const fb = getFirebase();
     if (!fb || !isFirebaseConfigured()) {
-      setProducts((prev) => prev.find((x) => x.id === p.id) ? prev.map((x) => x.id === p.id ? p : x) : [...prev, p]);
+      const next = readLocalProducts().find((x) => x.id === p.id) ? readLocalProducts().map((x) => x.id === p.id ? p : x) : [...readLocalProducts(), p];
+      writeLocalProducts(next);
+      setProducts(next);
       return;
     }
     try {
@@ -119,20 +154,26 @@ export function useProducts() {
       }
     } catch (e) {
       console.warn("Firestore save failed, updating locally:", e);
-      setProducts((prev) => prev.find((x) => x.id === p.id) ? prev.map((x) => x.id === p.id ? p : x) : [...prev, p]);
+      const next = readLocalProducts().find((x) => x.id === p.id) ? readLocalProducts().map((x) => x.id === p.id ? p : x) : [...readLocalProducts(), p];
+      writeLocalProducts(next);
+      setProducts(next);
     }
   };
 
   const remove = async (id: string) => {
     const fb = getFirebase();
     if (!fb || !isFirebaseConfigured()) {
-      setProducts((prev) => prev.filter((p) => p.id !== id));
+      const next = readLocalProducts().filter((p) => p.id !== id);
+      writeLocalProducts(next);
+      setProducts(next);
       return;
     }
     try { await deleteDoc(doc(fb.db, "products", id)); }
     catch (e) {
       console.warn("Firestore delete failed, removing locally:", e);
-      setProducts((prev) => prev.filter((p) => p.id !== id));
+      const next = readLocalProducts().filter((p) => p.id !== id);
+      writeLocalProducts(next);
+      setProducts(next);
     }
   };
 
