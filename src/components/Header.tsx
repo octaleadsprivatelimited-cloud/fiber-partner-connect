@@ -1,8 +1,18 @@
 import { NavLink, Link } from "react-router-dom";
 import { Phone, MessageCircle, Menu, X, Search, ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Logo } from "./Logo";
 import { SITE, whatsappLink } from "@/lib/site";
+
+const PRODUCT_MENU = [
+  "Fusion Splicers",
+  "OTDR",
+  "Power Meters",
+  "Cleavers",
+  "Visual Fault Locators",
+  "Cleaning Kits",
+  "Spare Parts & Service",
+];
 
 const nav = [
   { to: "/", label: "Home" },
@@ -16,6 +26,8 @@ const nav = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
+  const productsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (open) {
@@ -24,6 +36,14 @@ export function Header() {
       return () => { document.body.style.overflow = prev; };
     }
   }, [open]);
+
+  useEffect(() => {
+    const close = (event: MouseEvent) => {
+      if (!productsRef.current?.contains(event.target as Node)) setProductsOpen(false);
+    };
+    document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-white">
@@ -46,16 +66,53 @@ export function Header() {
 
           <nav className="hidden lg:flex items-center gap-8 flex-1 justify-center">
             {nav.slice(1, 6).map((n) => (
-              <NavLink
-                key={n.to}
-                to={n.to}
-                className={({ isActive }) =>
-                  `inline-flex items-center gap-1 text-[13px] font-semibold tracking-wide uppercase hover:text-primary transition ${isActive ? "text-primary" : "text-brand-black"}`
-                }
-              >
-                {n.label}
-                <ChevronDown className="h-3 w-3 opacity-50" />
-              </NavLink>
+              n.to === "/products" ? (
+                <div
+                  key={n.to}
+                  ref={productsRef}
+                  className="relative"
+                  onMouseEnter={() => setProductsOpen(true)}
+                  onMouseLeave={() => setProductsOpen(false)}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setProductsOpen((v) => !v)}
+                    className="inline-flex items-center gap-1 text-[13px] font-semibold tracking-wide uppercase text-brand-black hover:text-primary transition"
+                    aria-expanded={productsOpen}
+                  >
+                    {n.label}
+                    <ChevronDown className={`h-3 w-3 opacity-50 transition ${productsOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {productsOpen && (
+                    <div className="absolute left-1/2 top-full z-50 mt-6 w-[320px] -translate-x-1/2 border border-border bg-white shadow-2xl">
+                      <div className="grid gap-1 p-3">
+                        {PRODUCT_MENU.map((label) => (
+                          <Link
+                            key={label}
+                            to={`/products?category=${encodeURIComponent(label)}`}
+                            onClick={() => setProductsOpen(false)}
+                            className="flex items-center justify-between px-4 py-3 text-sm font-semibold text-brand-black hover:bg-muted hover:text-primary transition"
+                          >
+                            {label}
+                            <ChevronDown className="h-3.5 w-3.5 -rotate-90 opacity-40" />
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <NavLink
+                  key={n.to}
+                  to={n.to}
+                  className={({ isActive }) =>
+                    `inline-flex items-center gap-1 text-[13px] font-semibold tracking-wide uppercase hover:text-primary transition ${isActive ? "text-primary" : "text-brand-black"}`
+                  }
+                >
+                  {n.label}
+                  <ChevronDown className="h-3 w-3 opacity-50" />
+                </NavLink>
+              )
             ))}
           </nav>
 
