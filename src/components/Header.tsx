@@ -121,8 +121,8 @@ export function Header() {
                 <motion.a
                   href={`tel:${SITE.phoneRaw}`}
                   className="py-4 text-sm font-normal text-primary"
-                  initial={{ x: 30, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: nav.length * 0.05, duration: 0.35, ease: "easeOut" }}
                 >
                   <Headphones className="inline h-4 w-4 mr-2" />{SITE.phone}
