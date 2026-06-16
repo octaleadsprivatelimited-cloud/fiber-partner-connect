@@ -1,5 +1,5 @@
 import { NavLink, Link } from "react-router-dom";
-import { Phone, MessageCircle, Menu, X, Search, ChevronDown } from "lucide-react";
+import { Headphones, Menu, X, Search, ChevronDown, UserRound, Globe2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Logo } from "./Logo";
@@ -28,56 +28,54 @@ export function Header() {
 
 
   return (
-    <header className="sticky top-0 z-50 bg-white">
-      {/* Dell-style thin utility top bar — light gray */}
-      <div className="hidden md:block bg-[#f3f3f3] text-[#444] text-[11px] border-b border-[#e5e5e5]">
-        <div className="mx-auto max-w-7xl container-px flex h-7 items-center justify-end gap-5">
-          <a href={`tel:${SITE.phoneRaw}`} className="hover:text-primary inline-flex items-center gap-1.5">
-            <Phone className="h-3 w-3" /> {SITE.phone}
-          </a>
-          <span className="text-[#ccc]">|</span>
-          <Link to="/about" className="hover:text-primary">About</Link>
-          <Link to="/contact" className="hover:text-primary">Contact</Link>
-          <Link to="/gallery" className="hover:text-primary">Gallery</Link>
+    <header className="sticky top-0 z-50 bg-card text-foreground shadow-[0_1px_0_hsl(var(--border))]">
+      <div className="border-b border-border">
+        <div className="mx-auto max-w-[1920px] px-4 md:px-8 flex h-[52px] items-center gap-6">
+          <Link to="/" className="shrink-0 flex items-center"><Logo className="h-9" /></Link>
+          <div className="hidden md:flex flex-1 items-center max-w-xl border border-input h-9 bg-card">
+            <input aria-label="Search" placeholder="Search Satya Power" className="min-w-0 flex-1 px-3 text-sm outline-none bg-transparent" />
+            <button aria-label="Search" className="h-full w-10 grid place-items-center hover:bg-muted transition">
+              <Search className="h-4 w-4 text-muted-foreground" />
+            </button>
+          </div>
+          <div className="ml-auto hidden md:flex items-center gap-5 text-[13px] text-muted-foreground">
+            <Link to="/contact" className="inline-flex items-center gap-1.5 hover:text-primary"><UserRound className="h-4 w-4" /> Sign In</Link>
+            <a href={`tel:${SITE.phoneRaw}`} className="inline-flex items-center gap-1.5 hover:text-primary"><Headphones className="h-4 w-4" /> Contact Us</a>
+            <span className="inline-flex items-center gap-1.5"><Globe2 className="h-4 w-4" /> IN/EN <ChevronDown className="h-3.5 w-3.5" /></span>
+          </div>
+          <button onClick={() => setOpen(!open)} className="lg:hidden ml-auto p-2" aria-label="Menu">
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
       </div>
 
-      {/* main bar — Dell-style slim, clean */}
-      <div className="border-b border-[#e5e5e5]">
-        <div className="mx-auto max-w-7xl container-px flex h-14 md:h-16 items-center justify-between gap-6">
-          <Link to="/" className="shrink-0 flex items-center"><Logo className="h-12 md:h-14 w-auto" /></Link>
-
-          <nav className="hidden lg:flex items-center gap-7 flex-1 justify-center">
-            {nav.slice(1, 6).map((n) => (
+      <div className="hidden lg:block border-b border-border bg-card">
+        <div className="mx-auto max-w-[1920px] px-4 md:px-8 flex h-[52px] items-center justify-between gap-6">
+          <nav className="flex items-center gap-8">
+            {nav.slice(1).map((n) => (
               <NavLink
                 key={n.to}
                 to={n.to}
                 end={n.to === "/"}
                 className={({ isActive }) =>
-                  `relative text-[14px] font-normal text-[#1a1a1a] hover:text-primary transition py-1 after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-[2px] after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left ${isActive ? "text-primary after:scale-x-100" : ""}`
+                  `inline-flex items-center gap-1.5 text-[14px] font-normal hover:text-primary transition py-4 border-b-2 ${isActive ? "text-primary border-primary" : "border-transparent"}`
                 }
               >
                 {n.label}
+                <ChevronDown className="h-3.5 w-3.5 opacity-70" />
               </NavLink>
             ))}
           </nav>
-
-          <div className="flex items-center gap-2">
-            <button aria-label="Search" className="hidden md:inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-[#f3f3f3]">
-              <Search className="h-4 w-4 text-[#1a1a1a]" />
-            </button>
+          <div className="flex items-center gap-4">
             <a
               href={whatsappLink()}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center h-9 px-4 sm:px-5 rounded-sm bg-primary text-white text-[13px] font-semibold hover:bg-brand-red-dark transition-colors duration-200"
+              className="inline-flex items-center h-9 px-5 bg-primary text-primary-foreground text-[14px] font-normal hover:bg-brand-red-dark transition-colors duration-200"
             >
-              <span className="hidden sm:inline">Get a Quote</span>
-              <span className="sm:hidden">Quote</span>
+              Get a Quote
             </a>
-            <button onClick={() => setOpen(!open)} className="lg:hidden p-2" aria-label="Menu">
-              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
+            <Link to="/services" className="inline-flex items-center gap-2 border-l-8 border-primary pl-3 text-sm font-medium hover:text-primary">Satya Premier for Business</Link>
           </div>
         </div>
       </div>
@@ -87,7 +85,7 @@ export function Header() {
         {open && (
           <>
             <motion.div
-              className="lg:hidden fixed inset-0 top-14 bg-black/40 z-40"
+              className="lg:hidden fixed inset-0 top-[52px] bg-foreground/40 z-40"
               onClick={() => setOpen(false)}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -95,7 +93,7 @@ export function Header() {
               transition={{ duration: 0.25, ease: "easeInOut" }}
             />
             <motion.div
-              className="lg:hidden fixed right-0 top-14 bottom-0 w-full max-w-[320px] bg-white z-50 overflow-y-auto shadow-2xl"
+              className="lg:hidden fixed right-0 top-[52px] bottom-0 w-full max-w-[320px] bg-card z-50 overflow-y-auto shadow-2xl"
               initial={{ x: "100%", opacity: 0.5 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0.5 }}
@@ -113,7 +111,7 @@ export function Header() {
                     <Link
                       to={n.to}
                       onClick={() => setOpen(false)}
-                      className="py-4 text-sm font-semibold uppercase tracking-wide text-brand-black border-b border-border last:border-0 flex items-center justify-between"
+                      className="py-4 text-sm font-normal text-foreground border-b border-border last:border-0 flex items-center justify-between"
                     >
                       {n.label}
                       <ChevronDown className="h-4 w-4 -rotate-90 opacity-50" />
@@ -122,12 +120,12 @@ export function Header() {
                 ))}
                 <motion.a
                   href={`tel:${SITE.phoneRaw}`}
-                  className="py-4 text-sm font-semibold text-primary"
+                  className="py-4 text-sm font-normal text-primary"
                   initial={{ x: 30, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: nav.length * 0.05, duration: 0.35, ease: "easeOut" }}
                 >
-                  <Phone className="inline h-4 w-4 mr-2" />{SITE.phone}
+                  <Headphones className="inline h-4 w-4 mr-2" />{SITE.phone}
                 </motion.a>
               </div>
             </motion.div>
