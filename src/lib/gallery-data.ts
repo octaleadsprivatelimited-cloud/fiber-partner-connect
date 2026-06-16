@@ -72,7 +72,8 @@ export function useGallery() {
     };
   }, []);
 
-  const items: GalleryItem[] = [...remote, ...local];
+  const remoteKeys = new Set(remote.map((i) => `${i.title}|${i.image}`));
+  const items: GalleryItem[] = [...remote, ...local.filter((i) => !remoteKeys.has(`${i.title}|${i.image}`))];
 
   const add = useCallback(async (data: { title: string; category?: string; file: File }) => {
     // Compress aggressively — Firestore document limit is ~1MB.
