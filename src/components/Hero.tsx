@@ -53,15 +53,14 @@ export function Hero() {
           </h1>
           <p className="mt-6 text-base md:text-lg text-white/75 max-w-xl">{s.body}</p>
 
-          <div className="mt-10 flex flex-wrap gap-8 items-center">
-            <Link to="/products" className="group inline-flex items-center gap-3 text-sm font-bold uppercase tracking-wider text-white">
-              <span className="border-b-2 border-primary pb-1">Explore Products</span>
-              <span className="h-9 w-9 rounded-full bg-primary flex items-center justify-center group-hover:translate-x-1 transition-transform">
-                <ArrowRight className="h-4 w-4" />
-              </span>
+          <div className="mt-10 flex flex-wrap gap-4 items-center">
+            <Link to="/products" className="group btn-premium">
+              Explore Products
+              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <Link to="/services" className="text-sm font-bold uppercase tracking-wider text-white/80 hover:text-white border-b border-white/30 pb-1">
+            <Link to="/services" className="group inline-flex items-center gap-2 px-6 py-3.5 text-xs font-bold uppercase tracking-[0.08em] text-white border border-white/30 rounded-lg backdrop-blur hover:bg-white/10 hover:border-white/60 transition-all">
               Our Services
+              <ArrowRight className="h-3.5 w-3.5 opacity-70 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
         </div>

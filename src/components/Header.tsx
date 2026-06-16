@@ -124,7 +124,7 @@ export function Header() {
               href={whatsappLink()}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1.5 bg-primary px-4 py-2 text-xs font-bold uppercase tracking-wider text-white hover:bg-primary/90 transition rounded-none"
+              className="btn-premium"
             >
               <MessageCircle className="h-4 w-4" />
               <span className="hidden sm:inline">Get a Quote</span>

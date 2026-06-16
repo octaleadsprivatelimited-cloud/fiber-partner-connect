@@ -21,12 +21,14 @@ export function ServiceBranches() {
             Five locations across Andhra Pradesh & Telangana for fast on-site support.
           </p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-px bg-border">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {branches.map((b) => (
-            <div key={b.city} className="group bg-white p-6 md:p-8 hover:bg-brand-black transition-colors">
-              <MapPin className="h-6 w-6 text-primary mb-6" />
-              <div className="text-xl md:text-2xl font-black text-brand-black group-hover:text-white transition-colors">{b.city}</div>
-              <div className="mt-2 text-xs text-muted-foreground group-hover:text-white/70 uppercase tracking-wide">{b.role}</div>
+            <div key={b.city} className="group card-premium p-6 md:p-7 cursor-default">
+              <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-5 group-hover:bg-primary group-hover:text-white transition-colors">
+                <MapPin className="h-5 w-5" />
+              </div>
+              <div className="text-lg md:text-xl font-black text-brand-black">{b.city}</div>
+              <div className="mt-1.5 text-[11px] text-muted-foreground uppercase tracking-[0.12em]">{b.role}</div>
             </div>
           ))}
         </div>
