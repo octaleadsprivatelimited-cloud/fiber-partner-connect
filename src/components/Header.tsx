@@ -93,10 +93,10 @@ export function Header() {
               transition={{ duration: 0.25, ease: "easeInOut" }}
             />
             <motion.div
-              className="lg:hidden fixed right-0 top-[52px] bottom-0 w-full max-w-[320px] bg-card z-50 overflow-y-auto shadow-2xl"
-              initial={{ x: "100%", opacity: 0.5 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: "100%", opacity: 0.5 }}
+              className="lg:hidden fixed left-0 right-0 top-[52px] bg-card z-50 overflow-y-auto shadow-2xl border-b border-border"
+              initial={{ y: "-100%", opacity: 0.5 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: "-100%", opacity: 0.5 }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
             >
