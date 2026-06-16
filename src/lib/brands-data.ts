@@ -84,10 +84,10 @@ export function useBrands() {
   }, []);
 
   const add = useCallback(async (data: Omit<BrandItem, "id">) => {
+    const item: BrandItem = { ...data, id: `local-${Date.now()}` };
+    writeLocal([...readLocal().filter((b) => b.name.toLowerCase() !== data.name.toLowerCase()), item]);
     const fb = getFirebase();
     if (!fb || !isFirebaseConfigured()) {
-      const item: BrandItem = { ...data, id: `local-${Date.now()}` };
-      writeLocal([...readLocal(), item]);
       return;
     }
     try {
@@ -96,8 +96,6 @@ export function useBrands() {
       });
     } catch (e: any) {
       console.warn("Brand save failed, saving locally:", e);
-      const item: BrandItem = { ...data, id: `local-${Date.now()}` };
-      writeLocal([...readLocal(), item]);
       throw new Error(
         e?.code === "permission-denied"
           ? "Permission denied by Firestore rules. The brand was saved only on this device. Verify your admin UID exists in the /admins collection and that the brands rules allow admin writes."
@@ -129,6 +127,8 @@ export function useBrands() {
     }
     const fb = getFirebase();
     if (!fb || !isFirebaseConfigured()) return;
+    const localNext = readLocal().map((b) => (b.id === id || b.name === patch.name ? { ...b, ...patch } : b));
+    writeLocal(localNext);
     try { await updateDoc(doc(fb.db, "brands", id), patch as any); }
     catch (e: any) {
       throw new Error(
