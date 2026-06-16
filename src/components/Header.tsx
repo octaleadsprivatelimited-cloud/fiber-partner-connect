@@ -1,18 +1,8 @@
 import { NavLink, Link } from "react-router-dom";
 import { Phone, MessageCircle, Menu, X, Search, ChevronDown } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
 import { SITE, whatsappLink } from "@/lib/site";
-
-const PRODUCT_MENU = [
-  { label: "Fusion Splicers", to: "/products?category=Fusion%20Splicers" },
-  { label: "OTDR", to: "/products?category=OTDR" },
-  { label: "Power Meters", to: "/products?category=Power%20Meters" },
-  { label: "Cleavers", to: "/products?category=Cleavers" },
-  { label: "Visual Fault Locators", to: "/products?category=Visual%20Fault%20Locators" },
-  { label: "Cleaning Kits", to: "/products?category=Cleaning%20Kits" },
-  { label: "Spare Parts & Service", to: "/services" },
-];
 
 const nav = [
   { to: "/", label: "Home" },
@@ -26,8 +16,6 @@ const nav = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [productsOpen, setProductsOpen] = useState(false);
-  const productsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (open) {
@@ -37,13 +25,6 @@ export function Header() {
     }
   }, [open]);
 
-  useEffect(() => {
-    const close = (event: MouseEvent) => {
-      if (!productsRef.current?.contains(event.target as Node)) setProductsOpen(false);
-    };
-    document.addEventListener("mousedown", close);
-    return () => document.removeEventListener("mousedown", close);
-  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-white">
@@ -66,53 +47,16 @@ export function Header() {
 
           <nav className="hidden lg:flex items-center gap-8 flex-1 justify-center">
             {nav.slice(1, 6).map((n) => (
-              n.to === "/products" ? (
-                <div
-                  key={n.to}
-                  ref={productsRef}
-                  className="relative"
-                  onMouseEnter={() => setProductsOpen(true)}
-                  onMouseLeave={() => setProductsOpen(false)}
-                >
-                  <button
-                    type="button"
-                    onClick={() => setProductsOpen((v) => !v)}
-                    className="inline-flex items-center gap-1 text-[13px] font-semibold tracking-wide uppercase text-brand-black hover:text-primary transition"
-                    aria-expanded={productsOpen}
-                  >
-                    {n.label}
-                    <ChevronDown className={`h-3 w-3 opacity-50 transition ${productsOpen ? "rotate-180" : ""}`} />
-                  </button>
-                  {productsOpen && (
-                    <div className="absolute left-1/2 top-full z-50 mt-6 w-[320px] -translate-x-1/2 border border-border bg-white shadow-2xl">
-                      <div className="grid gap-1 p-3">
-                        {PRODUCT_MENU.map((item) => (
-                          <Link
-                            key={item.label}
-                            to={item.to}
-                            onClick={() => setProductsOpen(false)}
-                            className="flex items-center justify-between px-4 py-3 text-sm font-semibold text-brand-black hover:bg-muted hover:text-primary transition"
-                          >
-                            {item.label}
-                            <ChevronDown className="h-3.5 w-3.5 -rotate-90 opacity-40" />
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <NavLink
-                  key={n.to}
-                  to={n.to}
-                  className={({ isActive }) =>
-                    `inline-flex items-center gap-1 text-[13px] font-semibold tracking-wide uppercase hover:text-primary transition ${isActive ? "text-primary" : "text-brand-black"}`
-                  }
-                >
-                  {n.label}
-                  <ChevronDown className="h-3 w-3 opacity-50" />
-                </NavLink>
-              )
+              <NavLink
+                key={n.to}
+                to={n.to}
+                end={n.to === "/"}
+                className={({ isActive }) =>
+                  `text-[13px] font-semibold tracking-wide uppercase hover:text-primary transition ${isActive ? "text-primary" : "text-brand-black"}`
+                }
+              >
+                {n.label}
+              </NavLink>
             ))}
           </nav>
 
@@ -143,38 +87,11 @@ export function Header() {
           <div className="lg:hidden fixed left-0 right-0 top-16 bottom-0 bg-white z-40 overflow-y-auto">
             <div className="mx-auto max-w-7xl container-px flex flex-col py-2">
               {nav.map((n) => (
-                n.to === "/products" ? (
-                  <div key={n.to} className="border-b border-border">
-                    <button
-                      type="button"
-                      onClick={() => setProductsOpen((v) => !v)}
-                      className="w-full py-4 text-sm font-semibold uppercase tracking-wide text-brand-black flex items-center justify-between"
-                    >
-                      {n.label}
-                      <ChevronDown className={`h-4 w-4 opacity-50 transition ${productsOpen ? "rotate-180" : "-rotate-90"}`} />
-                    </button>
-                    {productsOpen && (
-                      <div className="grid gap-1 pb-3">
-                        {PRODUCT_MENU.map((item) => (
-                          <Link
-                            key={item.label}
-                            to={item.to}
-                            onClick={() => { setProductsOpen(false); setOpen(false); }}
-                            className="px-4 py-3 text-sm font-medium text-muted-foreground bg-muted/50"
-                          >
-                            {item.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <Link key={n.to} to={n.to} onClick={() => setOpen(false)}
-                    className="py-4 text-sm font-semibold uppercase tracking-wide text-brand-black border-b border-border last:border-0 flex items-center justify-between">
-                    {n.label}
-                    <ChevronDown className="h-4 w-4 -rotate-90 opacity-50" />
-                  </Link>
-                )
+                <Link key={n.to} to={n.to} onClick={() => setOpen(false)}
+                  className="py-4 text-sm font-semibold uppercase tracking-wide text-brand-black border-b border-border last:border-0 flex items-center justify-between">
+                  {n.label}
+                  <ChevronDown className="h-4 w-4 -rotate-90 opacity-50" />
+                </Link>
               ))}
               <a href={`tel:${SITE.phoneRaw}`} className="py-4 text-sm font-semibold text-primary">
                 <Phone className="inline h-4 w-4 mr-2" />{SITE.phone}
