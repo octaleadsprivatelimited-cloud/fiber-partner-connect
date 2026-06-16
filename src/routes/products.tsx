@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
 import { CTABanner } from "@/components/CTABanner";
@@ -13,6 +13,9 @@ function ProductsPage() {
   const { products } = useProducts();
   const [cat, setCatState] = useState<string>(searchParams.get("category") || "All");
   const [brand, setBrand] = useState<string>("All");
+  useEffect(() => {
+    setCatState(searchParams.get("category") || "All");
+  }, [searchParams]);
   const setCat = (value: string) => {
     setCatState(value);
     setSearchParams(value === "All" ? {} : { category: value });
