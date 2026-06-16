@@ -12,13 +12,13 @@ export function NotFoundPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-black text-brand-red">404</h1>
-        <h2 className="mt-4 text-xl font-bold">Page not found</h2>
+        <h1 className="text-7xl font-light text-primary">404</h1>
+        <h2 className="mt-4 text-xl font-normal">Page not found</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           The page you're looking for doesn't exist or has been moved.
         </p>
         <div className="mt-6">
-          <Link to="/" className="inline-flex items-center justify-center bg-brand-red px-5 py-3 text-sm font-bold text-white hover:bg-brand-red-dark transition">
+          <Link to="/" className="inline-flex items-center justify-center bg-primary px-5 py-3 text-sm font-normal text-primary-foreground hover:bg-brand-red-dark transition">
             Back home
           </Link>
         </div>

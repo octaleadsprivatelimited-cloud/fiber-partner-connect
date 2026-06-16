@@ -34,38 +34,38 @@
   --color-brand-yellow: var(--brand-yellow);
   --color-brand-orange: var(--brand-orange);
 
-  --font-sans: "Segoe UI", "Segoe UI Web (West European)", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-  --font-display: "Segoe UI", "Segoe UI Web (West European)", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Roboto", Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --font-display: "Roboto", Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 :root {
-  --radius: 0.25rem;
+  --radius: 0.125rem;
   --background: oklch(1 0 0);
-  --foreground: oklch(0.18 0.01 250);
+  --foreground: hsl(0 0% 10%);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.01 250);
+  --card-foreground: hsl(0 0% 10%);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.01 250);
-  --primary: oklch(0.62 0.24 27);
+  --popover-foreground: hsl(0 0% 10%);
+  --primary: hsl(207 94% 41%);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.15 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.5 0.005 250);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.15 0 0);
-  --destructive: oklch(0.58 0.22 27);
+  --secondary: hsl(210 11% 96%);
+  --secondary-foreground: hsl(0 0% 10%);
+  --muted: hsl(210 11% 96%);
+  --muted-foreground: hsl(0 0% 35%);
+  --accent: hsl(205 73% 94%);
+  --accent-foreground: hsl(207 100% 24%);
+  --destructive: hsl(0 72% 48%);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.92 0.003 250);
-  --input: oklch(0.92 0.003 250);
-  --ring: oklch(0.62 0.24 27);
+  --border: hsl(0 0% 88%);
+  --input: hsl(0 0% 82%);
+  --ring: hsl(207 94% 41%);
 
-  /* Brand — Adobe-inspired Noir + signature red */
-  --brand-red: oklch(0.62 0.24 27);
-  --brand-red-dark: oklch(0.52 0.22 27);
-  --brand-black: oklch(0.14 0.004 250);
-  --brand-yellow: oklch(0.86 0.17 90);
-  --brand-orange: oklch(0.72 0.18 50);
+  /* Dell UI palette */
+  --brand-red: hsl(207 94% 41%);
+  --brand-red-dark: hsl(207 100% 24%);
+  --brand-black: hsl(0 0% 10%);
+  --brand-yellow: hsl(205 73% 94%);
+  --brand-orange: hsl(204 100% 36%);
 
   --shadow-elegant: 0 1px 2px hsl(0 0% 0% / 0.04), 0 12px 32px -16px hsl(0 0% 0% / 0.12);
   --shadow-premium: 0 1px 2px hsl(0 0% 0% / 0.04), 0 30px 60px -30px hsl(0 0% 0% / 0.22);
@@ -88,8 +88,8 @@
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01", "cv11";
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.01em; font-weight: 600; }
-  h1 { letter-spacing: -0.02em; font-weight: 600; }
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: 0; font-weight: 400; }
+  h1 { letter-spacing: 0; font-weight: 300; }
 }
 
 @utility container-px {
@@ -115,23 +115,24 @@
   box-shadow: var(--shadow-premium);
 }
 
-/* Premium button primitives */
+/* Dell-style button primitives */
 @utility btn-premium {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   padding: 0.875rem 1.5rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
   color: #fff;
-  background-image: linear-gradient(135deg, var(--primary) 0%, color-mix(in oklab, var(--primary) 70%, black) 100%);
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 0 hsl(0 0% 100% / 0.15) inset, 0 8px 20px -10px color-mix(in oklab, var(--primary) 80%, transparent);
-  transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
-  &:hover { transform: translateY(-1px); filter: brightness(1.05); box-shadow: 0 1px 0 hsl(0 0% 100% / 0.2) inset, 0 16px 28px -12px color-mix(in oklab, var(--primary) 80%, transparent); }
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 2px;
+  box-shadow: none;
+  transition: background .2s ease, border-color .2s ease;
+  &:hover { background: var(--brand-red-dark); border-color: var(--brand-red-dark); }
   &:active { transform: translateY(0); }
 }
 
@@ -141,16 +142,16 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.875rem 1.5rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--brand-black);
   background: #fff;
   border: 1px solid var(--border);
-  border-radius: 0.5rem;
+  border-radius: 2px;
   transition: border-color .25s ease, color .25s ease, background .25s ease, transform .25s ease, box-shadow .25s ease;
-  &:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); box-shadow: var(--shadow-elegant); }
+  &:hover { border-color: var(--primary); color: var(--primary); background: var(--accent); }
 }
 
 @utility btn-dark-premium {
@@ -164,8 +165,8 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #fff;
-  background-image: linear-gradient(135deg, var(--brand-black) 0%, color-mix(in oklab, var(--brand-black) 80%, var(--primary)) 100%);
-  border-radius: 0.5rem;
+  background: var(--brand-black);
+  border-radius: 2px;
   transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
   &:hover { transform: translateY(-1px); filter: brightness(1.1); box-shadow: 0 12px 24px -12px hsl(220 30% 12% / 0.35); }
 }
@@ -174,7 +175,7 @@
 @utility card-premium {
   background: #fff;
   border: 1px solid var(--border);
-  border-radius: 0.875rem;
+  border-radius: 0;
   box-shadow: var(--shadow-elegant);
   transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
   &:hover { transform: translateY(-3px); box-shadow: var(--shadow-premium); border-color: color-mix(in oklab, var(--primary) 30%, var(--border)); }

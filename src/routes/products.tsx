@@ -32,17 +32,17 @@ function ProductsPage() {
         
       />
 
-      <section className="py-12">
-        <div className="mx-auto max-w-7xl container-px grid md:grid-cols-[240px_1fr] lg:grid-cols-[260px_1fr] gap-10 items-start">
+      <section className="py-12 md:py-16 bg-background">
+        <div className="mx-auto max-w-[1920px] px-6 md:px-16 grid md:grid-cols-[240px_1fr] lg:grid-cols-[260px_1fr] gap-10 items-start">
           <aside className="md:sticky md:top-24 self-start space-y-8 md:max-h-[calc(100vh-7rem)] md:overflow-y-auto md:pr-2">
             <div>
-              <h3 className="font-bold text-sm uppercase tracking-wider mb-3 text-brand-black">Category</h3>
+              <h3 className="font-medium text-sm mb-3 text-foreground">Category</h3>
               <div className="flex flex-wrap lg:flex-col gap-2">
                 {["All", ...CATEGORIES].map((c) => (
                   <button
                     key={c}
                     onClick={() => setCat(c)}
-                    className={`text-left text-sm px-3 py-2 border transition ${cat === c ? "bg-brand-red text-white border-brand-red" : "bg-white border-border hover:border-brand-red"}`}
+                    className={`text-left text-sm px-3 py-2 border transition ${cat === c ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border hover:border-primary hover:text-primary"}`}
                   >
                     {c}
                   </button>
@@ -50,13 +50,13 @@ function ProductsPage() {
               </div>
             </div>
             <div>
-              <h3 className="font-bold text-sm uppercase tracking-wider mb-3 text-brand-black">Brand</h3>
+              <h3 className="font-medium text-sm mb-3 text-foreground">Brand</h3>
               <div className="flex flex-wrap lg:flex-col gap-2">
                 {["All", ...BRANDS].map((b) => (
                   <button
                     key={b}
                     onClick={() => setBrand(b)}
-                    className={`text-left text-sm px-3 py-2 border transition ${brand === b ? "bg-brand-black text-white border-brand-black" : "bg-white border-border hover:border-brand-black"}`}
+                    className={`text-left text-sm px-3 py-2 border transition ${brand === b ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border hover:border-primary hover:text-primary"}`}
                   >
                     {b}
                   </button>
