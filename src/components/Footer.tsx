@@ -41,7 +41,7 @@ export function Footer() {
       <div className="mx-auto max-w-[1920px] px-5 md:px-16 pt-8 md:pt-14 pb-4 md:pb-6">
         <div className="grid gap-4 md:gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
-            <Logo className="h-9 md:h-12" />
+            <Logo className="h-14 md:h-20" />
             <p className="mt-3 md:mt-5 text-[12px] md:text-[13px] text-muted-foreground max-w-xs leading-relaxed">
               {SITE.tagline}. Authorized Distributor for Inno, Grandway, Claron & EXFO across Andhra Pradesh & Telangana.
             </p>
