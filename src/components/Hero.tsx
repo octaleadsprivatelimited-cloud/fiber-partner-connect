@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Wrench, Award, MapPin } from "lucide-react";
-import heroBg from "@/assets/hero-bg-blue.jpg";
+import heroBg from "@/assets/hero-bg-blue-v1.jpg";
 
 const slides = [
   {
