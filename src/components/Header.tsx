@@ -31,7 +31,7 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-card text-foreground shadow-[0_1px_0_var(--border)]">
       <div className="border-b border-border">
         <div className="mx-auto max-w-[1920px] px-4 md:px-8 flex h-[52px] items-center gap-6">
-          <Link to="/" className="shrink-0 flex items-center"><Logo className="h-9" /></Link>
+          <Link to="/" className="shrink-0 flex items-center"><Logo className="h-14 md:h-16" /></Link>
           <div className="hidden md:flex flex-1 items-center max-w-xl border border-input h-9 bg-card">
             <input aria-label="Search" placeholder="Search Satya Power" className="min-w-0 flex-1 px-3 text-sm outline-none bg-transparent" />
             <button aria-label="Search" className="h-full w-10 grid place-items-center hover:bg-muted transition">
