@@ -32,7 +32,7 @@ export function FloatingActions() {
   return (
     <>
       {/* Right side social floating buttons (middle) */}
-      <div className="fixed right-3 md:right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2 md:gap-3">
+      <div className="fixed right-0 md:right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2 md:gap-3">
         <a
           href={wa}
           target="_blank"
