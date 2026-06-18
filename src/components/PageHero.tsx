@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import heroBg from "@/assets/hero-bg-blue.jpg.asset.json";
+import heroBg from "@/assets/hero-bg-blue.jpg";
 
 type Props = {
   eyebrow?: string;
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export function PageHero({ eyebrow, title, description, bgImage, children }: Props) {
-  const bg = bgImage ?? heroBg.url;
+  const bg = bgImage ?? heroBg;
   return (
     <section className="relative bg-brand-black text-primary-foreground overflow-hidden">
       <div className="absolute inset-0">

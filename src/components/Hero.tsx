@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Wrench, Award, MapPin } from "lucide-react";
-import heroBg from "@/assets/hero-bg-blue.jpg.asset.json";
+import heroBg from "@/assets/hero-bg-blue.jpg";
 
 const slides = [
   {
@@ -33,7 +33,7 @@ export function Hero() {
   return (
     <section className="relative bg-brand-black text-primary-foreground overflow-hidden">
       <div className="absolute inset-0">
-        <img src={heroBg.url} alt="" className="absolute inset-0 h-full w-full object-cover opacity-70" />
+        <img src={heroBg} alt="" className="absolute inset-0 h-full w-full object-cover opacity-70" />
         <div className="absolute inset-0 bg-gradient-to-r from-brand-black/85 via-brand-black/55 to-transparent" />
       </div>
 
