@@ -1,4 +1,4 @@
-import logoUrl from "@/assets/satya-logo.png";
+import logoUrl from "@/assets/satya-logo-v1.png";
 import { SITE } from "@/lib/site";
 
 interface Props {
