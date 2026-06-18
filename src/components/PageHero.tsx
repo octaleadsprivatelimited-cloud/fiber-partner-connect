@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import heroBg from "@/assets/hero-bg-blue.jpg.asset.json";
+import heroBg from "@/assets/hero-bg-blue.jpg";
 
 type Props = {
   eyebrow?: string;
