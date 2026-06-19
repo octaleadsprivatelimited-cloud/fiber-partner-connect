@@ -54,6 +54,10 @@ export interface Product {
   description: string;
   image: string;
   featured?: boolean;
+  /** Optional product brochure/datasheet (data URL or hosted URL). */
+  pdf?: string;
+  /** Optional filename for the PDF (used when downloading). */
+  pdfName?: string;
 }
 
 export const PRODUCTS: Product[] = [

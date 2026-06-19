@@ -2,12 +2,13 @@ import { motion } from "framer-motion";
 import { Award, Target, Users, Quote, MapPin, Calendar } from "lucide-react";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
+import { CountUp } from "@/components/CountUp";
 import { SITE } from "@/lib/site";
 
 
 
 const timeline = [
-  { year: "2013", title: "Founded", body: "SATYA POWER TECHNOLOGYS established under the leadership of Mr. Deepak Singh." },
+  { year: "2013", title: "Founded", body: "SATYA POWER TECHNOLOGYS established under the leadership of Mr. Dorababu." },
   { year: "2024", title: "Authorized Distributor for Inno, Grandway, Claron & EXFO", body: "Awarded official distribution rights across AP & Telangana." },
   { year: "2024", title: "Service Center Launched", body: "In-house repair and calibration facility opened — the only authorized one in region." },
   { year: "2025", title: "Expanding Catalogue", body: "Added Fujikura, Sumitomo, Grandway, EXFO, VIAVI and Fiberfox to the brand portfolio." },
@@ -59,12 +60,14 @@ function AboutPage() {
           <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { v: "12+", l: "Years in business" },
-              { v: "500+", l: "Happy customers" },
+              { v: "5000+", l: "Happy Customers" },
               { v: "2", l: "States covered" },
               { v: "7+", l: "Authorized brands" },
             ].map((s) => (
               <div key={s.l} className="bg-card border border-border p-5 text-center">
-                <div className="text-3xl md:text-4xl font-light text-primary">{s.v}</div>
+                <div className="text-3xl md:text-4xl font-light text-primary">
+                  <CountUp value={s.v} />
+                </div>
                 <div className="text-xs text-muted-foreground mt-1">{s.l}</div>
               </div>
             ))}
@@ -101,13 +104,23 @@ function AboutPage() {
           </div>
 
           {/* Location card */}
-          <div className="mt-12 bg-primary text-primary-foreground p-8 md:p-10 flex flex-col md:flex-row md:items-center gap-6 justify-between">
+          <div className="mt-12 bg-primary text-primary-foreground p-8 md:p-10 grid md:grid-cols-2 gap-6">
             <div className="flex items-start gap-4">
               <MapPin className="h-8 w-8 text-primary-foreground shrink-0" />
               <div>
-                <div className="text-sm font-normal text-primary-foreground/75 mb-1">Headquarters</div>
+                <div className="text-sm font-normal text-primary-foreground/75 mb-1">Head Office</div>
+                <div className="text-lg font-medium">Peddapuram, Andhra Pradesh</div>
+                <p className="text-sm text-primary-foreground/85 mt-1 max-w-xl">{SITE.address}</p>
+                <p className="text-xs text-primary-foreground/70 mt-2">GSTIN: {SITE.gstin} · {SITE.phone}</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <MapPin className="h-8 w-8 text-primary-foreground shrink-0" />
+              <div>
+                <div className="text-sm font-normal text-primary-foreground/75 mb-1">Branch Office</div>
                 <div className="text-lg font-medium">Hyderabad, Telangana</div>
-                <p className="text-sm text-primary-foreground/80 mt-1 max-w-xl">{SITE.address}</p>
+                <p className="text-sm text-primary-foreground/85 mt-1 max-w-xl">{SITE.addressAlt}</p>
+                <p className="text-xs text-primary-foreground/70 mt-2">{SITE.phoneAlt}</p>
               </div>
             </div>
           </div>

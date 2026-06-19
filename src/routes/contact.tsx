@@ -43,11 +43,27 @@ function ContactPage() {
       <section className="py-12 md:py-16 bg-background">
         <div className="mx-auto max-w-[1920px] px-6 md:px-16 grid lg:grid-cols-[1fr_1.2fr] gap-12">
           <div className="space-y-6">
-            <ContactRow icon={Phone} label="Phone" value={SITE.phone} href={`tel:${SITE.phoneRaw}`} />
-            <ContactRow icon={Phone} label="Alt. Phone" value={SITE.phoneAlt} href={`tel:8688151526`} />
+            <AddressBlock
+              label="Head Office (Primary)"
+              name={SITE.name}
+              address={SITE.address}
+              gstin={SITE.gstin}
+              phone={SITE.phone}
+              phoneRaw={SITE.phoneRaw}
+              email={SITE.email}
+              website={SITE.website}
+              primary
+            />
+            <AddressBlock
+              label="Branch Office"
+              name={SITE.name}
+              address={SITE.addressAlt}
+              phone={SITE.phoneAlt}
+              phoneRaw={SITE.phoneRawAlt}
+              email={SITE.email}
+            />
+
             <ContactRow icon={MessageCircle} label="WhatsApp" value="Chat with us" href={whatsappLink()} accent />
-            <ContactRow icon={Mail} label="Email" value={SITE.email} href={`mailto:${SITE.email}`} />
-            <ContactRow icon={MapPin} label="Address" value={SITE.address} />
 
             <div className="aspect-video bg-muted border border-border overflow-hidden">
               <iframe
@@ -110,6 +126,30 @@ function ContactRow({ icon: Icon, label, value, href, accent }: { icon: any; lab
     </div>
   );
   return href ? <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">{inner}</a> : inner;
+}
+
+function AddressBlock({
+  label, name, address, gstin, phone, phoneRaw, email, website, primary,
+}: {
+  label: string; name: string; address: string; gstin?: string;
+  phone: string; phoneRaw: string; email: string; website?: string; primary?: boolean;
+}) {
+  return (
+    <div className={`border p-5 ${primary ? "bg-card border-primary" : "bg-card border-border"}`}>
+      <div className="flex items-center gap-2 mb-3">
+        <MapPin className={`h-5 w-5 ${primary ? "text-primary" : "text-muted-foreground"}`} />
+        <span className={`text-xs font-medium uppercase tracking-wider ${primary ? "text-primary" : "text-muted-foreground"}`}>{label}</span>
+      </div>
+      <div className="font-medium text-foreground">{name}</div>
+      <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{address}</p>
+      {gstin && <div className="text-xs text-muted-foreground mt-2">GSTIN: <span className="font-mono">{gstin}</span></div>}
+      <ul className="mt-3 space-y-1.5 text-sm">
+        <li className="flex items-center gap-2"><Phone className="h-3.5 w-3.5 text-primary" /><a href={`tel:${phoneRaw}`} className="hover:text-primary">{phone}</a></li>
+        <li className="flex items-center gap-2"><Mail className="h-3.5 w-3.5 text-primary" /><a href={`mailto:${email}`} className="hover:text-primary">{email}</a></li>
+        {website && <li className="flex items-center gap-2 text-muted-foreground"><span className="h-3.5 w-3.5 inline-block" />{website}</li>}
+      </ul>
+    </div>
+  );
 }
 
 function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {

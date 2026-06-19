@@ -6,6 +6,8 @@ import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
 import { submitInquiry } from "@/lib/admin-data";
 import { loadServices, ICONS } from "@/lib/services-data";
+import { BRANCHES } from "@/lib/branches";
+import { MapPin, Phone } from "lucide-react";
 
 
 
@@ -64,10 +66,18 @@ function ServicesPage() {
           <div>
             <div className="text-sm font-normal text-muted-foreground mb-3">Coverage</div>
             <h2 className="text-3xl md:text-5xl font-light text-foreground">Service across Andhra Pradesh & Telangana</h2>
-            <p className="mt-4 text-muted-foreground">Our authorized service network reaches every major city and industrial hub. Typical turnaround: 48 hours for diagnosis, same-week resolution.</p>
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              {["Hyderabad", "Vijayawada", "Visakhapatnam", "Warangal", "Guntur", "Tirupati", "Nellore", "Kakinada"].map((c) => (
-                <div key={c} className="bg-card border-l-4 border-primary px-4 py-3 font-normal text-sm">{c}</div>
+            <p className="mt-4 text-muted-foreground">Our four authorized service centers reach every major city in AP & Telangana. Typical turnaround: 48 hours for diagnosis, same-week resolution.</p>
+            <div className="mt-6 grid sm:grid-cols-2 gap-3">
+              {BRANCHES.map((b) => (
+                <div key={b.city} className="bg-card border-l-4 border-primary px-4 py-3">
+                  <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+                    <MapPin className="h-3.5 w-3.5 text-primary" /> {b.city}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">{b.role}</div>
+                  <a href={`tel:${b.phone.replace(/\s+/g, "")}`} className="mt-1.5 inline-flex items-center gap-1.5 text-xs text-primary hover:underline">
+                    <Phone className="h-3 w-3" /> {b.phone}
+                  </a>
+                </div>
               ))}
             </div>
           </div>
