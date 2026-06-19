@@ -44,6 +44,59 @@ export function Header() {
   }, [open]);
 
 
+export function Header() {
+  const [open, setOpen] = useState(false);
+  const [lang, setLang] = useState<LangCode>("en");
+
+  useEffect(() => {
+    const stored = (typeof window !== "undefined" && localStorage.getItem(LANG_KEY)) as LangCode | null;
+    if (stored && LANGUAGES.some((l) => l.code === stored)) {
+      setLang(stored);
+      document.documentElement.lang = stored;
+    } else {
+      document.documentElement.lang = "en";
+    }
+  }, []);
+
+  useEffect(() => {
+    if (open) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => { document.body.style.overflow = prev; };
+    }
+  }, [open]);
+
+  const changeLang = (code: LangCode) => {
+    setLang(code);
+    document.documentElement.lang = code;
+    try { localStorage.setItem(LANG_KEY, code); } catch {}
+  };
+
+  const current = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
+
+  const langSwitcher = (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="inline-flex items-center gap-1.5 hover:text-primary outline-none focus-visible:text-primary">
+        <Globe2 className="h-4 w-4" /> IN/{current.short}
+        <ChevronDown className="h-3.5 w-3.5" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[160px] bg-card z-[60]">
+        <DropdownMenuLabel>Language</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {LANGUAGES.map((l) => (
+          <DropdownMenuItem
+            key={l.code}
+            onSelect={() => changeLang(l.code)}
+            className="flex items-center justify-between cursor-pointer"
+          >
+            <span>{l.label}</span>
+            {l.code === lang && <Check className="h-4 w-4 text-primary" />}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+
   return (
     <header className="sticky top-0 z-50 bg-card text-foreground shadow-[0_1px_0_var(--border)]">
       <div className="border-b border-border">
@@ -58,7 +111,7 @@ export function Header() {
           <div className="ml-auto hidden md:flex items-center gap-5 text-[13px] text-muted-foreground">
             <Link to="/contact" className="inline-flex items-center gap-1.5 hover:text-primary"><UserRound className="h-4 w-4" /> Sign In</Link>
             <a href={`tel:${SITE.phoneRaw}`} className="inline-flex items-center gap-1.5 hover:text-primary"><Headphones className="h-4 w-4" /> Contact Us</a>
-            <span className="inline-flex items-center gap-1.5"><Globe2 className="h-4 w-4" /> IN/EN <ChevronDown className="h-3.5 w-3.5" /></span>
+            {langSwitcher}
           </div>
           <button onClick={() => setOpen(!open)} className="lg:hidden ml-auto p-2" aria-label="Menu">
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
