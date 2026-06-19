@@ -32,33 +32,37 @@ export function CountUp({
     const node = ref.current;
     if (!node) return;
 
-    // Set initial display to 1 (or 1 + unit/suffix)
-    setDisplay(
-      "1" + unit + suffix
-    );
-
     let raf = 0;
     let start = 0;
-    const animate = (ts: number) => {
-      if (!start) start = ts;
-      const p = Math.min(1, (ts - start) / duration);
-      // ease-out
-      const eased = 1 - Math.pow(1 - p, 3);
-      const current = 1 + (target - 1) * eased;
+    let hasAnimated = false;
+
+    const formatValue = (current: number) => {
       const formatted = Number.isInteger(target)
         ? Math.round(current).toString()
         : current.toFixed(1);
-      setDisplay(formatted + unit + suffix);
+      return formatted + unit + suffix;
+    };
+
+    const animate = (ts: number) => {
+      if (!start) start = ts;
+      const p = Math.min(1, (ts - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const current = 1 + (target - 1) * eased;
+      setDisplay(formatValue(current));
       if (p < 1) raf = requestAnimationFrame(animate);
+      else setDisplay(value);
     };
 
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) {
+          if (e.isIntersecting && !hasAnimated) {
+            hasAnimated = true;
             cancelAnimationFrame(raf);
             start = 0;
+            setDisplay(formatValue(1));
             raf = requestAnimationFrame(animate);
+            io.unobserve(node);
           }
         });
       },
