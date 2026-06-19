@@ -14,18 +14,28 @@ export function CountUp({
   duration?: number;
   className?: string;
 }) {
-  // Match leading number with optional K/M/+/% suffix
-  const match = /^(\d+(?:\.\d+)?)\s*([KMkm]?)([+%]?)(.*)$/.exec(value);
   const ref = useRef<HTMLSpanElement>(null);
-  const [display, setDisplay] = useState<string>(match ? "1" + (match[2] ?? "") + (match[3] ?? "") + (match[4] ?? "") : value);
+  const [display, setDisplay] = useState<string>(value);
 
   useEffect(() => {
-    if (!match) return;
+    const match =
+      /^(\d+(?:\.\d+)?)\s*([KMkm]?)([+%]?)(.*)$/.exec(value);
+
+    if (!match) {
+      setDisplay(value);
+      return;
+    }
+
     const target = parseFloat(match[1]);
     const unit = match[2] ?? "";
     const suffix = (match[3] ?? "") + (match[4] ?? "");
     const node = ref.current;
     if (!node) return;
+
+    // Set initial display to 1 (or 1 + unit/suffix)
+    setDisplay(
+      "1" + unit + suffix
+    );
 
     let raf = 0;
     let start = 0;
@@ -59,7 +69,7 @@ export function CountUp({
       io.disconnect();
       cancelAnimationFrame(raf);
     };
-  }, [match, duration]);
+  }, [value, duration]);
 
   return (
     <span ref={ref} className={className}>
