@@ -20,7 +20,7 @@ import { CATEGORIES, BRANDS, type Product } from "@/lib/products";
 import { useServicesStore, ICON_NAMES, ICONS, type ServiceItem } from "@/lib/services-data";
 import { useGallery, GALLERY_CATEGORIES, type GalleryItem } from "@/lib/gallery-data";
 import { useBrands } from "@/lib/brands-data";
-import { compressImage } from "@/lib/image-compress";
+import { compressImage, compressPdf } from "@/lib/image-compress";
 import { SITE } from "@/lib/site";
 import { toast } from "sonner";
 
@@ -534,10 +534,22 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
             {errors.image && <span className="text-xs text-brand-red mt-1 block">{errors.image.message}</span>}
           </Field>
 
+          <PdfField
+            currentPdf={watch("pdf")}
+            currentName={watch("pdfName")}
+            onChange={(dataUrl, name) => {
+              setValue("pdf", dataUrl, { shouldValidate: false });
+              setValue("pdfName", name, { shouldValidate: false });
+            }}
+          />
+          <input type="hidden" {...register("pdf")} />
+          <input type="hidden" {...register("pdfName")} />
+
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" {...register("featured")} className="h-4 w-4 accent-brand-red" />
             <span className="text-sm font-semibold text-slate-700">Show on homepage (featured)</span>
           </label>
+
 
           <div className="flex gap-3 pt-4">
             <button type="button" onClick={onClose} className="flex-1 border border-slate-200 font-semibold py-2.5 rounded-lg hover:bg-slate-50 text-sm">Cancel</button>
@@ -550,6 +562,61 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
     </motion.div>
   );
 }
+
+/* ============ PDF upload field (used by ProductEditor) ============ */
+function PdfField({ currentPdf, currentName, onChange }: {
+  currentPdf?: string;
+  currentName?: string;
+  onChange: (dataUrl: string | undefined, name: string | undefined) => void;
+}) {
+  const [busy, setBusy] = useState(false);
+  const [info, setInfo] = useState<string | null>(null);
+
+  return (
+    <Field label="Product PDF / Brochure (optional)">
+      <div className="flex flex-wrap items-center gap-3">
+        {currentPdf && (
+          <a
+            href={currentPdf}
+            download={currentName || "brochure.pdf"}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-brand-red border border-brand-red/30 px-3 py-2 rounded-lg hover:bg-brand-red/5"
+          >
+            <Upload className="h-3.5 w-3.5 rotate-180" /> {currentName || "Current PDF"}
+          </a>
+        )}
+        <label className="inline-flex items-center gap-2 border border-slate-200 rounded-lg px-4 py-2.5 font-semibold text-sm cursor-pointer hover:border-brand-red hover:text-brand-red transition">
+          <Upload className="h-4 w-4" /> {busy ? "Processing…" : currentPdf ? "Replace PDF" : "Upload PDF"}
+          <input type="file" accept="application/pdf,.pdf" className="hidden" onChange={async (e) => {
+            const f = e.target.files?.[0]; if (!f) return;
+            setBusy(true);
+            try {
+              const { dataUrl, size } = await compressPdf(f);
+              onChange(dataUrl, f.name);
+              setInfo(`Saved ${(size / 1024).toFixed(0)} KB`);
+              toast.success("PDF added");
+            } catch (err: any) {
+              toast.error(err?.message ?? "Failed to add PDF");
+            } finally { setBusy(false); }
+          }} />
+        </label>
+        {currentPdf && (
+          <button
+            type="button"
+            onClick={() => { onChange(undefined, undefined); setInfo(null); }}
+            className="text-xs text-slate-500 hover:text-brand-red"
+          >
+            Remove
+          </button>
+        )}
+        <span className="text-xs text-slate-500">PDFs are auto-checked &amp; compressed (max 10 MB).</span>
+      </div>
+      {info && <div className="text-[11px] text-slate-500 mt-1.5">{info}</div>}
+    </Field>
+  );
+}
+
 
 /* ============ Inquiries ============ */
 function InquiriesManager({ inquiries, updateStatus, remove }: {
