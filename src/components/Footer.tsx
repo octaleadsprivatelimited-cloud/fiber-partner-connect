@@ -45,11 +45,25 @@ export function Footer() {
             <p className="mt-3 md:mt-5 text-[12px] md:text-[13px] text-muted-foreground max-w-xs leading-relaxed">
               {SITE.tagline}. Authorized Distributor for Inno, Grandway, Claron & EXFO across Andhra Pradesh & Telangana.
             </p>
-            <ul className="mt-4 md:mt-6 space-y-2 md:space-y-2.5 text-[12px] md:text-[13px] text-muted-foreground">
-              <li className="flex gap-2 md:gap-2.5"><MapPin className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary shrink-0 mt-0.5" />{SITE.address}</li>
-              <li className="flex gap-2 md:gap-2.5"><Phone className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary shrink-0 mt-0.5" />{SITE.phone}</li>
-              <li className="flex gap-2 md:gap-2.5"><Mail className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary shrink-0 mt-0.5" />{SITE.email}</li>
-            </ul>
+            <div className="mt-4 md:mt-6 space-y-4 text-[12px] md:text-[13px] text-muted-foreground">
+              <div>
+                <div className="text-[11px] font-medium uppercase tracking-wider text-foreground mb-1.5">Head Office</div>
+                <ul className="space-y-1.5">
+                  <li className="flex gap-2"><MapPin className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />{SITE.address}</li>
+                  <li className="flex gap-2"><Phone className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" /><a href={`tel:${SITE.phoneRaw}`} className="hover:text-primary">{SITE.phone}</a></li>
+                </ul>
+              </div>
+              <div>
+                <div className="text-[11px] font-medium uppercase tracking-wider text-foreground mb-1.5">Branch Office</div>
+                <ul className="space-y-1.5">
+                  <li className="flex gap-2"><MapPin className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />{SITE.addressAlt}</li>
+                  <li className="flex gap-2"><Phone className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" /><a href={`tel:${SITE.phoneRawAlt}`} className="hover:text-primary">{SITE.phoneAlt}</a></li>
+                </ul>
+              </div>
+              <ul className="space-y-1.5 pt-1 border-t border-border/60">
+                <li className="flex gap-2"><Mail className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />{SITE.email}</li>
+              </ul>
+            </div>
           </div>
 
           {COLUMNS.map((c) => (
