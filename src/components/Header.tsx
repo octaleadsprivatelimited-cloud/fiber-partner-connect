@@ -32,16 +32,6 @@ const nav = [
   { to: "/contact", label: "Contact" },
 ];
 
-export function Header() {
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (open) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => { document.body.style.overflow = prev; };
-    }
-  }, [open]);
 
 
 export function Header() {
