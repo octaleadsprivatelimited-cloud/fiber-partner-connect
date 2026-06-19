@@ -97,10 +97,6 @@ function BrandsPage() {
       {adminBrands.length > 0 && (
         <section className="py-12 md:py-16 bg-background">
           <div className="mx-auto max-w-[1920px] px-6 md:px-16">
-            <div className="text-center mb-8 md:mb-10">
-              <div className="text-sm font-normal text-muted-foreground mb-2">Our brands</div>
-              <h2 className="text-2xl md:text-4xl font-light text-foreground">Authorized Brand Logos</h2>
-            </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
               {adminBrands.map((b) => {
                 const logo = b.logo || getBrandLogo(b.name);
