@@ -1,4 +1,4 @@
-import { Headphones, Instagram, Phone } from "lucide-react";
+import { Headphones, Instagram, Phone, Youtube } from "lucide-react";
 import { SITE, whatsappLink } from "@/lib/site";
 
 // Official WhatsApp glyph (from WhatsApp brand assets)
@@ -13,7 +13,6 @@ function WhatsAppGlyph({ className = "h-7 w-7" }: { className?: string }) {
   );
 }
 
-// Phone receiver glyph
 function PhoneIcon({ className = "h-6 w-6" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
@@ -27,7 +26,6 @@ function PhoneIcon({ className = "h-6 w-6" }: { className?: string }) {
 
 export function FloatingActions() {
   const wa = whatsappLink("Hello, I would like to request a quotation.");
-  const instagramUrl = "https://www.instagram.com/satya_power_technologys?igsh=NG1hdmZqYWIxZndn";
 
   return (
     <>
@@ -44,7 +42,7 @@ export function FloatingActions() {
           <WhatsAppGlyph className="h-5 w-5 md:h-6 md:w-6" />
         </a>
         <a
-          href={instagramUrl}
+          href={SITE.instagram}
           target="_blank"
           rel="noreferrer"
           aria-label="Instagram"
@@ -52,6 +50,16 @@ export function FloatingActions() {
           className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
         >
           <Instagram className="h-5 w-5 md:h-6 md:w-6" />
+        </a>
+        <a
+          href={SITE.youtube}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="YouTube"
+          title="YouTube"
+          className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg hover:bg-red-700 transition-colors"
+        >
+          <Youtube className="h-5 w-5 md:h-6 md:w-6" />
         </a>
         <a
           href={`tel:${SITE.phoneRaw}`}

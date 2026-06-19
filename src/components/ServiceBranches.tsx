@@ -1,17 +1,5 @@
 import { MapPin, Phone } from "lucide-react";
-import hyderabadImg from "@/assets/hyderabad.jpg";
-import vijayawadaImg from "@/assets/vijayawada.jpg";
-import kakinadaImg from "@/assets/kakinada.jpg";
-import srikakulamImg from "@/assets/srikakulam.jpg";
-import tirupatiImg from "@/assets/tirupati.jpg";
-
-const branches = [
-  { city: "Hyderabad", role: "Head Office & Service Center", image: hyderabadImg, phone: "+91 40 2956 7890" },
-  { city: "Vijayawada", role: "Sales & Service Branch", image: vijayawadaImg, phone: "+91 866 247 8901" },
-  { city: "Kakinada", role: "Sales & Service Branch", image: kakinadaImg, phone: "+91 884 234 5678" },
-  { city: "Srikakulam", role: "Service Support", image: srikakulamImg, phone: "+91 894 245 6789" },
-  { city: "Tirupati", role: "Service Support", image: tirupatiImg, phone: "+91 877 228 9012" },
-];
+import { BRANCHES } from "@/lib/branches";
 
 export function ServiceBranches() {
   return (
@@ -23,11 +11,11 @@ export function ServiceBranches() {
             <h2 className="text-2xl sm:text-3xl md:text-5xl font-light text-foreground leading-[1.15]">Our Service Branches</h2>
           </div>
           <p className="text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed">
-            Five locations across Andhra Pradesh & Telangana for fast on-site support.
+            Four service centers across Andhra Pradesh & Telangana for fast on-site support.
           </p>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5">
-          {branches.map((b) => (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
+          {BRANCHES.map((b) => (
             <div
               key={b.city}
               className="group cursor-default bg-card border border-border overflow-hidden hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-shadow duration-300"

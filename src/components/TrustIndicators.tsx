@@ -1,8 +1,9 @@
 import { Award, Users, MapPin, Headphones } from "lucide-react";
+import { CountUp } from "@/components/CountUp";
 
 const stats = [
   { value: "15+", label: "Years experience", sub: "Industry expertise", Icon: Award },
-  { value: "10K+", label: "Customers served", sub: "Across sectors", Icon: Users },
+  { value: "5000+", label: "Happy Customers", sub: "Across sectors", Icon: Users },
   { value: "Pan-India", label: "Sales & service", sub: "Nationwide reach", Icon: MapPin },
   { value: "24/7", label: "Support", sub: "Always available", Icon: Headphones },
 ];
@@ -36,7 +37,7 @@ export function TrustIndicators() {
                 <span className="hidden sm:inline text-[11px] text-primary-foreground/35">0{i + 1}</span>
               </div>
               <div className="text-2xl sm:text-3xl md:text-5xl font-light leading-none tracking-normal text-primary-foreground">
-                {value}
+                <CountUp value={value} />
               </div>
               <div className="mt-2 text-xs md:text-sm font-normal text-primary-foreground">
                 {label}
