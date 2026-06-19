@@ -34,7 +34,7 @@ export function CountUp({
       const p = Math.min(1, (ts - start) / duration);
       // ease-out
       const eased = 1 - Math.pow(1 - p, 3);
-      const current = Math.max(1, target * eased);
+      const current = 1 + (target - 1) * eased;
       const formatted = Number.isInteger(target)
         ? Math.round(current).toString()
         : current.toFixed(1);
