@@ -1,9 +1,26 @@
 import { NavLink, Link } from "react-router-dom";
-import { Headphones, Menu, X, Search, ChevronDown, UserRound, Globe2 } from "lucide-react";
+import { Headphones, Menu, X, Search, ChevronDown, UserRound, Globe2, Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Logo } from "./Logo";
 import { SITE, whatsappLink } from "@/lib/site";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+
+const LANGUAGES = [
+  { code: "en", label: "English", short: "EN" },
+  { code: "hi", label: "हिन्दी", short: "HI" },
+  { code: "mr", label: "मराठी", short: "MR" },
+  { code: "ta", label: "தமிழ்", short: "TA" },
+] as const;
+type LangCode = (typeof LANGUAGES)[number]["code"];
+const LANG_KEY = "satya:lang";
 
 const nav = [
   { to: "/", label: "Home" },
