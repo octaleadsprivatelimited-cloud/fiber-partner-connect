@@ -41,28 +41,44 @@ export function Footer() {
       <div className="mx-auto max-w-[1920px] px-5 md:px-16 pt-8 md:pt-14 pb-4 md:pb-6">
         <div className="grid gap-4 md:gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
-            <Logo className="h-14 md:h-20" />
-            <p className="mt-3 md:mt-5 text-[12px] md:text-[13px] text-muted-foreground max-w-xs leading-relaxed">
+            <Logo className="h-20 md:h-28 -my-2.5 md:-my-4 -ml-1 md:-ml-2" />
+            <p className="mt-1 md:mt-1.5 text-[12px] md:text-[13px] text-muted-foreground max-w-xs leading-relaxed">
               {SITE.tagline}. Authorized Distributor for Inno, Grandway, Claron & EXFO across Andhra Pradesh & Telangana.
             </p>
-            <div className="mt-4 md:mt-6 space-y-4 text-[12px] md:text-[13px] text-muted-foreground">
+            <div className="mt-3 md:mt-4 space-y-4 text-[12px] md:text-[13px] text-muted-foreground">
               <div>
-                <div className="text-[11px] font-medium uppercase tracking-wider text-foreground mb-1.5">Head Office</div>
+                <div className="text-[11px] font-medium uppercase tracking-wider text-foreground mb-1.5">Head Office Address</div>
                 <ul className="space-y-1.5">
                   <li className="flex gap-2"><MapPin className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />{SITE.address}</li>
-                  <li className="flex gap-2"><Phone className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" /><a href={`tel:${SITE.phoneRaw}`} className="hover:text-primary">{SITE.phone}</a></li>
                 </ul>
               </div>
               <div>
-                <div className="text-[11px] font-medium uppercase tracking-wider text-foreground mb-1.5">Branch Office</div>
+                <div className="text-[11px] font-medium uppercase tracking-wider text-foreground mb-1.5">Branch Office Address</div>
                 <ul className="space-y-1.5">
                   <li className="flex gap-2"><MapPin className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />{SITE.addressAlt}</li>
-                  <li className="flex gap-2"><Phone className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" /><a href={`tel:${SITE.phoneRawAlt}`} className="hover:text-primary">{SITE.phoneAlt}</a></li>
                 </ul>
               </div>
-              <ul className="space-y-1.5 pt-1 border-t border-border/60">
-                <li className="flex gap-2"><Mail className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />{SITE.email}</li>
-              </ul>
+              <div>
+                <div className="text-[11px] font-medium uppercase tracking-wider text-foreground mb-1.5">Contact Info</div>
+                <ul className="space-y-2">
+                  <li className="flex gap-2">
+                    <Phone className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                    <span>
+                      Head Office: <a href={`tel:${SITE.phoneRaw}`} className="hover:text-primary font-medium transition-colors">{SITE.phone}</a>
+                    </span>
+                  </li>
+                  <li className="flex gap-2">
+                    <Phone className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                    <span>
+                      Branch Office: <a href={`tel:${SITE.phoneRawAlt}`} className="hover:text-primary font-medium transition-colors">{SITE.phoneAlt}</a>
+                    </span>
+                  </li>
+                  <li className="flex gap-2 pt-2 border-t border-border/60">
+                    <Mail className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                    <a href={`mailto:${SITE.email}`} className="hover:text-primary transition-colors">{SITE.email}</a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 

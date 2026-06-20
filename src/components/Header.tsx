@@ -15,9 +15,8 @@ import {
 
 const LANGUAGES = [
   { code: "en", label: "English", short: "EN" },
+  { code: "te", label: "తెలుగు", short: "TE" },
   { code: "hi", label: "हिन्दी", short: "HI" },
-  { code: "mr", label: "मराठी", short: "MR" },
-  { code: "ta", label: "தமிழ்", short: "TA" },
 ] as const;
 type LangCode = (typeof LANGUAGES)[number]["code"];
 const LANG_KEY = "satya:lang";
@@ -43,6 +42,15 @@ export function Header() {
     if (stored && LANGUAGES.some((l) => l.code === stored)) {
       setLang(stored);
       document.documentElement.lang = stored;
+
+      // Sync cookie if missing
+      if (!document.cookie.includes(`googtrans=/en/${stored}`)) {
+        const domain = window.location.hostname;
+        const cookieValue = `/en/${stored}`;
+        document.cookie = `googtrans=${cookieValue}; path=/;`;
+        document.cookie = `googtrans=${cookieValue}; path=/; domain=${domain};`;
+        window.location.reload();
+      }
     } else {
       document.documentElement.lang = "en";
     }
@@ -59,7 +67,23 @@ export function Header() {
   const changeLang = (code: LangCode) => {
     setLang(code);
     document.documentElement.lang = code;
+
+    const domain = window.location.hostname;
+    const cookieValue = `/en/${code}`;
+
+    // Set translation cookies
+    document.cookie = `googtrans=${cookieValue}; path=/;`;
+    document.cookie = `googtrans=${cookieValue}; path=/; domain=${domain};`;
+    if (domain.includes('.')) {
+      const parts = domain.split('.');
+      if (parts.length > 2) {
+        const rootDomain = parts.slice(-2).join('.');
+        document.cookie = `googtrans=${cookieValue}; path=/; domain=.${rootDomain};`;
+      }
+    }
+
     try { localStorage.setItem(LANG_KEY, code); } catch {}
+    window.location.reload();
   };
 
   const current = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];

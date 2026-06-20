@@ -5,7 +5,7 @@ import { useState } from "react";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
 import { submitInquiry } from "@/lib/admin-data";
-import { loadServices, ICONS } from "@/lib/services-data";
+import { useServicesStore, ICONS } from "@/lib/services-data";
 import { BRANCHES } from "@/lib/branches";
 import { MapPin, Phone } from "lucide-react";
 
@@ -15,7 +15,8 @@ interface Form { name: string; phone: string; equipment: string; issue: string; 
 
 function ServicesPage() {
   const [sent, setSent] = useState(false);
-  const services = loadServices().map((s) => ({ icon: ICONS[s.iconName] ?? ICONS.Wrench, t: s.title, d: s.description }));
+  const { items } = useServicesStore();
+  const services = items.map((s) => ({ icon: ICONS[s.iconName] ?? ICONS.Wrench, t: s.title, d: s.description }));
   const { register, handleSubmit, formState: { errors }, reset } = useForm<Form>();
   const onSubmit = async (data: Form) => {
     try {

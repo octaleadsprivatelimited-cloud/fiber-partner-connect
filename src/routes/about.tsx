@@ -8,10 +8,26 @@ import { SITE } from "@/lib/site";
 
 
 const timeline = [
-  { year: "2013", title: "Founded", body: "SATYA POWER TECHNOLOGYS established under the leadership of Mr. Dorababu." },
-  { year: "2024", title: "Authorized Distributor for Inno, Grandway, Claron & EXFO", body: "Awarded official distribution rights across AP & Telangana." },
-  { year: "2024", title: "Service Center Launched", body: "In-house repair and calibration facility opened — the only authorized one in region." },
-  { year: "2025", title: "Expanding Catalogue", body: "Added Fujikura, Sumitomo, Grandway, EXFO, VIAVI and Fiberfox to the brand portfolio." },
+  {
+    year: "2013",
+    title: "Manufacturer & Distributor",
+    body: "Fujitomo Electronics established as a leading manufacturer and distributor of Fusion Splicers, OTDRs, and fiber optic toolkits.",
+  },
+  {
+    year: "2024",
+    title: "Operations & Quality Upgrades",
+    body: "Upgraded operations to match global standards, equipping facilities with state-of-the-art machinery and automated systems.",
+  },
+  {
+    year: "2024",
+    title: "Adhering to Best Practices",
+    body: "Maintained the highest standards of quality through management systems and regular audits by leading certification bodies.",
+  },
+  {
+    year: "2025",
+    title: "Notable Market Growth",
+    body: "Expanded market presence under the guidance of our mentor, Mr. Deepak Singh (CEO), leveraging rich industrial experience.",
+  },
 ];
 
 const pillars = [

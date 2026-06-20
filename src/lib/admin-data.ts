@@ -117,11 +117,10 @@ export function useProducts() {
     const q = query(collection(fb.db, "products"), orderBy("name"));
     const unsub = onSnapshot(q, (snap) => {
       const list = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Product, "id">) }));
-      // If Firestore is empty, fall back to the seeded demo catalog so the
-      // admin and storefront still show content out of the box.
-      const next = list.length ? list : readLocalProducts();
-      setProducts(next);
-      if (list.length) writeLocalProducts(next);
+      const seedProducts = SEED_PRODUCTS;
+      const combined = [...list, ...seedProducts.filter(seed => !list.some(item => item.id === seed.id))];
+      setProducts(combined);
+      writeLocalProducts(combined);
       setLoading(false);
     }, () => {
       // Read failed (rules/offline) — keep seed data visible.
@@ -178,20 +177,9 @@ export function useProducts() {
   };
 
   const uploadImage = async (file: File): Promise<string> => {
-    // Always compress first to keep payloads small.
-    const compressed = await compressImage(file, { maxSize: 1200, quality: 0.8 });
-    const fb = getFirebase();
-    if (!fb || !isFirebaseConfigured()) return compressed;
-    try {
-      // Convert data URL back to a Blob for Storage upload.
-      const blob = await (await fetch(compressed)).blob();
-      const r = ref(fb.storage, `uploads/${Date.now()}-${file.name.replace(/\.[^.]+$/, "")}.jpg`);
-      await uploadBytes(r, blob);
-      return await getDownloadURL(r);
-    } catch (e) {
-      console.warn("Storage upload failed, using inline data URL:", e);
-      return compressed;
-    }
+    // Compress aggressively so it fits under Firestore's 1MB document limit.
+    const compressed = await compressImage(file, { maxSize: 800, quality: 0.7 });
+    return compressed;
   };
 
   return { products, loading, save, remove, uploadImage };

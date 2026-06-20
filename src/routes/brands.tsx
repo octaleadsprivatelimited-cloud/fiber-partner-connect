@@ -26,9 +26,19 @@ const innoHighlights = [
 
 function BrandsPage() {
   const { items: adminBrands } = useBrands();
-  const logoByName = new Map(adminBrands.filter((b) => b.logo).map((b) => [b.name.toLowerCase(), b.logo as string]));
-  const portfolioBrands = brands.map((b) => ({ ...b, logo: logoByName.get(b.name.toLowerCase()) || getBrandLogo(b.name) }));
-  const innoLogo = logoByName.get("inno") || logoByName.get("inno instrument") || getBrandLogo("inno");
+  const logoByName = new Map(
+    adminBrands
+      .filter((b) => b.logo)
+      .map((b) => [b.name.trim().toLowerCase(), b.logo as string])
+  );
+  const portfolioBrands = brands.map((b) => ({
+    ...b,
+    logo: logoByName.get(b.name.trim().toLowerCase()) || getBrandLogo(b.name),
+  }));
+  const innoLogo =
+    logoByName.get("inno") ||
+    logoByName.get("inno instrument") ||
+    getBrandLogo("inno");
   return (
     <>
       <PageHero
@@ -80,8 +90,8 @@ function BrandsPage() {
                 <div className="text-7xl md:text-8xl font-light text-foreground">INNO</div>
               )}
               <div className="mt-6 grid grid-cols-2 gap-4">
-                <StatLight label="Years partnered" value="2+" />
-                <StatLight label="Service center" value="01" />
+                <StatLight label="Years partnered" value="13+" />
+                <StatLight label="Service centers" value="04" />
                 <StatLight label="States covered" value="AP+TG" />
                 <StatLight label="Genuine spares" value="100%" />
               </div>

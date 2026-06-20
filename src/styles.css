@@ -181,3 +181,23 @@
   &:hover { transform: translateY(-3px); box-shadow: var(--shadow-premium); border-color: color-mix(in oklab, var(--primary) 30%, var(--border)); }
 }
 
+/* Hide Google Translate toolbar, tooltips, and default UI */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame,
+.goog-te-banner {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
+.goog-tooltip,
+#goog-gt-tt,
+.goog-gt-tt {
+  display: none !important;
+}
+.goog-te-balloon-frame {
+  display: none !important;
+}
+#google_translate_element {
+  display: none !important;
+}

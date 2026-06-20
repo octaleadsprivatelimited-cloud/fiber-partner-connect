@@ -65,12 +65,10 @@ export function useBrands() {
             const list = snap.docs.map((d, i) => ({
               id: d.id, order: i, ...(d.data() as any),
             })) as BrandItem[];
-            if (list.length) {
-              setItems(list);
-              writeLocal(list); // mirror to local for offline/fallback
-            } else {
-              setItems(readLocal());
-            }
+            const seedBrands = BRANDS.map((b) => ({ id: `seed-${b}`, name: b }));
+            const combined = [...list, ...seedBrands.filter(seed => !list.some(item => item.name.trim().toLowerCase() === seed.name.trim().toLowerCase()))];
+            setItems(combined);
+            writeLocal(combined);
             setLoading(false);
           },
           (e) => { console.warn("Brands read failed, using local:", e); setItems(readLocal()); setLoading(false); },
