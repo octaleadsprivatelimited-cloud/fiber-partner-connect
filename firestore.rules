@@ -1,0 +1,107 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // --------------------------------------------------------------------------
+    // HELPER FUNCTIONS
+    // --------------------------------------------------------------------------
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        exists(/databases/$(database)/documents/user_roles/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/user_roles/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // --------------------------------------------------------------------------
+    // USER ROLES (admin-only read/write)
+    // --------------------------------------------------------------------------
+    match /user_roles/{userId} {
+      allow read: if isAdmin() || isOwner(userId);
+      allow write: if isAdmin();
+    }
+
+    // --------------------------------------------------------------------------
+    // USERS / PROFILES
+    // --------------------------------------------------------------------------
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // --------------------------------------------------------------------------
+    // PUBLIC CONTENT (services, branches, testimonials, etc.)
+    // Allow public reads; only admin can write
+    // --------------------------------------------------------------------------
+    match /services/{serviceId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /branches/{branchId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /testimonials/{testimonialId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /team/{memberId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /pages/{pageId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // --------------------------------------------------------------------------
+    // CONTACT / ENQUIRY SUBMISSIONS
+    // Allow anyone to submit; only admin can read/update/delete
+    // --------------------------------------------------------------------------
+    match /contacts/{contactId} {
+      allow create: if true;
+      allow read: if isAdmin();
+      allow update, delete: if isAdmin();
+    }
+
+    match /enquiries/{enquiryId} {
+      allow create: if true;
+      allow read: if isAdmin();
+      allow update, delete: if isAdmin();
+    }
+
+    // --------------------------------------------------------------------------
+    // BLOG / NEWS / ARTICLES
+    // --------------------------------------------------------------------------
+    match /blogs/{blogId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // --------------------------------------------------------------------------
+    // SETTINGS / SITE CONFIG
+    // --------------------------------------------------------------------------
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // --------------------------------------------------------------------------
+    // CATCH-ALL: DENY EVERYTHING ELSE BY DEFAULT
+    // --------------------------------------------------------------------------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
