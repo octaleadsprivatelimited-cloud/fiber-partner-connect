@@ -1,4 +1,5 @@
 import { MapPin, Phone } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { BRANCHES } from "@/lib/branches";
 
 export function ServiceBranches() {
@@ -40,10 +41,16 @@ export function ServiceBranches() {
               <div className="p-3 sm:p-4 md:p-5">
                 <div className="text-base sm:text-lg font-light text-foreground leading-tight">{b.city}</div>
                 <div className="mt-1 text-xs sm:text-sm text-muted-foreground">{b.role}</div>
-                <div className="mt-2.5 sm:mt-3 flex items-center gap-1.5 text-xs text-primary">
-                  <Phone className="h-3 w-3" />
-                  <span>{b.phone}</span>
-                </div>
+                <Button
+                  asChild
+                  size="sm"
+                  className="mt-2.5 sm:mt-3 w-full h-8 text-xs gap-1.5"
+                >
+                  <a href="tel:+919542840444" aria-label={`Contact ${b.city} branch`}>
+                    <Phone className="h-3 w-3" />
+                    Contact Us
+                  </a>
+                </Button>
               </div>
             </div>
           ))}
