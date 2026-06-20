@@ -1,0 +1,77 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // --------------------------------------------------------------------------
+    // HELPER FUNCTIONS
+    // --------------------------------------------------------------------------
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        firestore.get(/databases/(default)/documents/user_roles/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+
+    function isUnder5MB() {
+      return request.resource.size < 5 * 1024 * 1024;
+    }
+
+    // --------------------------------------------------------------------------
+    // PUBLIC ASSETS (logos, banners, site images)
+    // Anyone can read; admin can write
+    // --------------------------------------------------------------------------
+    match /public/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin() && isImage() && isUnder5MB();
+    }
+
+    // --------------------------------------------------------------------------
+    // USER PROFILE IMAGES
+    // Users can manage their own avatar; anyone can read
+    // --------------------------------------------------------------------------
+    match /users/{userId}/profile/{fileName} {
+      allow read: if true;
+      allow write: if isOwner(userId) && isImage() && isUnder5MB();
+    }
+
+    // --------------------------------------------------------------------------
+    // SERVICE / PRODUCT IMAGES
+    // --------------------------------------------------------------------------
+    match /services/{serviceId}/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin() && isImage() && isUnder5MB();
+    }
+
+    // --------------------------------------------------------------------------
+    // TEAM MEMBER PHOTOS
+    // --------------------------------------------------------------------------
+    match /team/{memberId}/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin() && isImage() && isUnder5MB();
+    }
+
+    // --------------------------------------------------------------------------
+    // BLOG / ARTICLE IMAGES
+    // --------------------------------------------------------------------------
+    match /blogs/{blogId}/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin() && isImage() && isUnder5MB();
+    }
+
+    // --------------------------------------------------------------------------
+    // CATCH-ALL: DENY EVERYTHING ELSE
+    // --------------------------------------------------------------------------
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
