@@ -63,7 +63,6 @@ export function Hero() {
 
           <div className="hidden lg:flex lg:col-span-4 flex-col gap-0 bg-card/95 text-foreground border border-border">
             <div className="border-b border-border p-5">
-              <div className="text-sm font-normal text-muted-foreground mb-2">Authorized for</div>
               <div className="text-xl font-light leading-tight">Inno · Grandway · Claron · EXFO</div>
             </div>
             <div className="grid grid-cols-2">
