@@ -61,21 +61,7 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="hidden lg:flex lg:col-span-4 flex-col gap-0 bg-card/95 text-foreground border border-border">
-            <div className="border-b border-border p-5">
-              <div className="text-xl font-light leading-tight">Inno · Grandway · Claron · EXFO</div>
-            </div>
-            <div className="grid grid-cols-2">
-              <div className="border-r border-border p-4">
-                <div className="text-3xl font-light text-primary">15+</div>
-                <div className="mt-1 text-xs text-muted-foreground">Years</div>
-              </div>
-              <div className="p-4">
-                <div className="text-3xl font-light text-primary">24/7</div>
-                <div className="mt-1 text-xs text-muted-foreground">Support</div>
-              </div>
-            </div>
-          </div>
+          <div className="hidden lg:flex lg:col-span-4" />
         </div>
 
         <div className="mt-10 flex justify-center gap-3">
