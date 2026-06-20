@@ -1,6 +1,7 @@
 rules_version = '2';
 
 // Satya Power Technologies — Firestore security rules
+// All data (including image data URLs / base64) is stored in Firestore.
 // Admin panel uses Firebase Auth (email/password). Any signed-in user is
 // treated as an admin since admin accounts are provisioned manually in the
 // Firebase console. Public visitors get read access to content collections
@@ -12,26 +13,36 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    // Cap document writes at ~900 KB to stay under Firestore's 1 MiB limit
+    // when storing base64-encoded images inline.
+    function isWithinSizeLimit() {
+      return request.resource.size() < 900 * 1024;
+    }
+
     // ---------- Public content (managed in the admin panel) ----------
     match /products/{id} {
       allow read: if true;
-      allow create, update, delete: if isSignedIn();
+      allow create, update: if isSignedIn() && isWithinSizeLimit();
+      allow delete: if isSignedIn();
     }
 
     match /brands/{id} {
       allow read: if true;
-      allow create, update, delete: if isSignedIn();
+      allow create, update: if isSignedIn() && isWithinSizeLimit();
+      allow delete: if isSignedIn();
     }
 
     match /gallery/{id} {
       allow read: if true;
-      allow create, update, delete: if isSignedIn();
+      allow create, update: if isSignedIn() && isWithinSizeLimit();
+      allow delete: if isSignedIn();
     }
 
     // ---------- Site settings ----------
     match /settings/{id} {
       allow read: if true;
-      allow create, update, delete: if isSignedIn();
+      allow create, update: if isSignedIn() && isWithinSizeLimit();
+      allow delete: if isSignedIn();
     }
 
     // ---------- Inquiries (contact form) ----------
@@ -42,7 +53,8 @@ service cloud.firestore {
         request.resource.data.keys().hasAll(['name', 'createdAt']) &&
         request.resource.data.name is string &&
         request.resource.data.name.size() > 0 &&
-        request.resource.data.name.size() < 200;
+        request.resource.data.name.size() < 200 &&
+        request.resource.size() < 100 * 1024;
       allow update, delete: if isSignedIn();
     }
 
