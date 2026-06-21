@@ -91,7 +91,7 @@ function BrandsPage() {
               )}
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <StatLight label="Years partnered" value="13+" />
-                <StatLight label="Service centers" value="04" />
+                <StatLight label="Service centers" value="05" />
                 <StatLight label="States covered" value="AP+TG" />
                 <StatLight label="Genuine spares" value="100%" />
               </div>

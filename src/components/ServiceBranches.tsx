@@ -12,10 +12,10 @@ export function ServiceBranches() {
             <h2 className="text-2xl sm:text-3xl md:text-5xl font-light text-foreground leading-[1.15]">Our Service Branches</h2>
           </div>
           <p className="text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed">
-            Four service centers across Andhra Pradesh & Telangana for fast on-site support.
+            Five service centers across Andhra Pradesh & Telangana for fast on-site support.
           </p>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-5">
           {BRANCHES.map((b) => (
             <div
               key={b.city}
@@ -33,7 +33,7 @@ export function ServiceBranches() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
                   <div className="flex items-center gap-1.5 text-white">
-                    <MapPin className="h-3.5 w-3.5 text-white" />
+                     <MapPin className="h-3.5 w-3.5 text-white" />
                     <span className="text-xs sm:text-sm font-medium">{b.city}</span>
                   </div>
                 </div>
@@ -46,7 +46,7 @@ export function ServiceBranches() {
                   size="sm"
                   className="mt-2.5 sm:mt-3 w-full h-8 text-xs gap-1.5"
                 >
-                  <a href="tel:+919542840444" aria-label={`Contact ${b.city} branch`}>
+                  <a href={`tel:${b.phone.replace(/\s+/g, "")}`} aria-label={`Contact ${b.city} branch`}>
                     <Phone className="h-3 w-3" />
                     Contact Us
                   </a>

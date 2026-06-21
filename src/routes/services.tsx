@@ -67,7 +67,7 @@ function ServicesPage() {
           <div>
             <div className="text-sm font-normal text-muted-foreground mb-3">Coverage</div>
             <h2 className="text-3xl md:text-5xl font-light text-foreground">Service across Andhra Pradesh & Telangana</h2>
-            <p className="mt-4 text-muted-foreground">Our four authorized service centers reach every major city in AP & Telangana. Typical turnaround: 48 hours for diagnosis, same-week resolution.</p>
+            <p className="mt-4 text-muted-foreground">Our five authorized service centers reach every major city in AP & Telangana. Typical turnaround: 48 hours for diagnosis, same-week resolution.</p>
             <div className="mt-6 grid sm:grid-cols-2 gap-3">
               {BRANCHES.map((b) => (
                 <div key={b.city} className="bg-card border-l-4 border-primary px-4 py-3">
