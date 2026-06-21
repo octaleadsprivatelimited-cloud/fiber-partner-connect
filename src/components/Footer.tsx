@@ -115,7 +115,17 @@ export function Footer() {
         </div>
 
         <div className="mt-6 md:mt-12 pt-4 md:pt-5 border-t border-border flex flex-wrap justify-between gap-2 md:gap-3 text-[11px] md:text-[12px] text-muted-foreground">
-          <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</span>
+          <span>
+            © {new Date().getFullYear()} {SITE.name}. All rights reserved. | Developed by{" "}
+            <a
+              href="https://octaleads.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary hover:underline transition-colors font-medium"
+            >
+              Octaleads Pvt. Ltd.
+            </a>
+          </span>
           <span>{SITE.website}</span>
         </div>
       </div>
