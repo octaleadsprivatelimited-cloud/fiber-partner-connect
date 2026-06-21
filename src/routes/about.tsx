@@ -11,7 +11,7 @@ const timeline = [
   {
     year: "2013",
     title: "Manufacturer & Distributor",
-    body: "Fujitomo Electronics established as a leading manufacturer and distributor of Fusion Splicers, OTDRs, and fiber optic toolkits.",
+    body: "SATYA POWER TECHNOLOGYS established as a leading manufacturer and distributor of Fusion Splicers, OTDRs, and fiber optic toolkits.",
   },
   {
     year: "2024",
