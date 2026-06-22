@@ -3,7 +3,10 @@ import { getBrandLogo } from "@/lib/brand-logos";
 
 export function BrandStrip() {
   const { items } = useBrands();
-  const brands = (items || []).filter(b => !b.name.toLowerCase().includes("satya power") && b.name.toUpperCase() !== "SKL");
+  const brands = (items || []).filter(b => {
+    const nameLower = b.name.trim().toLowerCase();
+    return nameLower === "inno" || nameLower === "inno instrument" || nameLower === "grandway" || nameLower === "claron" || nameLower === "exfo";
+  });
   const loop = [...brands, ...brands];
 
   return (

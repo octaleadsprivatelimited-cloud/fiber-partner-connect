@@ -27,19 +27,53 @@ const innoHighlights = [
 function BrandsPage() {
   const { items: adminBrands } = useBrands();
   const filteredBrands = (adminBrands || []).filter(b => !b.name.toLowerCase().includes("satya power") && b.name.toUpperCase() !== "SKL");
-  const portfolioBrandNames = new Set(brands.map(b => b.name.toLowerCase()));
-  const logoGridBrands = filteredBrands.filter(
-    b => b.name.toLowerCase() !== "inno" && b.name.toLowerCase() !== "inno instrument" && !portfolioBrandNames.has(b.name.toLowerCase())
-  );
+  
+  // 1. Authorized Brands Logo Grid: only INNO, Grandway, Claron, EXFO
+  const logoGridBrands = filteredBrands.filter(b => {
+    const nameLower = b.name.trim().toLowerCase();
+    return nameLower === "inno" || nameLower === "inno instrument" || nameLower === "grandway" || nameLower === "claron" || nameLower === "exfo";
+  });
+
   const logoByName = new Map(
     filteredBrands
       .filter((b) => b.logo)
       .map((b) => [b.name.trim().toLowerCase(), b.logo as string])
   );
-  const portfolioBrands = brands.map((b) => ({
-    ...b,
-    logo: logoByName.get(b.name.trim().toLowerCase()) || getBrandLogo(b.name),
-  }));
+
+  // 2. Base Portfolio Brands (Fujikura, Sumitomo, VIAVI, Fiberfox - excluding Grandway & EXFO)
+  const basePortfolio = brands.filter(b => {
+    const nameLower = b.name.toLowerCase();
+    return nameLower !== "grandway" && nameLower !== "exfo";
+  });
+
+  // 3. Admin-added custom brands that are not core brands
+  const customAdditional = filteredBrands
+    .filter(b => {
+      const nameLower = b.name.trim().toLowerCase();
+      // Exclude core brands
+      if (nameLower === "inno" || nameLower === "inno instrument" || nameLower === "grandway" || nameLower === "claron" || nameLower === "exfo") {
+        return false;
+      }
+      // Exclude hardcoded portfolio brands to avoid duplicates
+      const isHardcoded = basePortfolio.some(hp => hp.name.toLowerCase() === nameLower);
+      return !isHardcoded;
+    })
+    .map(b => ({
+      name: b.name,
+      logo: b.logo || getBrandLogo(b.name),
+      desc: b.description || "Authorized partner providing premium equipment and warranty support.",
+      tag: "Partner"
+    }));
+
+  // 4. Combined Additional Brands
+  const portfolioBrands = [
+    ...basePortfolio.map((b) => ({
+      ...b,
+      logo: logoByName.get(b.name.trim().toLowerCase()) || getBrandLogo(b.name),
+    })),
+    ...customAdditional
+  ];
+
   const innoLogo =
     logoByName.get("inno") ||
     logoByName.get("inno instrument") ||
