@@ -2,7 +2,7 @@ import { Award, Users, MapPin, Headphones } from "lucide-react";
 import { CountUp } from "@/components/CountUp";
 
 const stats = [
-  { value: "15+", label: "Years experience", sub: "Industry expertise", Icon: Award },
+  { value: "13+", label: "Years experience", sub: "Industry expertise", Icon: Award },
   { value: "5000+", label: "Happy Customers", sub: "Across sectors", Icon: Users },
   { value: "Pan-India", label: "Sales & service", sub: "Nationwide reach", Icon: MapPin },
   { value: "24/7", label: "Support", sub: "Always available", Icon: Headphones },

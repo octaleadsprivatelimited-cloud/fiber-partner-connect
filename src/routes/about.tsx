@@ -75,7 +75,7 @@ function AboutPage() {
           {/* Quick stats */}
           <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { v: "12+", l: "Years in business" },
+              { v: "13+", l: "Years in business" },
               { v: "5000+", l: "Happy Customers" },
               { v: "2", l: "States covered" },
               { v: "7+", l: "Authorized brands" },
