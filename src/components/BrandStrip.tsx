@@ -3,7 +3,7 @@ import { getBrandLogo } from "@/lib/brand-logos";
 
 export function BrandStrip() {
   const { items } = useBrands();
-  const brands = items.length ? items : [];
+  const brands = (items || []).filter(b => !b.name.toLowerCase().includes("satya power"));
   const loop = [...brands, ...brands];
 
   return (
