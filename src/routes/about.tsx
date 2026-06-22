@@ -26,7 +26,7 @@ const timeline = [
   {
     year: "2025",
     title: "Notable Market Growth",
-    body: "Expanded market presence under the guidance of our mentor, Mr. Deepak Singh (CEO), leveraging rich industrial experience.",
+    body: "Expanded market presence under the guidance of our mentor, Mr. Dorababu (CEO), leveraging rich industrial experience.",
   },
 ];
 
