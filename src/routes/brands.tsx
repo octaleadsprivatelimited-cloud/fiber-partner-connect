@@ -26,7 +26,7 @@ const innoHighlights = [
 
 function BrandsPage() {
   const { items: adminBrands } = useBrands();
-  const filteredBrands = (adminBrands || []).filter(b => !b.name.toLowerCase().includes("satya power"));
+  const filteredBrands = (adminBrands || []).filter(b => !b.name.toLowerCase().includes("satya power") && b.name.toUpperCase() !== "SKL");
   const logoByName = new Map(
     filteredBrands
       .filter((b) => b.logo)
