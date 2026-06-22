@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Outlet, Link, useLocation } from "react-router-dom";
 
@@ -29,6 +30,11 @@ export function NotFoundPage() {
 
 export default function RootLayout() {
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   const isAdmin = pathname.startsWith("/admin");
   return (
     <QueryClientProvider client={queryClient}>

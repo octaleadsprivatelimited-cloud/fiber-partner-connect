@@ -91,8 +91,8 @@ function ContactPage() {
                   <input {...register("phone", { required: "Required" })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-primary" />
                 </Field>
                 <div className="sm:col-span-2">
-                  <Field label="Email" error={errors.email?.message}>
-                    <input {...register("email", { required: "Required", pattern: { value: /^\S+@\S+\.\S+$/, message: "Invalid email" } })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-primary" />
+                  <Field label="Email (Optional)" error={errors.email?.message}>
+                    <input {...register("email", { validate: value => !value || /^\S+@\S+\.\S+$/.test(value) || "Invalid email" })} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-primary" />
                   </Field>
                 </div>
                 <div className="sm:col-span-2">
