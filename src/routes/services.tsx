@@ -8,6 +8,7 @@ import { submitInquiry } from "@/lib/admin-data";
 import { useServicesStore, ICONS } from "@/lib/services-data";
 import { BRANCHES } from "@/lib/branches";
 import { MapPin, Phone } from "lucide-react";
+import { whatsappLink } from "@/lib/site";
 
 
 
@@ -75,8 +76,13 @@ function ServicesPage() {
                     <MapPin className="h-3.5 w-3.5 text-primary" /> {b.city}
                   </div>
                   <div className="text-xs text-muted-foreground mt-1">{b.role}</div>
-                  <a href={`tel:${b.phone.replace(/\s+/g, "")}`} className="mt-1.5 inline-flex items-center gap-1.5 text-xs text-primary hover:underline">
-                    <Phone className="h-3 w-3" /> {b.phone}
+                  <a
+                    href={whatsappLink()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1.5 inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
+                  >
+                    <Phone className="h-3 w-3" /> Contact Us
                   </a>
                 </div>
               ))}
