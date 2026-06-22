@@ -63,15 +63,11 @@ export function Footer() {
                 <ul className="space-y-2">
                   <li className="flex gap-2">
                     <Phone className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
-                    <span>
-                      Building: <a href={`tel:${SITE.phoneRaw}`} className="hover:text-primary font-medium transition-colors">{SITE.phone}</a>
-                    </span>
+                    <a href={`tel:${SITE.phoneRaw}`} className="hover:text-primary font-medium transition-colors">{SITE.phone}</a>
                   </li>
                   <li className="flex gap-2">
                     <Phone className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
-                    <span>
-                      Head Office: <a href={`tel:${SITE.phoneRawAlt}`} className="hover:text-primary font-medium transition-colors">{SITE.phoneAlt}</a>
-                    </span>
+                    <a href={`tel:${SITE.phoneRawAlt}`} className="hover:text-primary font-medium transition-colors">{SITE.phoneAlt}</a>
                   </li>
                   <li className="flex gap-2 pt-2 border-t border-border/60">
                     <Mail className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
