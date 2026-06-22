@@ -129,9 +129,6 @@ export function Header() {
             <a href={`tel:${SITE.phoneRaw}`} className="hidden md:inline-flex items-center gap-1.5 hover:text-primary">
               <Headphones className="h-4 w-4" /> Contact Us
             </a>
-            <a href={`tel:${SITE.phoneRaw}`} className="inline-flex md:hidden items-center gap-1 hover:text-primary font-medium text-foreground text-[10px] sm:text-[11px]">
-              <Headphones className="h-3 w-3 text-primary shrink-0" /> {SITE.phone}
-            </a>
             {langSwitcher}
           </div>
           <button onClick={() => setOpen(!open)} className="lg:hidden p-2 ml-2 sm:ml-3" aria-label="Menu">
