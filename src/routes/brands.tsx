@@ -27,6 +27,10 @@ const innoHighlights = [
 function BrandsPage() {
   const { items: adminBrands } = useBrands();
   const filteredBrands = (adminBrands || []).filter(b => !b.name.toLowerCase().includes("satya power") && b.name.toUpperCase() !== "SKL");
+  const portfolioBrandNames = new Set(brands.map(b => b.name.toLowerCase()));
+  const logoGridBrands = filteredBrands.filter(
+    b => b.name.toLowerCase() !== "inno" && b.name.toLowerCase() !== "inno instrument" && !portfolioBrandNames.has(b.name.toLowerCase())
+  );
   const logoByName = new Map(
     filteredBrands
       .filter((b) => b.logo)
@@ -105,11 +109,11 @@ function BrandsPage() {
       </section>
 
       {/* Admin-managed brand logos */}
-      {filteredBrands.length > 0 && (
+      {logoGridBrands.length > 0 && (
         <section className="py-12 md:py-16 bg-background">
           <div className="mx-auto max-w-[1920px] px-6 md:px-16">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
-              {filteredBrands.map((b) => {
+              {logoGridBrands.map((b) => {
                 const logo = b.logo || getBrandLogo(b.name);
                 return (
                   <div key={b.id} className="bg-card border border-border p-4 md:p-6 flex flex-col items-center gap-3 hover:border-primary transition">
