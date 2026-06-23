@@ -47,7 +47,7 @@ export function Footer() {
             </p>
             <div className="mt-3 md:mt-4 space-y-4 text-[12px] md:text-[13px] text-muted-foreground">
               <div>
-                <div className="text-[11px] font-medium uppercase tracking-wider text-foreground mb-1.5">Building Address</div>
+                <div className="text-[11px] font-medium uppercase tracking-wider text-foreground mb-1.5">Billing Address</div>
                 <ul className="space-y-1.5">
                   <li className="flex gap-2"><MapPin className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />{SITE.address}</li>
                 </ul>

@@ -124,7 +124,7 @@ function AboutPage() {
             <div className="flex items-start gap-4">
               <MapPin className="h-8 w-8 text-primary-foreground shrink-0" />
               <div>
-                <div className="text-sm font-normal text-primary-foreground/75 mb-1">Building</div>
+                <div className="text-sm font-normal text-primary-foreground/75 mb-1">Billing Address</div>
                 <div className="text-lg font-medium">Peddapuram, Andhra Pradesh</div>
                 <p className="text-sm text-primary-foreground/85 mt-1 max-w-xl">{SITE.address}</p>
                 <p className="text-xs text-primary-foreground/70 mt-2">GSTIN: {SITE.gstin} · {SITE.phone}</p>

@@ -44,7 +44,7 @@ function ContactPage() {
         <div className="mx-auto max-w-[1920px] px-6 md:px-16 grid lg:grid-cols-[1fr_1.2fr] gap-12">
           <div className="space-y-6">
             <AddressBlock
-              label="Building Address"
+              label="Billing Address"
               name={SITE.name}
               address={SITE.address}
               gstin={SITE.gstin}
