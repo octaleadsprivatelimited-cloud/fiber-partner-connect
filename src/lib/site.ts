@@ -16,7 +16,7 @@ export const SITE = {
     "House No. 49/50, Vayushakthi Nagar Road No.1, Dammaiguda, Hyderabad - 500083, Telangana, India",
   gstin: "37BILPL7684K1ZD",
   founded: 2013,
-  ceo: "Mr. Dorababu",
+  ceo: "Mr. V Dorababu",
   website: "www.satyapowertechnologys.in",
   whatsappMsg: "Hello SATYA POWER TECHNOLOGYS, I'd like a quote.",
   // Social links (easy to update)
