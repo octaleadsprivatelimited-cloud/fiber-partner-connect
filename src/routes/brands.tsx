@@ -173,7 +173,7 @@ function BrandsPage() {
           <div className="flex items-end justify-between mb-8 md:mb-10 gap-4 flex-wrap">
             <div>
               <div className="text-sm font-normal text-muted-foreground mb-2">Portfolio</div>
-              <h2 className="text-2xl md:text-4xl font-light text-foreground">Additional Authorized Brands</h2>
+              <h2 className="text-2xl md:text-4xl font-light text-foreground">Our Additional Brands</h2>
             </div>
             <p className="text-sm text-muted-foreground max-w-md">
               Premium fusion splicers, OTDRs and field tools — all backed by our in-region service.
