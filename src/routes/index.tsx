@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Package } from "lucide-react";
+import { ArrowRight, Package, Zap, Wrench, ShieldCheck } from "lucide-react";
 import { Hero } from "@/components/Hero";
 import { TrustIndicators } from "@/components/TrustIndicators";
 import { BrandStrip } from "@/components/BrandStrip";
@@ -8,6 +8,8 @@ import { WhyChoose } from "@/components/WhyChoose";
 import { ProductCard } from "@/components/ProductCard";
 import { CTABanner } from "@/components/CTABanner";
 import { useProducts } from "@/lib/admin-data";
+import evServiceImg from "@/assets/ev-service.png";
+import { whatsappLink } from "@/lib/site";
 
 
 function Home() {
@@ -42,6 +44,72 @@ function Home() {
       </section>
 
       <ServiceBranches />
+
+      <section className="py-14 md:py-24 bg-card text-foreground border-t border-border overflow-hidden">
+        <div className="mx-auto max-w-[1920px] px-6 md:px-16 grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
+          <div className="space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-5 duration-700">
+            <div>
+              <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">New Service Frontier</div>
+              <h2 className="text-3xl md:text-5xl font-light leading-[1.15] text-foreground">
+                Powering the Future:<br />EV Charging & Vehicle Services
+              </h2>
+            </div>
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
+              We have recently expanded our service portfolio to cater to the growing electric vehicle infrastructure. Satya Power Technologys now offers professional testing, diagnostics, and turnkey installation services for AC and DC fast chargers.
+            </p>
+            <div className="space-y-4">
+              <div className="flex gap-4">
+                <div className="h-10 w-10 bg-accent text-primary flex items-center justify-center shrink-0">
+                  <Zap className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-md font-medium text-foreground">Turnkey Installation</h3>
+                  <p className="text-sm text-muted-foreground">Expert site-survey, design, and commissioning of AC and DC fast-charging systems for fleet operators, commercial establishments, and retail stations.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="h-10 w-10 bg-accent text-primary flex items-center justify-center shrink-0">
+                  <Wrench className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-md font-medium text-foreground">Diagnostics & Maintenance</h3>
+                  <p className="text-sm text-muted-foreground">Periodic safety checks, diagnostic troubleshooting, and charger calibration by certified technical teams.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="h-10 w-10 bg-accent text-primary flex items-center justify-center shrink-0">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-md font-medium text-foreground">State-Wide Support</h3>
+                  <p className="text-sm text-muted-foreground">Full support coverage through our five regional service centers in AP & Telangana with rapid same-week turnaround.</p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <a
+                href={whatsappLink("Hello SATYA POWER TECHNOLOGYS, I am interested in your EV charging/vehicle services.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/95 transition-all shadow-md group"
+              >
+                Inquire on WhatsApp <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </div>
+          </div>
+          <div className="relative group max-w-xl mx-auto lg:mx-0 w-full animate-in fade-in slide-in-from-right-5 duration-700">
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-sm blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+            <div className="relative bg-card border border-border/80 overflow-hidden">
+              <img
+                src={evServiceImg}
+                alt="EV Charging Service"
+                loading="lazy"
+                className="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
 
       <WhyChoose />
 
