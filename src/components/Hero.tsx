@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Wrench, Award, MapPin } from "lucide-react";
+import { ArrowRight, Wrench, Award, MapPin, Battery } from "lucide-react";
 import heroBg from "@/assets/hero-bg-blue-v1.jpg";
 
 const slides = [
@@ -18,6 +18,11 @@ const slides = [
     eyebrow: { icon: MapPin, text: "PREMIUM EQUIPMENT" },
     title: "Built for the Field, Trusted by Pros",
     body: "Inno, Grandway, Claron, EXFO, Fujikura, Sumitomo, VIAVI — all under one trusted roof.",
+  },
+  {
+    eyebrow: { icon: Battery, text: "EV VEHICLE SERVICES" },
+    title: "EV Batteries & Smart Charging Solutions",
+    body: "Powering the green transition with expert EV battery diagnostics, service upgrades, and turnkey charging station installations.",
   },
 ];
 
