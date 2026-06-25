@@ -55,7 +55,7 @@ function Home() {
               </h2>
             </div>
             <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-              We have recently expanded our service portfolio to support the transition to electric vehicles. For EV batteries, we specifically provide only repair, service, and cell replacement (we do not sell new batteries, but restore your existing packs to peak performance).
+              We have recently expanded our service portfolio to support the transition to electric vehicles. For EV batteries, we specifically provide only repair, service, and cell replacement.
             </p>
             <div className="space-y-4">
               <div className="flex gap-4">
