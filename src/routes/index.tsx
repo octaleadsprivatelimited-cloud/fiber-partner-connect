@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Package, Zap, Wrench, ShieldCheck } from "lucide-react";
+import { ArrowRight, Package, Zap, Wrench, ShieldCheck, Battery } from "lucide-react";
 import { Hero } from "@/components/Hero";
 import { TrustIndicators } from "@/components/TrustIndicators";
 import { BrandStrip } from "@/components/BrandStrip";
@@ -51,44 +51,44 @@ function Home() {
             <div>
               <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">New Service Frontier</div>
               <h2 className="text-3xl md:text-5xl font-light leading-[1.15] text-foreground">
-                Powering the Future:<br />EV Charging & Vehicle Services
+                Powering the Future:<br />EV Battery & Charging Services
               </h2>
             </div>
             <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-              We have recently expanded our service portfolio to cater to the growing electric vehicle infrastructure. Satya Power Technologys now offers professional testing, diagnostics, and turnkey installation services for AC and DC fast chargers.
+              We have recently expanded our service portfolio to support the transition to electric vehicles. For EV batteries, we specifically provide professional diagnostics, repair & service, and cell replacement. We also supply and install brand new batteries and AC/DC fast chargers.
             </p>
             <div className="space-y-4">
-              <div className="flex gap-4">
-                <div className="h-10 w-10 bg-accent text-primary flex items-center justify-center shrink-0">
-                  <Zap className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="text-md font-medium text-foreground">Turnkey Installation</h3>
-                  <p className="text-sm text-muted-foreground">Expert site-survey, design, and commissioning of AC and DC fast-charging systems for fleet operators, commercial establishments, and retail stations.</p>
-                </div>
-              </div>
               <div className="flex gap-4">
                 <div className="h-10 w-10 bg-accent text-primary flex items-center justify-center shrink-0">
                   <Wrench className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-md font-medium text-foreground">Diagnostics & Maintenance</h3>
-                  <p className="text-sm text-muted-foreground">Periodic safety checks, diagnostic troubleshooting, and charger calibration by certified technical teams.</p>
+                  <h3 className="text-md font-medium text-foreground">EV Battery Repair & Service</h3>
+                  <p className="text-sm text-muted-foreground">Comprehensive health diagnostics, safety testing, capacity validation, and servicing to restore original battery efficiency.</p>
                 </div>
               </div>
               <div className="flex gap-4">
                 <div className="h-10 w-10 bg-accent text-primary flex items-center justify-center shrink-0">
-                  <ShieldCheck className="h-5 w-5" />
+                  <Battery className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-md font-medium text-foreground">State-Wide Support</h3>
-                  <p className="text-sm text-muted-foreground">Full support coverage through our five regional service centers in AP & Telangana with rapid same-week turnaround.</p>
+                  <h3 className="text-md font-medium text-foreground">Battery Cells Replacement</h3>
+                  <p className="text-sm text-muted-foreground">Cost-effective replacement of individual degraded or faulty cell modules to extend the lifecycle of your existing pack.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="h-10 w-10 bg-accent text-primary flex items-center justify-center shrink-0">
+                  <Zap className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-md font-medium text-foreground">New Batteries & Charger Setup</h3>
+                  <p className="text-sm text-muted-foreground">Supply of brand new replacement battery packs alongside turnkey commercial and residential AC/DC charger installations.</p>
                 </div>
               </div>
             </div>
             <div>
               <a
-                href={whatsappLink("Hello SATYA POWER TECHNOLOGYS, I am interested in your EV charging/vehicle services.")}
+                href={whatsappLink("Hello SATYA POWER TECHNOLOGYS, I am interested in your EV battery repair, cells replacement, and charger services.")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/95 transition-all shadow-md group"
@@ -102,7 +102,7 @@ function Home() {
             <div className="relative bg-card border border-border/80 overflow-hidden">
               <img
                 src={evServiceImg}
-                alt="EV Charging Service"
+                alt="EV Battery & Charging Service"
                 loading="lazy"
                 className="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-105"
               />
