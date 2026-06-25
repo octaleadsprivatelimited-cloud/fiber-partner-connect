@@ -51,11 +51,11 @@ function Home() {
             <div>
               <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">New Service Frontier</div>
               <h2 className="text-3xl md:text-5xl font-light leading-[1.15] text-foreground">
-                Powering the Future:<br />EV Battery & Charging Services
+                Powering the Future:<br />EV Battery Repair Services
               </h2>
             </div>
             <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-              We have recently expanded our service portfolio to support the transition to electric vehicles. For EV batteries, we specifically provide only repair, service, and cell replacement (we do not sell new batteries, but restore your existing packs to peak performance). We also offer turnkey installation services for AC/DC fast chargers.
+              We have recently expanded our service portfolio to support the transition to electric vehicles. For EV batteries, we specifically provide only repair, service, and cell replacement (we do not sell new batteries, but restore your existing packs to peak performance).
             </p>
             <div className="space-y-4">
               <div className="flex gap-4">
@@ -76,19 +76,10 @@ function Home() {
                   <p className="text-sm text-muted-foreground">Cost-effective replacement of individual degraded or faulty cell modules to extend the lifecycle of your existing pack.</p>
                 </div>
               </div>
-              <div className="flex gap-4">
-                <div className="h-10 w-10 bg-accent text-primary flex items-center justify-center shrink-0">
-                  <Zap className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="text-md font-medium text-foreground">AC & DC Charger Installation</h3>
-                  <p className="text-sm text-muted-foreground">Turnkey installation and setup of commercial and residential AC & DC fast chargers for home, retail, and fleet stations.</p>
-                </div>
-              </div>
             </div>
             <div>
               <a
-                href={whatsappLink("Hello SATYA POWER TECHNOLOGYS, I am interested in your EV battery repair, cells replacement, and charger services.")}
+                href={whatsappLink("Hello SATYA POWER TECHNOLOGYS, I am interested in your EV battery repair and cell replacement services.")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-medium text-sm hover:bg-primary/95 transition-all shadow-md group"
@@ -102,7 +93,7 @@ function Home() {
             <div className="relative bg-card border border-border/80 overflow-hidden">
               <img
                 src={evServiceImg}
-                alt="EV Battery & Charging Service"
+                alt="EV Battery Repair Service"
                 loading="lazy"
                 className="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-105"
               />

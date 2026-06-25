@@ -20,9 +20,9 @@ const slides = [
     body: "Inno, Grandway, Claron, EXFO, Fujikura, Sumitomo, VIAVI — all under one trusted roof.",
   },
   {
-    eyebrow: { icon: Battery, text: "EV BATTERY & CHARGING" },
-    title: "EV Batteries & Smart Charging Solutions",
-    body: "Providing expert EV battery repair, diagnostics, cell replacement, and commercial charger installations.",
+    eyebrow: { icon: Battery, text: "EV BATTERY REPAIR" },
+    title: "EV Battery Repair & Cell Replacement",
+    body: "Providing expert EV battery diagnostics, repairs, and individual cell replacements to restore performance.",
   },
 ];
 
