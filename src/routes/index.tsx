@@ -55,7 +55,7 @@ function Home() {
               </h2>
             </div>
             <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-              We have recently expanded our service portfolio to support the transition to electric vehicles. For EV batteries, we specifically provide professional diagnostics, repair & service, and cell replacement. We also supply and install brand new batteries and AC/DC fast chargers.
+              We have recently expanded our service portfolio to support the transition to electric vehicles. For EV batteries, we specifically provide only repair, service, and cell replacement (we do not sell new batteries, but restore your existing packs to peak performance). We also offer turnkey installation services for AC/DC fast chargers.
             </p>
             <div className="space-y-4">
               <div className="flex gap-4">
@@ -81,8 +81,8 @@ function Home() {
                   <Zap className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-md font-medium text-foreground">New Batteries & Charger Setup</h3>
-                  <p className="text-sm text-muted-foreground">Supply of brand new replacement battery packs alongside turnkey commercial and residential AC/DC charger installations.</p>
+                  <h3 className="text-md font-medium text-foreground">AC & DC Charger Installation</h3>
+                  <p className="text-sm text-muted-foreground">Turnkey installation and setup of commercial and residential AC & DC fast chargers for home, retail, and fleet stations.</p>
                 </div>
               </div>
             </div>

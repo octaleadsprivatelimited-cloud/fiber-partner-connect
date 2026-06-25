@@ -22,7 +22,7 @@ const slides = [
   {
     eyebrow: { icon: Battery, text: "EV BATTERY & CHARGING" },
     title: "EV Batteries & Smart Charging Solutions",
-    body: "Providing expert EV battery repair, diagnostics, cell replacement, new batteries, and commercial charger setup.",
+    body: "Providing expert EV battery repair, diagnostics, cell replacement, and commercial charger installations.",
   },
 ];
 
