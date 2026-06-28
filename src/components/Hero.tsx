@@ -1,28 +1,35 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Wrench, Award, MapPin, Battery } from "lucide-react";
-import heroBg from "@/assets/hero-bg-blue-v1.jpg";
+import hero1 from "@/assets/hero-1.jpg";
+import hero2 from "@/assets/hero-2.jpg";
+import hero3 from "@/assets/hero-3.jpg";
+import evService from "@/assets/ev-service.png";
 
 const slides = [
   {
     eyebrow: { icon: Award, text: "AUTHORIZED DISTRIBUTOR" },
     title: "Fiber Optic Tools for AP & Telangana",
     body: "Authorized Distributor for Inno, Grandway, Claron & EXFO — sales and service across both states.",
+    image: hero1,
   },
   {
     eyebrow: { icon: Wrench, text: "SALES + SERVICE" },
     title: "We Don't Just Sell — We Service",
     body: "In-house repair, calibration & on-site support. Competitors only sell. We do both.",
+    image: hero2,
   },
   {
     eyebrow: { icon: MapPin, text: "PREMIUM EQUIPMENT" },
     title: "Built for the Field, Trusted by Pros",
     body: "Inno, Grandway, Claron, EXFO, Fujikura, Sumitomo, VIAVI — all under one trusted roof.",
+    image: hero3,
   },
   {
     eyebrow: { icon: Battery, text: "EV BATTERY REPAIR" },
     title: "EV Battery Repair & Cell Replacement",
     body: "Providing expert EV battery diagnostics, repairs, and individual cell replacements to restore performance.",
+    image: evService,
   },
 ];
 
@@ -38,7 +45,16 @@ export function Hero() {
   return (
     <section className="relative bg-brand-black text-primary-foreground overflow-hidden">
       <div className="absolute inset-0">
-        <img src={heroBg} alt="" className="absolute inset-0 h-full w-full object-cover opacity-70" />
+        {slides.map((slide, idx) => (
+          <img
+            key={idx}
+            src={slide.image}
+            alt=""
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ease-in-out ${
+              idx === i ? "opacity-70" : "opacity-0 pointer-events-none"
+            }`}
+          />
+        ))}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-black/85 via-brand-black/55 to-transparent" />
       </div>
 
