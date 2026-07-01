@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Award, ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
+import { SEO } from "@/components/SEO";
 import { useBrands } from "@/lib/brands-data";
 import { getBrandLogo } from "@/lib/brand-logos";
 
@@ -80,6 +81,11 @@ function BrandsPage() {
     getBrandLogo("inno");
   return (
     <>
+      <SEO
+        title="Authorized Brands"
+        description="We represent world-leading fiber optic brands. Explore our partnerships with INNO Instrument, Grandway, Claron, EXFO, Fujikura, Sumitomo, and VIAVI."
+        keywords="inno instrument, grandway, exfo, fujikura, sumitomo, claron, fiber brands"
+      />
       <PageHero
         eyebrow="OUR PARTNERS"
         title="Brands We Represent"

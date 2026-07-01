@@ -27,11 +27,23 @@ import { toast } from "sonner";
 
 type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "gallery" | "settings";
 
+import { SEO } from "@/components/SEO";
+
 function AdminPage() {
   const { user, loading, login, logout } = useAuth();
   if (loading) return <div className="min-h-[60vh] flex items-center justify-center text-muted-foreground">Loading…</div>;
-  if (!user) return <LoginScreen onLogin={login} />;
-  return <Dashboard email={user.email ?? ""} onLogout={logout} />;
+  if (!user) return (
+    <>
+      <SEO title="Admin Login" description="Admin authentication panel for Satya Power Technologys." />
+      <LoginScreen onLogin={login} />
+    </>
+  );
+  return (
+    <>
+      <SEO title="Admin Dashboard" description="Admin management dashboard for Satya Power Technologys." />
+      <Dashboard email={user.email ?? ""} onLogout={logout} />
+    </>
+  );
 }
 
 /* ============ LOGIN ============ */

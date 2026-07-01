@@ -4,6 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
+import { SEO } from "@/components/SEO";
 import { submitInquiry } from "@/lib/admin-data";
 import { useServicesStore, ICONS } from "@/lib/services-data";
 import { BRANCHES } from "@/lib/branches";
@@ -33,6 +34,11 @@ function ServicesPage() {
 
   return (
     <>
+      <SEO
+        title="Our Services"
+        description="Professional repair, calibration, preventive maintenance, EV battery cell replacement, and on-site support for fiber optic splicers and OTDRs. We service AP & Telangana."
+        keywords="splicer repair, otdr calibration, battery cell replacement, service centers ap, service support"
+      />
       <PageHero
         eyebrow="OUR DIFFERENTIATOR"
         title={<>We Don't Just Sell — <span className="text-primary">We Service.</span></>}

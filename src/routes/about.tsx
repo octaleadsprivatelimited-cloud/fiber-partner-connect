@@ -36,9 +36,16 @@ const pillars = [
   { icon: Users, t: "Our People", d: "An experienced team of engineers and field technicians committed to your uptime." },
 ];
 
+import { SEO } from "@/components/SEO";
+
 function AboutPage() {
   return (
     <>
+      <SEO
+        title="About Us"
+        description="Learn about SATYA POWER TECHNOLOGYS, founded in 2013 under the leadership of Mr. V Dorababu. Discover our mission, values, and our journey as a leading provider of fiber optic and industrial technology services."
+        keywords="about satya power, mr v dorababu, fiber optic solutions company, company profile"
+      />
       <PageHero
         eyebrow="OUR STORY"
         title="Built on trust. Backed by service."

@@ -122,7 +122,10 @@ export function Footer() {
               Octaleads Pvt. Ltd.
             </a>
           </span>
-          <span>{SITE.website}</span>
+          <div className="flex gap-4">
+            <a href="/sitemap.xml" className="hover:text-primary hover:underline transition">Sitemap</a>
+            <span>{SITE.website}</span>
+          </div>
         </div>
       </div>
     </footer>

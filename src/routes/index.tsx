@@ -10,6 +10,7 @@ import { CTABanner } from "@/components/CTABanner";
 import { useProducts } from "@/lib/admin-data";
 import evServiceImg from "@/assets/ev-service.png";
 import { whatsappLink } from "@/lib/site";
+import { SEO } from "@/components/SEO";
 
 
 function Home() {
@@ -17,6 +18,11 @@ function Home() {
   const featured = products.filter((p) => p.featured).slice(0, 8);
   return (
     <>
+      <SEO
+        title="Authorized Distributor for Inno, Grandway, Claron & EXFO"
+        description="SATYA POWER TECHNOLOGYS is the authorized sales & service distributor of premium fiber optic fusion splicers, OTDRs, cleavers, EV batteries repair, and testing equipment across Andhra Pradesh & Telangana."
+        keywords="fusion splicers, otdr, fiber optic tools, inno distributor, satya power, ev battery repair, ap telangana"
+      />
       <Hero />
       <TrustIndicators />
       <BrandStrip />

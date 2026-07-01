@@ -5,6 +5,7 @@ import { SITE, whatsappLink } from "@/lib/site";
 import { submitInquiry } from "@/lib/admin-data";
 import { sendToFormspree } from "@/lib/formspree";
 import { PageHero } from "@/components/PageHero";
+import { SEO } from "@/components/SEO";
 
 
 
@@ -33,6 +34,11 @@ function ContactPage() {
 
   return (
     <>
+      <SEO
+        title="Contact Us"
+        description="Get in touch with SATYA POWER TECHNOLOGYS. Contact our Billing Address in Peddapuram or our Head Office in Hyderabad for sales quotes, support inquiries, or repair requests."
+        keywords="contact satya power, office address, customer support phone, whatsapp contact"
+      />
       <PageHero
         eyebrow="GET IN TOUCH"
         title="Let's talk fiber."

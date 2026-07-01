@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, ImageIcon } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { useGallery, GALLERY_CATEGORIES, type GalleryItem } from "@/lib/gallery-data";
+import { SEO } from "@/components/SEO";
 
 
 function GalleryPage() {
@@ -20,6 +21,11 @@ function GalleryPage() {
 
   return (
     <>
+      <SEO
+        title="Gallery"
+        description="Explore photos of our services, customer training sessions, events, state-of-the-art repair facilities, and team field support operations across AP & Telangana."
+        keywords="satya power gallery, service photos, customer training, workshop photos"
+      />
       <PageHero
         eyebrow="OUR WORK"
         title="Gallery"

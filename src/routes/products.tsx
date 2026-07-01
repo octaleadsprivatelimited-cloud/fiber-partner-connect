@@ -5,6 +5,7 @@ import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
 import { CATEGORIES, BRANDS } from "@/lib/products";
 import { useProducts } from "@/lib/admin-data";
+import { SEO } from "@/components/SEO";
 
 
 
@@ -25,6 +26,11 @@ function ProductsPage() {
   );
   return (
     <>
+      <SEO
+        title="Products Catalogue"
+        description="Browse our full range of high-quality fiber optic equipment including fusion splicers, OTDRs, optical power meters, cleavers, VFLs, and other field accessories."
+        keywords="fiber optic products, buy fusion splicer, otdr catalog, field tools, fiber gear"
+      />
       <PageHero
         eyebrow="CATALOGUE"
         title="All Products"
