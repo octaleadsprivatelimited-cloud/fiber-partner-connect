@@ -124,7 +124,7 @@ export function Footer() {
               href="https://octaleads.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-primary hover:underline transition-colors font-medium"
+              className="text-[#f97316] hover:text-[#ea580c] hover:underline transition-colors font-medium"
             >
               Octaleads Pvt. Ltd.
             </a>
