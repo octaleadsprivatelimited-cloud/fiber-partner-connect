@@ -14,6 +14,12 @@ const slides = [
     image: hero1,
   },
   {
+    eyebrow: { icon: Battery, text: "EV BATTERY REPAIR" },
+    title: "EV Battery Repair & Cell Replacement",
+    body: "Providing expert EV battery diagnostics, repairs, and individual cell replacements to restore performance.",
+    image: evService,
+  },
+  {
     eyebrow: { icon: Wrench, text: "SALES + SERVICE" },
     title: "We Don't Just Sell — We Service",
     body: "In-house repair, calibration & on-site support. Competitors only sell. We do both.",
@@ -24,12 +30,6 @@ const slides = [
     title: "Built for the Field, Trusted by Pros",
     body: "Inno, Grandway, Claron, EXFO, Fujikura, Sumitomo, VIAVI — all under one trusted roof.",
     image: hero3,
-  },
-  {
-    eyebrow: { icon: Battery, text: "EV BATTERY REPAIR" },
-    title: "EV Battery Repair & Cell Replacement",
-    body: "Providing expert EV battery diagnostics, repairs, and individual cell replacements to restore performance.",
-    image: evService,
   },
 ];
 
