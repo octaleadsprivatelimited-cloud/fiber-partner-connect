@@ -3,38 +3,45 @@ import { Phone, Mail, MapPin, Linkedin, Facebook, Instagram, Youtube, ChevronDow
 import { useState } from "react";
 import { Logo } from "./Logo";
 import { SITE } from "@/lib/site";
-
-const COLUMNS: { title: string; links: { to: string; label: string }[] }[] = [
-  {
-    title: "Explore",
-    links: [
-      { to: "/products", label: "Products" },
-      { to: "/brands", label: "Brands" },
-      { to: "/services", label: "Services" },
-      { to: "/gallery", label: "Gallery" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { to: "/about", label: "About Us" },
-      { to: "/contact", label: "Contact" },
-      { to: "/services", label: "Service Centers" },
-    ],
-  },
-  {
-    title: "Categories",
-    links: [
-      { to: "/products?category=Fusion%20Splicers", label: "Fusion Splicers" },
-      { to: "/products?category=OTDR", label: "OTDR & Power Meters" },
-      { to: "/products?category=Cleavers", label: "Cleavers & VFL" },
-      { to: "/services", label: "Spare Parts & Service" },
-    ],
-  },
-];
+import { useCategories } from "@/lib/categories-data";
 
 export function Footer() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const { categories } = useCategories();
+
+  const dynamicCategoryLinks = categories.slice(0, 4).map((c) => ({
+    to: `/products?category=${encodeURIComponent(c.name)}`,
+    label: c.name,
+  }));
+
+  const columns = [
+    {
+      title: "Explore",
+      links: [
+        { to: "/products", label: "Products" },
+        { to: "/brands", label: "Brands" },
+        { to: "/services", label: "Services" },
+        { to: "/gallery", label: "Gallery" },
+      ],
+    },
+    {
+      title: "Company",
+      links: [
+        { to: "/about", label: "About Us" },
+        { to: "/contact", label: "Contact" },
+        { to: "/services", label: "Service Centers" },
+      ],
+    },
+    {
+      title: "Categories",
+      links: dynamicCategoryLinks.length > 0 ? dynamicCategoryLinks : [
+        { to: "/products?category=Fusion%20Splicers", label: "Fusion Splicers" },
+        { to: "/products?category=OTDR", label: "OTDR & Power Meters" },
+        { to: "/products?category=Cleavers", label: "Cleavers & VFL" },
+        { to: "/services", label: "Spare Parts & Service" },
+      ],
+    },
+  ];
 
   return (
     <footer className="bg-muted text-foreground border-t border-border">
@@ -78,7 +85,7 @@ export function Footer() {
             </div>
           </div>
 
-          {COLUMNS.map((c) => (
+          {columns.map((c) => (
             <div key={c.title} className="md:col-span-2 border-b border-border md:border-0">
               <button
                 type="button"

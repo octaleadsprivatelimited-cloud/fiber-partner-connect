@@ -3,15 +3,17 @@ import { useSearchParams } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
 import { CTABanner } from "@/components/CTABanner";
 import { PageHero } from "@/components/PageHero";
-import { CATEGORIES, BRANDS } from "@/lib/products";
+import { BRANDS } from "@/lib/products";
 import { useProducts } from "@/lib/admin-data";
 import { SEO } from "@/components/SEO";
+import { useCategories } from "@/lib/categories-data";
 
 
 
 function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { products } = useProducts();
+  const { categories } = useCategories();
   const [cat, setCatState] = useState<string>(searchParams.get("category") || "All");
   const [brand, setBrand] = useState<string>("All");
   useEffect(() => {
@@ -44,7 +46,7 @@ function ProductsPage() {
             <div>
               <h3 className="font-medium text-sm mb-3 text-foreground">Category</h3>
               <div className="flex flex-wrap lg:flex-col gap-2">
-                {["All", ...CATEGORIES].map((c) => (
+                {["All", ...categories.map((c) => c.name)].map((c) => (
                   <button
                     key={c}
                     onClick={() => setCat(c)}

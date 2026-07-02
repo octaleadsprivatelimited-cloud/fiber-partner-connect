@@ -9,8 +9,10 @@ import {
   LayoutDashboard, Package, MessageSquare, Tag as TagIcon, Settings as SettingsIcon,
   LogOut, Plus, Pencil, Trash2, Upload, AlertCircle, CheckCircle2, X, Mail, Phone,
   TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Wrench, Image as ImageIcon,
+  Layers,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { useCategories } from "@/lib/categories-data";
 import {
   useAuth, useProducts, useInquiries, isFirebaseConfigured,
   DEMO_CREDENTIALS,
@@ -26,7 +28,7 @@ import { SITE } from "@/lib/site";
 import { toast } from "sonner";
 
 
-type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "gallery" | "settings";
+type Tab = "dashboard" | "products" | "services" | "inquiries" | "brands" | "gallery" | "categories" | "settings";
 
 import { SEO } from "@/components/SEO";
 
@@ -110,6 +112,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
   const tabs: { id: Tab; label: string; icon: any }[] = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "products", label: "Products", icon: Package },
+    { id: "categories", label: "Categories", icon: Layers },
     { id: "services", label: "Services", icon: Wrench },
     { id: "inquiries", label: "Inquiries", icon: MessageSquare },
     { id: "brands", label: "Brands & Partners", icon: TagIcon },
@@ -222,6 +225,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
           <section className="p-4 sm:p-6 lg:p-8 min-w-0">
             {tab === "dashboard" && <DashboardOverview products={products} inquiries={inquiries} onTab={setTab} />}
             {tab === "products" && <ProductsManager products={products} save={save} remove={remove} uploadImage={uploadImage} />}
+            {tab === "categories" && <CategoriesManager />}
             {tab === "services" && <ServicesManager />}
             {tab === "inquiries" && <InquiriesManager inquiries={inquiries} updateStatus={updateStatus} remove={removeInquiry} />}
             {tab === "brands" && <BrandsManager />}
@@ -490,6 +494,7 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
   onSave: (p: Product) => Promise<void>;
   uploadImage: (f: File) => Promise<string>;
 }) {
+  const { categories } = useCategories();
   const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<Product>({ defaultValues: product });
   const image = watch("image");
   const [uploading, setUploading] = useState(false);
@@ -517,7 +522,7 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field label="Category">
               <select {...register("category")} className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red bg-white">
-                {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                {categories.map((c) => <option key={c.name} value={c.name}>{c.name}</option>)}
               </select>
             </Field>
             <Field label="Brand">
@@ -1141,6 +1146,83 @@ function GalleryManager() {
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+/* ============ Categories manager ============ */
+function CategoriesManager() {
+  const { categories, loading, add, remove } = useCategories();
+  const [newCatName, setNewCatName] = useState("");
+
+  const handleAdd = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCatName.trim()) return;
+    await add(newCatName.trim());
+    setNewCatName("");
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Categories</h2>
+          <p className="text-sm text-slate-500 mt-1">{categories.length} product categor{categories.length === 1 ? "y" : "ies"}</p>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-6 items-start">
+        {/* Add Form */}
+        <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
+          <h3 className="font-bold text-slate-900">Add New Category</h3>
+          <form onSubmit={handleAdd} className="space-y-3">
+            <div>
+              <label className="text-xs font-bold uppercase tracking-wider text-brand-black">Category Name</label>
+              <input
+                value={newCatName}
+                onChange={(e) => setNewCatName(e.target.value)}
+                placeholder="e.g. Patch Cords"
+                className="mt-1.5 w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-brand-red text-white font-semibold py-2.5 rounded hover:bg-brand-red-dark transition text-sm shadow-sm"
+            >
+              Add Category
+            </button>
+          </form>
+        </div>
+
+        {/* Categories List */}
+        <div className="md:col-span-2 bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+          {loading && categories.length === 0 ? (
+            <div className="p-8 text-center text-muted-foreground text-sm">Loading categories...</div>
+          ) : (
+            <div className="divide-y divide-slate-100">
+              {categories.map((c) => (
+                <div key={c.id} className="p-4 flex items-center justify-between hover:bg-slate-50 transition">
+                  <div className="font-medium text-slate-900">{c.name}</div>
+                  <button
+                    onClick={() => {
+                      if (confirm(`Are you sure you want to delete the category "${c.name}"?`)) {
+                        remove(c.id);
+                      }
+                    }}
+                    className="p-1.5 rounded hover:bg-red-50 text-brand-red transition"
+                    aria-label="Delete category"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+              {categories.length === 0 && (
+                <div className="p-8 text-center text-muted-foreground text-sm">No categories found. Add one above.</div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

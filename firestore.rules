@@ -20,6 +20,12 @@ service cloud.firestore {
     }
 
     // ---------- Public content (managed in the admin panel) ----------
+    match /categories/{id} {
+      allow read: if true;
+      allow create, update: if isSignedIn() && isWithinSizeLimit();
+      allow delete: if isSignedIn();
+    }
+
     match /products/{id} {
       allow read: if true;
       allow create, update: if isSignedIn() && isWithinSizeLimit();
