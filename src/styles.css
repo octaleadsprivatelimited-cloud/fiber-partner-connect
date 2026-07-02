@@ -104,7 +104,7 @@
 }
 
 @utility animate-marquee {
-  animation: marquee 28s linear infinite;
+  animation: marquee 18s linear infinite;
   &:hover { animation-play-state: paused; }
 }
 
