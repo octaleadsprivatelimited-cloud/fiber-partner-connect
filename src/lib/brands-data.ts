@@ -20,22 +20,43 @@ export interface BrandItem {
 const LOCAL_KEY = "admin-brands-v2";
 const LEGACY_KEY = "admin-brand-descriptions";
 
+function deduplicateBrands(brands: BrandItem[]): BrandItem[] {
+  const seen = new Map<string, BrandItem>();
+  for (const b of brands) {
+    const key = b.name.trim().toLowerCase();
+    const existing = seen.get(key);
+    if (!existing) {
+      seen.set(key, b);
+    } else {
+      const currentIsBetter = (b.logo && !existing.logo) || (!b.id?.startsWith("seed-") && existing.id?.startsWith("seed-"));
+      if (currentIsBetter) {
+        seen.set(key, b);
+      }
+    }
+  }
+  return Array.from(seen.values());
+}
+
 function readLocal(): BrandItem[] {
   if (typeof localStorage === "undefined") return [];
   try {
     const raw = localStorage.getItem(LOCAL_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return deduplicateBrands(parsed);
+    }
     // Migrate legacy localStorage from old BrandsManager
     const legacy = localStorage.getItem(LEGACY_KEY);
     if (legacy) {
       const parsed = JSON.parse(legacy) as BrandItem[];
       if (Array.isArray(parsed)) {
-        localStorage.setItem(LOCAL_KEY, JSON.stringify(parsed));
-        return parsed;
+        const deduped = deduplicateBrands(parsed);
+        localStorage.setItem(LOCAL_KEY, JSON.stringify(deduped));
+        return deduped;
       }
     }
   } catch { /* noop */ }
-  return BRANDS.map((b) => ({ id: `seed-${b}`, name: b }));
+  return deduplicateBrands(BRANDS.map((b) => ({ id: `seed-${b}`, name: b })));
 }
 
 function writeLocal(list: BrandItem[]) {
@@ -88,8 +109,9 @@ export function useBrands() {
             const list = snap.docs.map((d, i) => ({
               id: d.id, order: i, ...(d.data() as any),
             })) as BrandItem[];
-            setItems(list);
-            writeLocal(list);
+            const deduplicated = deduplicateBrands(list);
+            setItems(deduplicated);
+            writeLocal(deduplicated);
             setLoading(false);
           },
           (e) => { console.warn("Brands read failed, using local:", e); setItems(readLocal()); setLoading(false); },
@@ -124,7 +146,7 @@ export function useBrands() {
   }, []);
 
   const update = useCallback(async (id: string, patch: Partial<BrandItem>) => {
-    if (!id || id.startsWith("local-") || id.startsWith("seed-")) {
+    if (!id || id.startsWith("local-")) {
       const list = readLocal();
       const exists = list.some((b) => b.id === id);
       const next = exists
@@ -159,14 +181,16 @@ export function useBrands() {
   }, []);
 
   const remove = useCallback(async (id: string) => {
-    if (!id || id.startsWith("local-") || id.startsWith("seed-")) {
+    if (!id || id.startsWith("local-")) {
       writeLocal(readLocal().filter((b) => b.id !== id));
       return;
     }
+    writeLocal(readLocal().filter((b) => b.id !== id));
+
     const fb = getFirebase();
     if (!fb || !isFirebaseConfigured()) return;
     try { await deleteDoc(doc(fb.db, "brands", id)); }
-    catch (e) { console.warn(e); }
+    catch (e) { console.warn("Failed to delete brand from Firestore:", e); }
   }, []);
 
   return { items, loading, add, update, remove };
