@@ -63,13 +63,17 @@ export function useBrands() {
         const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).brandsSeeded;
         if (!alreadySeeded) {
           console.log("Seeding brands to Firestore on startup...");
-          const promises = BRANDS.map((b, i) => {
+          const promises = BRANDS.map(async (b, i) => {
             const id = `seed-${b.toLowerCase().replace(/\s+/g, "-")}`;
-            return setDoc(doc(fb.db, "brands", id), {
-              name: b,
-              order: i,
-              createdAt: serverTimestamp(),
-            });
+            const docRef = doc(fb.db, "brands", id);
+            const docSnap = await getDoc(docRef);
+            if (!docSnap.exists()) {
+              await setDoc(docRef, {
+                name: b,
+                order: i,
+                createdAt: serverTimestamp(),
+              });
+            }
           });
           await Promise.all(promises);
           await setDoc(globalRef, { brandsSeeded: true }, { merge: true });

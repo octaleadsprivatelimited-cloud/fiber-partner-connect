@@ -57,13 +57,17 @@ export function useCategories() {
         const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).categoriesSeeded;
         if (!alreadySeeded) {
           console.log("Seeding categories to Firestore on startup...");
-          const promises = SEED_CATEGORIES.map((c, i) => {
+          const promises = SEED_CATEGORIES.map(async (c, i) => {
             const id = `seed-${c.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
-            return setDoc(doc(fb.db, "categories", id), {
-              name: c,
-              order: i,
-              createdAt: serverTimestamp(),
-            });
+            const docRef = doc(fb.db, "categories", id);
+            const docSnap = await getDoc(docRef);
+            if (!docSnap.exists()) {
+              await setDoc(docRef, {
+                name: c,
+                order: i,
+                createdAt: serverTimestamp(),
+              });
+            }
           });
           await Promise.all(promises);
           await setDoc(globalRef, { categoriesSeeded: true }, { merge: true });

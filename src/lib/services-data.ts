@@ -76,14 +76,18 @@ export function useServicesStore() {
         const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).servicesSeeded;
         if (!alreadySeeded) {
           console.log("Seeding services to Firestore on startup...");
-          const promises = SEED_ITEMS.map((item, i) => {
-            return setDoc(doc(fb.db, "services", item.id), {
-              iconName: item.iconName,
-              title: item.title,
-              description: item.description,
-              order: i,
-              createdAt: serverTimestamp(),
-            });
+          const promises = SEED_ITEMS.map(async (item, i) => {
+            const docRef = doc(fb.db, "services", item.id);
+            const docSnap = await getDoc(docRef);
+            if (!docSnap.exists()) {
+              await setDoc(docRef, {
+                iconName: item.iconName,
+                title: item.title,
+                description: item.description,
+                order: i,
+                createdAt: serverTimestamp(),
+              });
+            }
           });
           await Promise.all(promises);
           await setDoc(globalRef, { servicesSeeded: true }, { merge: true });

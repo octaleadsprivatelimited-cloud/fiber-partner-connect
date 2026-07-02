@@ -120,9 +120,13 @@ export function useProducts() {
       const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).productsSeeded;
       if (!alreadySeeded) {
         console.log("Seeding products to Firestore on startup...");
-        const promises = SEED_PRODUCTS.map((seed) => {
+        const promises = SEED_PRODUCTS.map(async (seed) => {
           const { id, ...rest } = seed;
-          return setDoc(doc(fb.db, "products", id), rest);
+          const docRef = doc(fb.db, "products", id);
+          const docSnap = await getDoc(docRef);
+          if (!docSnap.exists()) {
+            await setDoc(docRef, rest);
+          }
         });
         await Promise.all(promises);
         await setDoc(globalRef, { productsSeeded: true }, { merge: true });

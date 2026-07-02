@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { useCategories } from "@/lib/categories-data";
+import { getBrandLogo } from "@/lib/brand-logos";
 import {
   useAuth, useProducts, useInquiries, isFirebaseConfigured,
   DEMO_CREDENTIALS,
@@ -732,9 +733,14 @@ function BrandsManager() {
           <div key={it.id} className="group bg-white rounded-xl border border-border p-5 flex flex-col hover:shadow-lg hover:-translate-y-0.5 transition">
             <div className="flex items-start gap-3">
               <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-red-50 to-rose-50 grid place-items-center overflow-hidden shrink-0 border border-border">
-                {it.logo
-                  ? <img src={it.logo} alt={it.name} className="h-full w-full object-contain p-1" />
-                  : <span className="font-black text-brand-red text-lg">{it.name[0]}</span>}
+                {(() => {
+                  const logo = it.logo || getBrandLogo(it.name);
+                  return logo ? (
+                    <img src={logo} alt={it.name} className="h-full w-full object-contain p-1" />
+                  ) : (
+                    <span className="font-black text-brand-red text-lg">{it.name[0]}</span>
+                  );
+                })()}
               </div>
               <div className="min-w-0 flex-1">
                 <div className="font-black text-brand-black text-lg truncate">{it.name}</div>
