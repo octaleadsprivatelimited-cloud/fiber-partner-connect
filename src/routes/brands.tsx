@@ -75,10 +75,14 @@ function BrandsPage() {
     ...customAdditional
   ];
 
-  const innoLogo =
-    logoByName.get("inno") ||
-    logoByName.get("inno instrument") ||
-    getBrandLogo("inno");
+  const defaultAuthorizedBrands = [
+    { id: "seed-inno", name: "INNO Instrument", logo: getBrandLogo("inno") },
+    { id: "seed-grandway", name: "Grandway", logo: getBrandLogo("grandway") },
+    { id: "seed-claron", name: "Claron", logo: getBrandLogo("claron") },
+    { id: "seed-exfo", name: "EXFO", logo: getBrandLogo("exfo") },
+  ];
+  const displayBrands = logoGridBrands.length > 0 ? logoGridBrands : defaultAuthorizedBrands;
+
   return (
     <>
       <SEO
@@ -90,88 +94,69 @@ function BrandsPage() {
         eyebrow="OUR PARTNERS"
         title="Brands We Represent"
         description="Genuine equipment from the world's most trusted fiber optic manufacturers."
-        
       />
 
-      {/* INNO featured */}
-      <section className="py-12 md:py-20 relative overflow-hidden bg-background">
-        <div className="relative mx-auto max-w-[1920px] px-6 md:px-16 grid lg:grid-cols-5 gap-10 items-center">
-          <div className="lg:col-span-3">
-            <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-3 py-1.5 mb-5 text-sm font-normal">
-              <Award className="h-3.5 w-3.5" /> AUTHORIZED DISTRIBUTOR
+      {/* Authorized Distributor Section */}
+      <section className="py-12 md:py-20 relative overflow-hidden bg-background border-b border-border">
+        <div className="relative mx-auto max-w-[1920px] px-6 md:px-16">
+          <div className="grid lg:grid-cols-12 gap-10 items-center">
+            
+            {/* Content Column */}
+            <div className="lg:col-span-6">
+              <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-3 py-1.5 mb-5 text-sm font-normal">
+                <Award className="h-3.5 w-3.5" /> AUTHORIZED DISTRIBUTOR
+              </div>
+              <h2 className="text-3xl md:text-5xl font-light leading-tight text-foreground">
+                Official Sales & Service Partner
+                <span className="block text-primary text-base md:text-lg font-normal mt-3">
+                  FOR ANDHRA PRADESH & TELANGANA
+                </span>
+              </h2>
+              <p className="mt-5 text-sm md:text-base text-muted-foreground max-w-xl">
+                SATYA POWER TECHNOLOGYS is the Authorized Distributor for **INNO Instrument**, **Grandway**, **Claron**, and **EXFO** across both states. We provide genuine equipment, full manufacturer warranty support, certified calibration, and in-region spare parts.
+              </p>
+              
+              <div className="mt-8 grid grid-cols-2 gap-4 max-w-md border-t border-border pt-6">
+                <StatLight label="Authorized Brands" value="04" />
+                <StatLight label="Years Partnered" value="13+" />
+                <StatLight label="Service Branches" value="05" />
+                <StatLight label="Genuine Spares" value="100%" />
+              </div>
+              
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link to="/products" className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 font-normal hover:bg-brand-red-dark transition text-sm">
+                  Shop Authorized Products <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link to="/services" className="inline-flex items-center gap-2 border border-border px-6 py-3 font-normal hover:bg-accent hover:border-primary transition text-foreground text-sm">
+                  Service & Repair
+                </Link>
+              </div>
             </div>
-            <h2 className="text-4xl md:text-6xl font-light leading-tight text-foreground">
-              INNO Instrument
-              <span className="block text-primary text-lg md:text-xl font-normal mt-3">
-                AP & TELANGANA · SALES + SERVICE
-              </span>
-            </h2>
-            <p className="mt-5 text-base md:text-lg text-muted-foreground max-w-xl">
-              SATYA POWER TECHNOLOGYS is the Authorized Distributor for Inno, Grandway, Claron & EXFO across Andhra Pradesh and Telangana — covering full sales, service and warranty support.
-            </p>
-            <ul className="mt-7 grid sm:grid-cols-2 gap-3">
-              {innoHighlights.map((h) => (
-                <li key={h} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" /> {h}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/products" className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 font-normal hover:bg-brand-red-dark transition">
-                Shop INNO Products <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link to="/services" className="inline-flex items-center gap-2 border border-border px-6 py-3 font-normal hover:bg-accent hover:border-primary transition text-foreground">
-                Service & Repair
-              </Link>
-            </div>
-          </div>
 
-          {/* Stat card */}
-          <div className="lg:col-span-2">
-            <div className="relative bg-card border border-border p-8">
-              {innoLogo ? (
-                <img src={innoLogo} alt="INNO Instrument logo" className="h-24 md:h-28 w-full object-contain object-left" />
-              ) : (
-                <div className="text-7xl md:text-8xl font-light text-foreground">INNO</div>
-              )}
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                <StatLight label="Years partnered" value="13+" />
-                <StatLight label="Service centers" value="05" />
-                <StatLight label="States covered" value="AP+TG" />
-                <StatLight label="Genuine spares" value="100%" />
-              </div>
-              <div className="mt-6 flex items-center gap-2 text-xs text-muted-foreground">
-                <MapPin className="h-3.5 w-3.5" /> Hyderabad · in-region support
+            {/* Logos Grid Column */}
+            <div className="lg:col-span-6">
+              <div className="grid grid-cols-2 gap-4">
+                {displayBrands.map((b) => {
+                  const logo = b.logo || getBrandLogo(b.name);
+                  return (
+                    <div key={b.id} className="bg-card border border-border p-5 flex flex-col items-center justify-center gap-4 hover:border-primary transition rounded-xl aspect-[4/3] bg-white">
+                      {logo ? (
+                        <img src={logo} alt={`${b.name} logo`} loading="lazy" className="h-14 md:h-16 w-full object-contain" />
+                      ) : (
+                        <div className="h-14 md:h-16 w-full grid place-items-center text-xl font-light text-primary bg-muted rounded">
+                          {b.name.slice(0, 2).toUpperCase()}
+                        </div>
+                      )}
+                      <div className="text-xs font-semibold text-foreground text-center tracking-wide uppercase">{b.name}</div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
+
           </div>
         </div>
       </section>
-
-      {/* Admin-managed brand logos */}
-      {logoGridBrands.length > 0 && (
-        <section className="py-12 md:py-16 bg-background">
-          <div className="mx-auto max-w-[1920px] px-6 md:px-16">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
-              {logoGridBrands.map((b) => {
-                const logo = b.logo || getBrandLogo(b.name);
-                return (
-                  <div key={b.id} className="bg-card border border-border p-4 md:p-6 flex flex-col items-center gap-3 hover:border-primary transition">
-                    {logo ? (
-                      <img src={logo} alt={`${b.name} logo`} loading="lazy" className="h-16 md:h-20 w-full object-contain" />
-                    ) : (
-                      <div className="h-16 md:h-20 w-full grid place-items-center text-2xl md:text-3xl font-light text-primary bg-muted">
-                        {b.name.slice(0, 2).toUpperCase()}
-                      </div>
-                    )}
-                    <div className="text-sm md:text-base font-medium text-foreground text-center">{b.name}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Additional brands */}
       <section className="py-12 md:py-16 bg-muted border-y border-border">
