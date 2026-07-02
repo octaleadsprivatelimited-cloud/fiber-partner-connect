@@ -819,11 +819,14 @@ const defaultCompany = (): CompanyInfo => ({
   name: SITE.name, tagline: SITE.tagline, phone: SITE.phone, phoneAlt: SITE.phoneAlt,
   email: SITE.email, address: SITE.address, gstin: SITE.gstin,
   founded: String(SITE.founded), ceo: SITE.ceo, website: SITE.website,
+  logo: "",
 });
 
 function SettingsManager() {
   const [company, setCompany] = useState<CompanyInfo>(defaultCompany);
   const [companySaved, setCompanySaved] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const { uploadImage } = useProducts();
 
   useEffect(() => {
     getCompanyInfo().then((data) => {
@@ -851,7 +854,38 @@ function SettingsManager() {
           <p className="text-sm text-muted-foreground mt-1">Contact details and business profile shown across the site.</p>
         </div>
         <div className="p-5 grid sm:grid-cols-2 gap-4">
-          <Field label="Company Name"><input value={company.name} onChange={(e) => set("name", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>
+          <div className="sm:col-span-2">
+            <Field label="Company Logo">
+              <div className="flex flex-wrap items-center gap-4 mt-2">
+                {company.logo && (
+                  <img src={company.logo} alt="Company logo preview" className="h-16 object-contain bg-slate-50 border border-border p-2 rounded" />
+                )}
+                <label className="inline-flex items-center gap-2 border border-border px-4 py-2.5 font-semibold text-sm cursor-pointer hover:border-brand-red hover:text-brand-red transition rounded bg-white text-slate-700 shadow-sm">
+                  <Upload className="h-4 w-4" />
+                  {uploading ? "Uploading..." : "Upload Logo"}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    disabled={uploading}
+                    onChange={async (e) => {
+                      const f = e.target.files?.[0];
+                      if (!f) return;
+                      setUploading(true);
+                      try {
+                        const url = await uploadImage(f);
+                        set("logo", url);
+                      } catch (err: any) {
+                        toast.error(err?.message || "Upload failed");
+                      } finally {
+                        setUploading(false);
+                      }
+                    }}
+                  />
+                </label>
+              </div>
+            </Field>
+          </div>
           <Field label="Tagline / Slogan"><input value={company.tagline} onChange={(e) => set("tagline", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>
           <Field label="Primary Phone"><input value={company.phone} onChange={(e) => set("phone", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>
           <Field label="Alternate Phone"><input value={company.phoneAlt} onChange={(e) => set("phoneAlt", e.target.value)} className="w-full border border-input px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red rounded" /></Field>

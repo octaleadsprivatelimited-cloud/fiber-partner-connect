@@ -319,10 +319,13 @@ export async function saveSettings(s: AdminSettings) {
   await setDoc(doc(fb.db, "settings", "global"), s);
 }
 
+import logoUrl from "../assets/satya-logo-v1.png";
+
 /* ------------- Company Information ------------- */
 export interface CompanyInfo {
   name: string; tagline: string; phone: string; phoneAlt: string; email: string;
   address: string; gstin: string; founded: string; ceo: string; website: string;
+  logo: string;
 }
 
 export async function getCompanyInfo(): Promise<CompanyInfo> {
@@ -337,17 +340,36 @@ export async function getCompanyInfo(): Promise<CompanyInfo> {
       email: "satyapowertechnologys@gmail.com",
       address: "2-3/107, Koneru Street, C.B Devam, Peddapuram, AP - 533437",
       gstin: "37BILPL7684K1ZD", founded: "2013", ceo: "Mr. V Dorababu",
-      website: "www.satyapowertechnologys.in"
+      website: "www.satyapowertechnologys.in",
+      logo: logoUrl
     };
   }
   try {
     const snap = await getDoc(doc(fb.db, "settings", "company"));
     if (snap.exists()) {
       const data = snap.data() as CompanyInfo;
+      if (!data.logo) {
+        data.logo = logoUrl;
+      }
       if (typeof localStorage !== "undefined") {
         localStorage.setItem("admin-company-info", JSON.stringify(data));
       }
       return data;
+    } else {
+      const initial = {
+        name: "SATYA POWER TECHNOLOGYS", tagline: "Service first, Sales next",
+        phone: "+91 95428 40444", phoneAlt: "+91 86881 51526",
+        email: "satyapowertechnologys@gmail.com",
+        address: "2-3/107, Koneru Street, C.B Devam, Peddapuram, AP - 533437",
+        gstin: "37BILPL7684K1ZD", founded: "2013", ceo: "Mr. V Dorababu",
+        website: "www.satyapowertechnologys.in",
+        logo: logoUrl
+      };
+      await setDoc(doc(fb.db, "settings", "company"), initial);
+      if (typeof localStorage !== "undefined") {
+        localStorage.setItem("admin-company-info", JSON.stringify(initial));
+      }
+      return initial;
     }
   } catch (e) {
     console.warn("Failed to fetch company info from Firestore:", e);
@@ -358,7 +380,8 @@ export async function getCompanyInfo(): Promise<CompanyInfo> {
     email: "satyapowertechnologys@gmail.com",
     address: "2-3/107, Koneru Street, C.B Devam, Peddapuram, AP - 533437",
     gstin: "37BILPL7684K1ZD", founded: "2013", ceo: "Mr. V Dorababu",
-    website: "www.satyapowertechnologys.in"
+    website: "www.satyapowertechnologys.in",
+    logo: logoUrl
   };
 }
 
