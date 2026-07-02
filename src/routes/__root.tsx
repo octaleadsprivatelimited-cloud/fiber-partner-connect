@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Outlet, Link, useLocation } from "react-router-dom";
 
@@ -6,6 +6,8 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Toaster } from "../components/ui/sonner";
 import { FloatingActions } from "../components/FloatingActions";
+import { getCompanyInfo } from "../lib/admin-data";
+import { SITE } from "../lib/site";
 
 const queryClient = new QueryClient();
 
@@ -30,10 +32,33 @@ export function NotFoundPage() {
 
 export default function RootLayout() {
   const { pathname } = useLocation();
+  const [, setSeed] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  useEffect(() => {
+    getCompanyInfo().then((info) => {
+      const rawPhone = info.phone.replace(/\D/g, "");
+      const rawPhoneAlt = info.phoneAlt.replace(/\D/g, "");
+
+      SITE.name = info.name;
+      SITE.tagline = info.tagline;
+      SITE.phone = info.phone;
+      SITE.phoneRaw = rawPhone;
+      SITE.phoneAlt = info.phoneAlt;
+      SITE.phoneRawAlt = rawPhoneAlt;
+      SITE.email = info.email;
+      SITE.address = info.address;
+      SITE.gstin = info.gstin;
+      SITE.founded = Number(info.founded) || 2013;
+      SITE.ceo = info.ceo;
+      SITE.website = info.website;
+
+      setSeed((s) => s + 1);
+    });
+  }, []);
 
   const isAdmin = pathname.startsWith("/admin");
   return (

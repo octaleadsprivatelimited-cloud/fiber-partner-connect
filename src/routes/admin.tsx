@@ -15,6 +15,7 @@ import {
   useAuth, useProducts, useInquiries, isFirebaseConfigured,
   DEMO_CREDENTIALS,
   type Inquiry,
+  getCompanyInfo, saveCompanyInfo, type CompanyInfo,
 } from "@/lib/admin-data";
 import { CATEGORIES, BRANDS, type Product } from "@/lib/products";
 import { useServicesStore, ICON_NAMES, ICONS, type ServiceItem } from "@/lib/services-data";
@@ -809,11 +810,6 @@ function BrandEditor({ initial, isNew, onClose, onSave }: { initial: BrandItemTy
 }
 
 /* ============ Settings ============ */
-interface CompanyInfo {
-  name: string; tagline: string; phone: string; phoneAlt: string; email: string;
-  address: string; gstin: string; founded: string; ceo: string; website: string;
-}
-const COMPANY_KEY = "admin-company-info";
 const defaultCompany = (): CompanyInfo => ({
   name: SITE.name, tagline: SITE.tagline, phone: SITE.phone, phoneAlt: SITE.phoneAlt,
   email: SITE.email, address: SITE.address, gstin: SITE.gstin,
@@ -825,12 +821,13 @@ function SettingsManager() {
   const [companySaved, setCompanySaved] = useState(false);
 
   useEffect(() => {
-    const raw = typeof localStorage !== "undefined" ? localStorage.getItem(COMPANY_KEY) : null;
-    if (raw) { try { setCompany({ ...defaultCompany(), ...JSON.parse(raw) }); } catch {} }
+    getCompanyInfo().then((data) => {
+      setCompany(data);
+    });
   }, []);
 
-  const saveCompany = () => {
-    localStorage.setItem(COMPANY_KEY, JSON.stringify(company));
+  const saveCompany = async () => {
+    await saveCompanyInfo(company);
     setCompanySaved(true); setTimeout(() => setCompanySaved(false), 1800);
   };
   const set = <K extends keyof CompanyInfo>(k: K, v: CompanyInfo[K]) => setCompany((c) => ({ ...c, [k]: v }));

@@ -117,10 +117,26 @@ export function useProducts() {
     const q = query(collection(fb.db, "products"), orderBy("name"));
     const unsub = onSnapshot(q, (snap) => {
       const list = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Product, "id">) }));
-      const seedProducts = SEED_PRODUCTS;
-      const combined = [...list, ...seedProducts.filter(seed => !list.some(item => item.id === seed.id))];
-      setProducts(combined);
-      writeLocalProducts(combined);
+      
+      if (snap.empty) {
+        const globalRef = doc(fb.db, "settings", "global");
+        getDoc(globalRef).then((globalSnap) => {
+          const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).productsSeeded;
+          if (!alreadySeeded) {
+            console.log("Seeding products to Firestore...");
+            const promises = SEED_PRODUCTS.map((seed) => {
+              const { id, ...rest } = seed;
+              return setDoc(doc(fb.db, "products", id), rest);
+            });
+            Promise.all(promises).then(() => {
+              setDoc(globalRef, { productsSeeded: true }, { merge: true });
+            });
+          }
+        }).catch((err) => console.warn("Seed check failed:", err));
+      }
+
+      setProducts(list);
+      writeLocalProducts(list);
       setLoading(false);
     }, () => {
       // Read failed (rules/offline) — keep seed data visible.
@@ -304,4 +320,56 @@ export async function saveSettings(s: AdminSettings) {
     localStorage.setItem("admin-settings", JSON.stringify(s)); return;
   }
   await setDoc(doc(fb.db, "settings", "global"), s);
+}
+
+/* ------------- Company Information ------------- */
+export interface CompanyInfo {
+  name: string; tagline: string; phone: string; phoneAlt: string; email: string;
+  address: string; gstin: string; founded: string; ceo: string; website: string;
+}
+
+export async function getCompanyInfo(): Promise<CompanyInfo> {
+  const fb = getFirebase();
+  const raw = typeof localStorage !== "undefined" ? localStorage.getItem("admin-company-info") : null;
+  const localDefault = raw ? JSON.parse(raw) : null;
+
+  if (!fb || !isFirebaseConfigured()) {
+    return localDefault || {
+      name: "SATYA POWER TECHNOLOGYS", tagline: "Service first, Sales next",
+      phone: "+91 95428 40444", phoneAlt: "+91 86881 51526",
+      email: "satyapowertechnologys@gmail.com",
+      address: "2-3/107, Koneru Street, C.B Devam, Peddapuram, AP - 533437",
+      gstin: "37BILPL7684K1ZD", founded: "2013", ceo: "Mr. V Dorababu",
+      website: "www.satyapowertechnologys.in"
+    };
+  }
+  try {
+    const snap = await getDoc(doc(fb.db, "settings", "company"));
+    if (snap.exists()) {
+      const data = snap.data() as CompanyInfo;
+      if (typeof localStorage !== "undefined") {
+        localStorage.setItem("admin-company-info", JSON.stringify(data));
+      }
+      return data;
+    }
+  } catch (e) {
+    console.warn("Failed to fetch company info from Firestore:", e);
+  }
+  return localDefault || {
+    name: "SATYA POWER TECHNOLOGYS", tagline: "Service first, Sales next",
+    phone: "+91 95428 40444", phoneAlt: "+91 86881 51526",
+    email: "satyapowertechnologys@gmail.com",
+    address: "2-3/107, Koneru Street, C.B Devam, Peddapuram, AP - 533437",
+    gstin: "37BILPL7684K1ZD", founded: "2013", ceo: "Mr. V Dorababu",
+    website: "www.satyapowertechnologys.in"
+  };
+}
+
+export async function saveCompanyInfo(c: CompanyInfo) {
+  if (typeof localStorage !== "undefined") {
+    localStorage.setItem("admin-company-info", JSON.stringify(c));
+  }
+  const fb = getFirebase();
+  if (!fb || !isFirebaseConfigured()) return;
+  await setDoc(doc(fb.db, "settings", "company"), c);
 }

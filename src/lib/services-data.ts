@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import {
   collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy,
-  serverTimestamp, updateDoc, setDoc,
+  serverTimestamp, updateDoc, setDoc, getDoc,
 } from "firebase/firestore";
 import { getFirebase } from "./firebase";
 import { isFirebaseConfigured } from "./admin-data";
@@ -78,10 +78,31 @@ export function useServicesStore() {
             const list = snap.docs.map((d, i) => ({
               id: d.id, order: i, ...(d.data() as any),
             })) as ServiceItem[];
-            const seedItems = SEED_ITEMS;
-            const combined = [...list, ...seedItems.filter(seed => !list.some(item => item.id === seed.id))];
-            setItems(combined);
-            writeLocal(combined);
+
+            if (snap.empty) {
+              const globalRef = doc(fb.db, "settings", "global");
+              getDoc(globalRef).then((globalSnap) => {
+                const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).servicesSeeded;
+                if (!alreadySeeded) {
+                  console.log("Seeding services to Firestore...");
+                  const promises = SEED_ITEMS.map((item, i) => {
+                    return setDoc(doc(fb.db, "services", item.id), {
+                      iconName: item.iconName,
+                      title: item.title,
+                      description: item.description,
+                      order: i,
+                      createdAt: serverTimestamp(),
+                    });
+                  });
+                  Promise.all(promises).then(() => {
+                    setDoc(globalRef, { servicesSeeded: true }, { merge: true });
+                  });
+                }
+              }).catch((err) => console.warn("Services seed check failed:", err));
+            }
+
+            setItems(list);
+            writeLocal(list);
             setLoading(false);
           },
           (e) => {
