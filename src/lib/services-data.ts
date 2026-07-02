@@ -70,6 +70,26 @@ export function useServicesStore() {
     let unsub: (() => void) | undefined;
     if (fb && isFirebaseConfigured()) {
       setLoading(true);
+
+      const globalRef = doc(fb.db, "settings", "global");
+      getDoc(globalRef).then(async (globalSnap) => {
+        const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).servicesSeeded;
+        if (!alreadySeeded) {
+          console.log("Seeding services to Firestore on startup...");
+          const promises = SEED_ITEMS.map((item, i) => {
+            return setDoc(doc(fb.db, "services", item.id), {
+              iconName: item.iconName,
+              title: item.title,
+              description: item.description,
+              order: i,
+              createdAt: serverTimestamp(),
+            });
+          });
+          await Promise.all(promises);
+          await setDoc(globalRef, { servicesSeeded: true }, { merge: true });
+        }
+      }).catch((err) => console.warn("Services seed check failed:", err));
+
       try {
         const q = query(collection(fb.db, "services"), orderBy("order", "asc"));
         unsub = onSnapshot(
@@ -78,29 +98,6 @@ export function useServicesStore() {
             const list = snap.docs.map((d, i) => ({
               id: d.id, order: i, ...(d.data() as any),
             })) as ServiceItem[];
-
-            if (snap.empty) {
-              const globalRef = doc(fb.db, "settings", "global");
-              getDoc(globalRef).then((globalSnap) => {
-                const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).servicesSeeded;
-                if (!alreadySeeded) {
-                  console.log("Seeding services to Firestore...");
-                  const promises = SEED_ITEMS.map((item, i) => {
-                    return setDoc(doc(fb.db, "services", item.id), {
-                      iconName: item.iconName,
-                      title: item.title,
-                      description: item.description,
-                      order: i,
-                      createdAt: serverTimestamp(),
-                    });
-                  });
-                  Promise.all(promises).then(() => {
-                    setDoc(globalRef, { servicesSeeded: true }, { merge: true });
-                  });
-                }
-              }).catch((err) => console.warn("Services seed check failed:", err));
-            }
-
             setItems(list);
             writeLocal(list);
             setLoading(false);

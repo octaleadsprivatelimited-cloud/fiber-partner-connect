@@ -114,27 +114,24 @@ export function useProducts() {
       };
     }
     setLoading(true);
+
+    const globalRef = doc(fb.db, "settings", "global");
+    getDoc(globalRef).then(async (globalSnap) => {
+      const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).productsSeeded;
+      if (!alreadySeeded) {
+        console.log("Seeding products to Firestore on startup...");
+        const promises = SEED_PRODUCTS.map((seed) => {
+          const { id, ...rest } = seed;
+          return setDoc(doc(fb.db, "products", id), rest);
+        });
+        await Promise.all(promises);
+        await setDoc(globalRef, { productsSeeded: true }, { merge: true });
+      }
+    }).catch((err) => console.warn("Products seed check failed:", err));
+
     const q = query(collection(fb.db, "products"), orderBy("name"));
     const unsub = onSnapshot(q, (snap) => {
       const list = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Product, "id">) }));
-      
-      if (snap.empty) {
-        const globalRef = doc(fb.db, "settings", "global");
-        getDoc(globalRef).then((globalSnap) => {
-          const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).productsSeeded;
-          if (!alreadySeeded) {
-            console.log("Seeding products to Firestore...");
-            const promises = SEED_PRODUCTS.map((seed) => {
-              const { id, ...rest } = seed;
-              return setDoc(doc(fb.db, "products", id), rest);
-            });
-            Promise.all(promises).then(() => {
-              setDoc(globalRef, { productsSeeded: true }, { merge: true });
-            });
-          }
-        }).catch((err) => console.warn("Seed check failed:", err));
-      }
-
       setProducts(list);
       writeLocalProducts(list);
       setLoading(false);

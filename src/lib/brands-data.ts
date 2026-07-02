@@ -57,6 +57,25 @@ export function useBrands() {
     let unsub: (() => void) | undefined;
     if (fb && isFirebaseConfigured()) {
       setLoading(true);
+
+      const globalRef = doc(fb.db, "settings", "global");
+      getDoc(globalRef).then(async (globalSnap) => {
+        const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).brandsSeeded;
+        if (!alreadySeeded) {
+          console.log("Seeding brands to Firestore on startup...");
+          const promises = BRANDS.map((b, i) => {
+            const id = `seed-${b.toLowerCase().replace(/\s+/g, "-")}`;
+            return setDoc(doc(fb.db, "brands", id), {
+              name: b,
+              order: i,
+              createdAt: serverTimestamp(),
+            });
+          });
+          await Promise.all(promises);
+          await setDoc(globalRef, { brandsSeeded: true }, { merge: true });
+        }
+      }).catch((err) => console.warn("Brands seed check failed:", err));
+
       try {
         const q = query(collection(fb.db, "brands"), orderBy("order", "asc"));
         unsub = onSnapshot(
@@ -65,28 +84,6 @@ export function useBrands() {
             const list = snap.docs.map((d, i) => ({
               id: d.id, order: i, ...(d.data() as any),
             })) as BrandItem[];
-
-            if (snap.empty) {
-              const globalRef = doc(fb.db, "settings", "global");
-              getDoc(globalRef).then((globalSnap) => {
-                const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).brandsSeeded;
-                if (!alreadySeeded) {
-                  console.log("Seeding brands to Firestore...");
-                  const promises = BRANDS.map((b, i) => {
-                    const id = `seed-${b.toLowerCase().replace(/\s+/g, "-")}`;
-                    return setDoc(doc(fb.db, "brands", id), {
-                      name: b,
-                      order: i,
-                      createdAt: serverTimestamp(),
-                    });
-                  });
-                  Promise.all(promises).then(() => {
-                    setDoc(globalRef, { brandsSeeded: true }, { merge: true });
-                  });
-                }
-              }).catch((err) => console.warn("Brands seed check failed:", err));
-            }
-
             setItems(list);
             writeLocal(list);
             setLoading(false);

@@ -51,6 +51,25 @@ export function useCategories() {
     let unsub: (() => void) | undefined;
     if (fb && isFirebaseConfigured()) {
       setLoading(true);
+
+      const globalRef = doc(fb.db, "settings", "global");
+      getDoc(globalRef).then(async (globalSnap) => {
+        const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).categoriesSeeded;
+        if (!alreadySeeded) {
+          console.log("Seeding categories to Firestore on startup...");
+          const promises = SEED_CATEGORIES.map((c, i) => {
+            const id = `seed-${c.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+            return setDoc(doc(fb.db, "categories", id), {
+              name: c,
+              order: i,
+              createdAt: serverTimestamp(),
+            });
+          });
+          await Promise.all(promises);
+          await setDoc(globalRef, { categoriesSeeded: true }, { merge: true });
+        }
+      }).catch((err) => console.warn("Categories seed check failed:", err));
+
       try {
         const q = query(collection(fb.db, "categories"), orderBy("order", "asc"));
         unsub = onSnapshot(
@@ -59,28 +78,6 @@ export function useCategories() {
             const list = snap.docs.map((d, i) => ({
               id: d.id, order: i, ...(d.data() as any),
             })) as CategoryItem[];
-
-            if (snap.empty) {
-              const globalRef = doc(fb.db, "settings", "global");
-              getDoc(globalRef).then((globalSnap) => {
-                const alreadySeeded = globalSnap.exists() && (globalSnap.data() as any).categoriesSeeded;
-                if (!alreadySeeded) {
-                  console.log("Seeding categories to Firestore...");
-                  const promises = SEED_CATEGORIES.map((c, i) => {
-                    const id = `seed-${c.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
-                    return setDoc(doc(fb.db, "categories", id), {
-                      name: c,
-                      order: i,
-                      createdAt: serverTimestamp(),
-                    });
-                  });
-                  Promise.all(promises).then(() => {
-                    setDoc(globalRef, { categoriesSeeded: true }, { merge: true });
-                  });
-                }
-              }).catch((err) => console.warn("Categories seed check failed:", err));
-            }
-
             setCategories(list);
             writeLocal(list);
             setLoading(false);
