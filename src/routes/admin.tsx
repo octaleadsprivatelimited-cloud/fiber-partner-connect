@@ -533,7 +533,7 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
             </Field>
           </div>
           <Field label="Description" error={errors.description?.message}>
-            <textarea rows={3} {...register("description", { required: "Required", maxLength: 1000 })} className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10" />
+            <textarea rows={5} {...register("description", { required: "Required", maxLength: 10000 })} className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10" />
           </Field>
 
           <Field label="Image">
