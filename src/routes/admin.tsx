@@ -629,7 +629,7 @@ function PdfField({ currentPdf, currentName, onChange }: {
             Remove
           </button>
         )}
-        <span className="text-xs text-slate-500">PDFs are auto-checked &amp; compressed (max 10 MB).</span>
+        <span className="text-xs text-slate-500">PDFs are stored directly in the database (max 700 KB).</span>
       </div>
       {info && <div className="text-[11px] text-slate-500 mt-1.5">{info}</div>}
     </Field>

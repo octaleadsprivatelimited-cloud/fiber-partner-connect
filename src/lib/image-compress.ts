@@ -58,12 +58,12 @@ export async function compressPdf(
   file: File,
   opts: { maxBytes?: number } = {}
 ): Promise<{ dataUrl: string; size: number }> {
-  const maxBytes = opts.maxBytes ?? 10 * 1024 * 1024; // 10 MB hard cap
+  const maxBytes = opts.maxBytes ?? 700 * 1024; // 700 KB hard cap for Firestore document limit
   if (!/pdf$/i.test(file.type) && !/\.pdf$/i.test(file.name)) {
     throw new Error("Please upload a PDF file.");
   }
   if (file.size > maxBytes) {
-    throw new Error(`PDF is too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Please keep brochures under ${(maxBytes / 1024 / 1024).toFixed(0)} MB.`);
+    throw new Error(`PDF brochure is too large (${(file.size / 1024).toFixed(0)} KB). Since files are stored directly in the database, please keep brochures under ${(maxBytes / 1024).toFixed(0)} KB to prevent database payload errors.`);
   }
   const dataUrl = await new Promise<string>((resolve, reject) => {
     const reader = new FileReader();

@@ -112,7 +112,18 @@ async function imageUrlToBase64(url: string): Promise<string> {
 
 function writeLocalProducts(list: Product[]) {
   if (typeof localStorage !== "undefined") {
-    localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(list));
+    // Strip heavy base64 strings from local storage cache to keep payload small and prevent QuotaExceededError
+    const cleaned = list.map((p) => {
+      const copy = { ...p };
+      if (copy.image && copy.image.startsWith("data:")) {
+        copy.image = "";
+      }
+      if (copy.pdf && copy.pdf.startsWith("data:")) {
+        copy.pdf = "";
+      }
+      return copy;
+    });
+    localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(cleaned));
     window.dispatchEvent(new StorageEvent("storage", { key: PRODUCTS_LOCAL_KEY }));
   }
 }
