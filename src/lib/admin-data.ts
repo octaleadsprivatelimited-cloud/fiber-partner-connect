@@ -93,6 +93,23 @@ function readLocalProducts(): Product[] {
   return SEED_PRODUCTS;
 }
 
+async function imageUrlToBase64(url: string): Promise<string> {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return url;
+    const blob = await res.blob();
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  } catch (e) {
+    console.warn("Failed to convert image to base64:", url, e);
+    return url;
+  }
+}
+
 function writeLocalProducts(list: Product[]) {
   if (typeof localStorage !== "undefined") {
     localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(list));
@@ -125,7 +142,8 @@ export function useProducts() {
           const docRef = doc(fb.db, "products", id);
           const docSnap = await getDoc(docRef);
           if (!docSnap.exists()) {
-            await setDoc(docRef, rest);
+            const base64 = await imageUrlToBase64(rest.image);
+            await setDoc(docRef, { ...rest, image: base64 });
           }
         });
         await Promise.all(promises);
@@ -136,6 +154,25 @@ export function useProducts() {
     const q = query(collection(fb.db, "products"), orderBy("name"));
     const unsub = onSnapshot(q, (snap) => {
       const list = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Product, "id">) }));
+      
+      // Auto-migrate any legacy relative path images in Firestore to base64 Data URLs!
+      list.forEach(async (p) => {
+        if (p.image && (p.image.startsWith("/src/assets/") || p.image.includes("product-") || p.image.startsWith("/assets/")) && !p.image.startsWith("data:")) {
+          const seedProduct = SEED_PRODUCTS.find((sp) => sp.id === p.id);
+          if (seedProduct) {
+            console.log(`Migrating product image to base64 for ${p.id}...`);
+            try {
+              const base64 = await imageUrlToBase64(seedProduct.image);
+              if (base64.startsWith("data:")) {
+                await updateDoc(doc(fb.db, "products", p.id), { image: base64 });
+              }
+            } catch (err) {
+              console.warn(`Failed to migrate image for ${p.id}:`, err);
+            }
+          }
+        }
+      });
+
       setProducts(list);
       writeLocalProducts(list);
       setLoading(false);
