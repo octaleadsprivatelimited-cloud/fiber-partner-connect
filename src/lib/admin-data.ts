@@ -87,7 +87,15 @@ function readLocalProducts(): Product[] {
     const raw = localStorage.getItem(PRODUCTS_LOCAL_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as Product[];
-      if (Array.isArray(parsed) && parsed.length) return parsed;
+      if (Array.isArray(parsed) && parsed.length) {
+        return parsed.map((p) => {
+          if (!p.image) {
+            const seed = SEED_PRODUCTS.find((s) => s.id === p.id);
+            if (seed) p.image = seed.image;
+          }
+          return p;
+        });
+      }
     }
   } catch { /* noop */ }
   return SEED_PRODUCTS;
@@ -172,9 +180,14 @@ export function useProducts() {
     const unsub = onSnapshot(q, (snap) => {
       const list = snap.docs.map((d) => {
         const data = d.data() as Omit<Product, "id">;
-        // If Firestore has an empty/missing image for a seed product,
+        // Check if image is missing, empty, or a legacy relative path that is broken in production
+        const isLegacyPath = data.image && 
+          (data.image.startsWith("/src/assets/") || data.image.startsWith("/assets/") || 
+           (data.image.includes("product-") && !data.image.startsWith("data:")));
+
+        // If Firestore has an empty/missing or legacy image for a seed product,
         // immediately fall back to the bundled asset so the card is never blank.
-        if (!data.image) {
+        if (!data.image || isLegacyPath) {
           const seed = SEED_PRODUCTS.find((s) => s.id === d.id);
           if (seed) data.image = seed.image;
         }
