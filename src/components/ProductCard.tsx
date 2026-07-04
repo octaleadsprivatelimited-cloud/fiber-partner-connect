@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import type { Product } from "@/lib/products";
 import { QuoteDialog } from "@/components/QuoteDialog";
@@ -147,12 +147,11 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
                   {activeProduct.pdf && (
                     <a
                       href={activeProduct.pdf}
-                      download={activeProduct.pdfName || `${activeProduct.id}-brochure.pdf`}
                       target="_blank"
                       rel="noreferrer"
                       className="inline-flex items-center gap-2 bg-yellow-500 text-black px-5 py-2.5 text-sm font-medium hover:bg-yellow-400 transition"
                     >
-                      <Download className="h-4 w-4" /> Download PDF
+                      <ExternalLink className="h-4 w-4" /> View Brochure
                     </a>
                   )}
                 </div>

@@ -9,7 +9,7 @@ import {
   LayoutDashboard, Package, MessageSquare, Tag as TagIcon, Settings as SettingsIcon,
   LogOut, Plus, Pencil, Trash2, Upload, AlertCircle, CheckCircle2, X, Mail, Phone,
   TrendingUp, TrendingDown, ShoppingBag, Users, Eye, Menu, Wrench, Image as ImageIcon,
-  Layers,
+  Layers, ExternalLink,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { useCategories } from "@/lib/categories-data";
@@ -24,7 +24,7 @@ import { CATEGORIES, BRANDS, type Product } from "@/lib/products";
 import { useServicesStore, ICON_NAMES, ICONS, type ServiceItem } from "@/lib/services-data";
 import { useGallery, GALLERY_CATEGORIES, type GalleryItem } from "@/lib/gallery-data";
 import { useBrands } from "@/lib/brands-data";
-import { compressImage, compressPdf } from "@/lib/image-compress";
+import { compressImage } from "@/lib/image-compress";
 import { SITE } from "@/lib/site";
 import { toast } from "sonner";
 
@@ -555,10 +555,9 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
 
           <PdfField
             currentPdf={watch("pdf")}
-            currentName={watch("pdfName")}
-            onChange={(dataUrl, name) => {
-              setValue("pdf", dataUrl, { shouldValidate: false });
-              setValue("pdfName", name, { shouldValidate: false });
+            onChange={(url) => {
+              setValue("pdf", url, { shouldValidate: false });
+              setValue("pdfName", undefined, { shouldValidate: false });
             }}
           />
           <input type="hidden" {...register("pdf")} />
@@ -582,56 +581,82 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
   );
 }
 
-/* ============ PDF upload field (used by ProductEditor) ============ */
-function PdfField({ currentPdf, currentName, onChange }: {
+/* ============ Drive URL field (used by ProductEditor) ============ */
+function PdfField({ currentPdf, onChange }: {
   currentPdf?: string;
-  currentName?: string;
-  onChange: (dataUrl: string | undefined, name: string | undefined) => void;
+  onChange: (url: string | undefined) => void;
 }) {
-  const [busy, setBusy] = useState(false);
-  const [info, setInfo] = useState<string | null>(null);
+  const [input, setInput] = useState(currentPdf || "");
+  const [error, setError] = useState<string | null>(null);
+
+  // Convert any Google Drive share link to a direct preview/open link
+  function normalizeDriveUrl(raw: string): string {
+    const trimmed = raw.trim();
+    // Already a view link
+    if (trimmed.includes("drive.google.com/file/d/")) {
+      // Ensure it uses /view so it opens in Drive viewer
+      return trimmed.replace(/\/?(edit|preview|download)[^?]*/, "/view");
+    }
+    return trimmed;
+  }
+
+  function handleSave() {
+    const trimmed = input.trim();
+    if (!trimmed) {
+      onChange(undefined);
+      setError(null);
+      return;
+    }
+    if (!trimmed.includes("drive.google.com")) {
+      setError("Please enter a valid Google Drive share link.");
+      return;
+    }
+    setError(null);
+    onChange(normalizeDriveUrl(trimmed));
+    toast.success("Drive link saved!");
+  }
 
   return (
-    <Field label="Product PDF / Brochure (optional)">
-      <div className="flex flex-wrap items-center gap-3">
+    <Field label="Product Brochure — Google Drive Link (optional)">
+      <div className="space-y-2">
+        <div className="flex gap-2">
+          <input
+            type="url"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="https://drive.google.com/file/d/…/view"
+            className="flex-1 border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10"
+          />
+          <button
+            type="button"
+            onClick={handleSave}
+            className="px-4 py-2.5 bg-brand-red text-white text-sm font-semibold rounded-lg hover:bg-brand-red-dark transition"
+          >
+            Save
+          </button>
+          {currentPdf && (
+            <button
+              type="button"
+              onClick={() => { setInput(""); onChange(undefined); }}
+              className="px-3 py-2.5 text-sm text-slate-500 border border-slate-200 rounded-lg hover:text-brand-red hover:border-brand-red transition"
+            >
+              Remove
+            </button>
+          )}
+        </div>
+        {error && <p className="text-xs text-brand-red">{error}</p>}
         {currentPdf && (
           <a
             href={currentPdf}
-            download={currentName || "brochure.pdf"}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-brand-red border border-brand-red/30 px-3 py-2 rounded-lg hover:bg-brand-red/5"
+            className="inline-flex items-center gap-1.5 text-xs text-brand-red hover:underline"
           >
-            <Upload className="h-3.5 w-3.5 rotate-180" /> {currentName || "Current PDF"}
+            <ExternalLink className="h-3 w-3" /> Preview saved link
           </a>
         )}
-        <label className="inline-flex items-center gap-2 border border-slate-200 rounded-lg px-4 py-2.5 font-semibold text-sm cursor-pointer hover:border-brand-red hover:text-brand-red transition">
-          <Upload className="h-4 w-4" /> {busy ? "Processing…" : currentPdf ? "Replace PDF" : "Upload PDF"}
-          <input type="file" accept="application/pdf,.pdf" className="hidden" onChange={async (e) => {
-            const f = e.target.files?.[0]; if (!f) return;
-            setBusy(true);
-            try {
-              const { dataUrl, size } = await compressPdf(f);
-              onChange(dataUrl, f.name);
-              setInfo(`Saved ${(size / 1024).toFixed(0)} KB`);
-              toast.success("PDF added");
-            } catch (err: any) {
-              toast.error(err?.message ?? "Failed to add PDF");
-            } finally { setBusy(false); }
-          }} />
-        </label>
-        {currentPdf && (
-          <button
-            type="button"
-            onClick={() => { onChange(undefined, undefined); setInfo(null); }}
-            className="text-xs text-slate-500 hover:text-brand-red"
-          >
-            Remove
-          </button>
-        )}
-        <span className="text-xs text-slate-500">PDFs are stored directly in the database (max 700 KB).</span>
+        <p className="text-xs text-slate-500">Paste a Google Drive share link. Customers will open the PDF directly in Google Drive.</p>
       </div>
-      {info && <div className="text-[11px] text-slate-500 mt-1.5">{info}</div>}
     </Field>
   );
 }
