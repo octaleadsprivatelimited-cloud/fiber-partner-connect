@@ -170,11 +170,23 @@ export function useProducts() {
 
     const q = query(collection(fb.db, "products"), orderBy("name"));
     const unsub = onSnapshot(q, (snap) => {
-      const list = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Product, "id">) }));
-      
-      // Auto-migrate any legacy relative path images in Firestore to base64 Data URLs!
+      const list = snap.docs.map((d) => {
+        const data = d.data() as Omit<Product, "id">;
+        // If Firestore has an empty/missing image for a seed product,
+        // immediately fall back to the bundled asset so the card is never blank.
+        if (!data.image) {
+          const seed = SEED_PRODUCTS.find((s) => s.id === d.id);
+          if (seed) data.image = seed.image;
+        }
+        return { id: d.id, ...data };
+      });
+
+      // Async: migrate old hashed-path images → base64 in Firestore for future loads.
       list.forEach(async (p) => {
-        if (p.image && (p.image.startsWith("/src/assets/") || p.image.includes("product-") || p.image.startsWith("/assets/")) && !p.image.startsWith("data:")) {
+        const isLegacyPath = p.image &&
+          (p.image.startsWith("/src/assets/") || p.image.startsWith("/assets/") ||
+           (p.image.includes("product-") && !p.image.startsWith("data:")));
+        if (isLegacyPath) {
           const seedProduct = SEED_PRODUCTS.find((sp) => sp.id === p.id);
           if (seedProduct) {
             console.log(`Migrating product image to base64 for ${p.id}...`);
