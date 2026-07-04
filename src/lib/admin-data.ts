@@ -82,6 +82,17 @@ export function useAuth() {
 /* ------------- Products ------------- */
 const PRODUCTS_LOCAL_KEY = "admin-products-v2";
 
+function resolveLegacyImage(imagePath: string): string {
+  if (!imagePath) return "";
+  const match = imagePath.match(/(product-[a-z]+)/i);
+  if (match) {
+    const filename = match[1];
+    const seed = SEED_PRODUCTS.find((s) => s.image && s.image.includes(filename));
+    if (seed) return seed.image;
+  }
+  return SEED_PRODUCTS[0]?.image || "";
+}
+
 function readLocalProducts(): Product[] {
   if (typeof localStorage === "undefined") return SEED_PRODUCTS;
   try {
@@ -90,9 +101,19 @@ function readLocalProducts(): Product[] {
       const parsed = JSON.parse(raw) as Product[];
       if (Array.isArray(parsed) && parsed.length) {
         return parsed.map((p) => {
-          if (!p.image) {
+          const isLegacyPath = p.image && 
+            (p.image.startsWith("/src/assets/") || p.image.startsWith("/assets/") || 
+             (p.image.includes("product-") && !p.image.startsWith("data:")));
+             
+          if (!p.image || isLegacyPath) {
             const seed = SEED_PRODUCTS.find((s) => s.id === p.id);
-            if (seed) p.image = seed.image;
+            if (seed) {
+              p.image = seed.image;
+            } else if (p.image) {
+              p.image = resolveLegacyImage(p.image);
+            } else {
+              p.image = SEED_PRODUCTS[0]?.image || "";
+            }
           }
           return p;
         });
@@ -190,7 +211,13 @@ export function useProducts() {
         // immediately fall back to the bundled asset so the card is never blank.
         if (!data.image || isLegacyPath) {
           const seed = SEED_PRODUCTS.find((s) => s.id === d.id);
-          if (seed) data.image = seed.image;
+          if (seed) {
+            data.image = seed.image;
+          } else if (data.image) {
+            data.image = resolveLegacyImage(data.image);
+          } else {
+            data.image = SEED_PRODUCTS[0]?.image || "";
+          }
         }
         return { id: d.id, ...data };
       });
