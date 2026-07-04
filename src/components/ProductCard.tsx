@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import type { Product } from "@/lib/products";
 import { QuoteDialog } from "@/components/QuoteDialog";
@@ -10,11 +10,13 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeProduct, setActiveProduct] = useState<Product>(p);
   const [activeTab, setActiveTab] = useState<"details" | "pdf">("details");
+  const [history, setHistory] = useState<Product[]>([]);
   const { products } = useProducts();
 
   const handleOpen = () => {
     setActiveProduct(p);
     setActiveTab("details");
+    setHistory([]);
     setIsOpen(true);
   };
 
@@ -22,11 +24,21 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
     setIsOpen(open);
     if (!open) {
       setActiveTab("details");
+      setHistory([]);
     }
   };
 
   const handleSelectRelated = (r: Product) => {
+    setHistory((prev) => [...prev, activeProduct]);
     setActiveProduct(r);
+    setActiveTab("details");
+  };
+
+  const handleBack = () => {
+    if (history.length === 0) return;
+    const prev = history[history.length - 1];
+    setHistory((prevStack) => prevStack.slice(0, -1));
+    setActiveProduct(prev);
     setActiveTab("details");
   };
 
@@ -113,6 +125,16 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
           <DialogHeader className="sr-only">
             <DialogTitle>{activeProduct.name}</DialogTitle>
           </DialogHeader>
+
+          {history.length > 0 && (
+            <button
+              type="button"
+              onClick={handleBack}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-brand-red hover:underline mb-4 transition-colors cursor-pointer"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" /> Back to {history[history.length - 1].name}
+            </button>
+          )}
 
           {activeProduct.pdf && (
             <div className="flex border-b border-border mb-4">
