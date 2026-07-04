@@ -13,6 +13,7 @@ import {
 import { getFirebase } from "./firebase";
 import { PRODUCTS as SEED_PRODUCTS, type Product } from "./products";
 import { compressImage } from "./image-compress";
+import { toast } from "sonner";
 
 export function isFirebaseConfigured() {
   const fb = getFirebase();
@@ -238,18 +239,30 @@ export function useProducts() {
       setProducts(next);
       return;
     }
+
+    // Clean undefined fields so Firestore doesn't throw "Unsupported field value: undefined"
+    const cleaned: any = {};
+    Object.keys(p).forEach((key) => {
+      const val = (p as any)[key];
+      if (val !== undefined) {
+        cleaned[key] = val;
+      }
+    });
+
     try {
-      if (p.id && (await getDoc(doc(fb.db, "products", p.id))).exists()) {
-        const { id, ...rest } = p;
+      if (cleaned.id && (await getDoc(doc(fb.db, "products", cleaned.id))).exists()) {
+        const { id, ...rest } = cleaned;
         await updateDoc(doc(fb.db, "products", id), rest);
-      } else if (p.id) {
-        const { id, ...rest } = p;
+      } else if (cleaned.id) {
+        const { id, ...rest } = cleaned;
         await setDoc(doc(fb.db, "products", id), rest);
       } else {
-        await addDoc(collection(fb.db, "products"), p);
+        await addDoc(collection(fb.db, "products"), cleaned);
       }
-    } catch (e) {
+      toast.success("Product saved successfully!");
+    } catch (e: any) {
       console.warn("Firestore save failed, updating locally:", e);
+      toast.error(e?.message || "Failed to save product in database!");
       const next = readLocalProducts().find((x) => x.id === p.id) ? readLocalProducts().map((x) => x.id === p.id ? p : x) : [...readLocalProducts(), p];
       writeLocalProducts(next);
       setProducts(next);
