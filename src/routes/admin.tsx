@@ -509,7 +509,12 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
           <button onClick={onClose} className="p-2 rounded-lg hover:bg-slate-100"><X className="h-4 w-4" /></button>
         </div>
         <form onSubmit={handleSubmit(async (d) => {
-          const id = d.id || d.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 50);
+          let id = d.id ? d.id.trim() : "";
+          if (!id) {
+            id = d.name;
+          }
+          // Convert to a clean URL slug (lowercase, alphanumeric, dashes) replacing any slashes or special chars.
+          id = id.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 50);
           await onSave({ ...d, id });
         })} className="p-5 space-y-4">
           {isNew && (
