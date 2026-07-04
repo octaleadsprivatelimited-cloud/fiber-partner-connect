@@ -110,7 +110,9 @@ async function imageUrlToBase64(url: string): Promise<string> {
   }
 }
 
-function writeLocalProducts(list: Product[]) {
+// notify=false when called from Firestore listener to prevent the storage
+// event from triggering sync() and overwriting React state with stripped images.
+function writeLocalProducts(list: Product[], notify = false) {
   if (typeof localStorage !== "undefined") {
     // Strip heavy base64 strings from local storage cache to keep payload small and prevent QuotaExceededError
     const cleaned = list.map((p) => {
@@ -124,12 +126,16 @@ function writeLocalProducts(list: Product[]) {
       return copy;
     });
     localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(cleaned));
-    window.dispatchEvent(new StorageEvent("storage", { key: PRODUCTS_LOCAL_KEY }));
+    if (notify) {
+      window.dispatchEvent(new StorageEvent("storage", { key: PRODUCTS_LOCAL_KEY }));
+    }
   }
 }
 
 export function useProducts() {
-  const [products, setProducts] = useState<Product[]>(() => readLocalProducts());
+  // Initialise from seed data (has real images) so cards are never blank while Firestore loads.
+  // readLocalProducts() has images stripped to avoid QuotaExceededError, so don't use it here.
+  const [products, setProducts] = useState<Product[]>(SEED_PRODUCTS);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -185,7 +191,8 @@ export function useProducts() {
       });
 
       setProducts(list);
-      writeLocalProducts(list);
+      // notify=false: don't dispatch storage event or we'll overwrite state with stripped images
+      writeLocalProducts(list, false);
       setLoading(false);
     }, () => {
       // Read failed (rules/offline) — keep seed data visible.
@@ -202,7 +209,7 @@ export function useProducts() {
     const fb = getFirebase();
     if (!fb || !isFirebaseConfigured()) {
       const next = readLocalProducts().find((x) => x.id === p.id) ? readLocalProducts().map((x) => x.id === p.id ? p : x) : [...readLocalProducts(), p];
-      writeLocalProducts(next);
+      writeLocalProducts(next, true);
       setProducts(next);
       return;
     }
