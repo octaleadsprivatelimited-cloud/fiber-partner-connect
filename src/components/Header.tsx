@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Logo } from "./Logo";
 import { SITE, whatsappLink } from "@/lib/site";
+import { PaymentDialog } from "./PaymentDialog";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -129,6 +130,16 @@ export function Header() {
             <a href={`tel:${SITE.phoneRaw}`} className="hidden md:inline-flex items-center gap-1.5 hover:text-primary">
               <Headphones className="h-4 w-4" /> Contact Us
             </a>
+            <PaymentDialog
+              trigger={
+                <button
+                  type="button"
+                  className="inline-flex items-center h-8 px-3.5 sm:px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-[11px] sm:text-xs transition-colors cursor-pointer"
+                >
+                  Pay Now
+                </button>
+              }
+            />
             {langSwitcher}
           </div>
           <button onClick={() => setOpen(!open)} className="lg:hidden p-2 ml-2 sm:ml-3" aria-label="Menu">
@@ -215,6 +226,24 @@ export function Header() {
                 >
                   <Headphones className="inline h-4 w-4 mr-2" />{SITE.phone}
                 </motion.a>
+                <motion.div
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: (nav.length + 1) * 0.05, duration: 0.35, ease: "easeOut" }}
+                  className="pt-4 border-t border-border mt-2"
+                >
+                  <PaymentDialog
+                    trigger={
+                      <button
+                        type="button"
+                        onClick={() => setOpen(false)}
+                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 text-center text-sm shadow-sm transition-colors cursor-pointer"
+                      >
+                        Pay Now
+                      </button>
+                    }
+                  />
+                </motion.div>
               </div>
             </motion.div>
           </>

@@ -70,6 +70,13 @@ service cloud.firestore {
       allow update, delete: if isSignedIn();
     }
 
+    // ---------- Payments ----------
+    // Anyone can record successful payments. Only signed-in admins can view / manage them.
+    match /payments/{id} {
+      allow read, update, delete: if isSignedIn();
+      allow create: if true;
+    }
+
     // ---------- Default deny ----------
     match /{document=**} {
       allow read, write: if false;
