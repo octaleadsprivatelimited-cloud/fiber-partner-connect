@@ -1,5 +1,6 @@
 import { Headphones, Instagram, Phone, Youtube } from "lucide-react";
 import { SITE, whatsappLink } from "@/lib/site";
+import googleReviewsImg from "@/assets/google-reviews.png";
 
 // Official WhatsApp glyph (from WhatsApp brand assets)
 function WhatsAppGlyph({ className = "h-7 w-7" }: { className?: string }) {
@@ -29,6 +30,24 @@ export function FloatingActions() {
 
   return (
     <>
+      {/* Left side Google Reviews floating button */}
+      <div className="fixed left-4 md:left-8 bottom-4 md:bottom-6 z-50 flex items-center">
+        <a
+          href="https://www.google.com/search?q=satya+POWER+TECHNOLOGYS+inHouse+No.+49%2F50%2C+Vayushakthi+Nagar+Road+No.1%2C+Dammaiguda%2C+Hyderabad+-+500083%2C+Telangana%2C+India&newwindow=1&sca_esv=d9f40adba4e5763b&aep=1&biw=1366&bih=599&cs=0&hl=en-GB&sxsrf=APpeQnv6M9MPpVv0m3TdPwhRnGM4LbaFIw%3A1783410851000&ei=orBMasDEPNC4seMPt7Hy-QU&ved=0ahUKEwjAnYySi8CVAxVQXGwGHbeYPF8Q4dUDCBA&uact=5&oq=satya+POWER+TECHNOLOGYS+inHouse+No.+49%2F50%2C+Vayushakthi+Nagar+Road+No.1%2C+Dammaiguda%2C+Hyderabad+-+500083%2C+Telangana%2C+India&gs_lp=Egxnd3Mtd2l6LXNlcnAieHNhdHlhIFBPV0VSIFRFQ0hOT0xPR1lTIGluSG91c2UgTm8uIDQ5LzUwLCBWYXl1c2hha3RoaSBOYWdhciBSb2FkIE5vLjEsIERhbW1haWd1ZGEsIEh5ZGVyYWJhZCAtIDUwMDA4MywgVGVsYW5nYW5hLCBJbmRpYTIKECMYsAIYsAMYJzIIEAAY7wUYsAMyCBAAGO8FGLADMggQABjvBRiwAzIIEAAY7wUYsANIvCBQuRlYuRlwAXgAkAEAmAEAoAEAqgEAuAEDyAEA-AEC-AEBmAIBoAICmAMA4gMFEgExIECIBgGQBgWSBwExoAcAsgcAuAcAwgcDMC4xyAcCgAgB&sclient=gws-wiz-serp#lrd=0x3bcb9b78fa96671d:0xb9068d70416b057d,1,,,,"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Write a Google Review"
+          aria-label="Google Reviews"
+          className="block hover:scale-105 active:scale-95 transition-transform duration-200"
+        >
+          <img
+            src={googleReviewsImg}
+            alt="Google Reviews"
+            className="h-10 md:h-12 w-auto object-contain bg-white p-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.15)] rounded border border-slate-200"
+          />
+        </a>
+      </div>
+
       {/* Right side social floating buttons (middle) */}
       <div className="fixed right-0 md:right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2 md:gap-3">
         <a
