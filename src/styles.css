@@ -114,6 +114,12 @@
 @utility shadow-premium {
   box-shadow: var(--shadow-premium);
 }
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 /* Dell-style button primitives */
 @utility btn-premium {
