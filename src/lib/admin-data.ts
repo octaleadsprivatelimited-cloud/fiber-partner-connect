@@ -144,18 +144,27 @@ async function imageUrlToBase64(url: string): Promise<string> {
 // event from triggering sync() and overwriting React state with stripped images.
 function writeLocalProducts(list: Product[], notify = false) {
   if (typeof localStorage !== "undefined") {
-    // Strip heavy base64 strings from local storage cache to keep payload small and prevent QuotaExceededError
-    const cleaned = list.map((p) => {
-      const copy = { ...p };
-      if (copy.image && copy.image.startsWith("data:")) {
-        copy.image = "";
+    try {
+      localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(list));
+    } catch (e) {
+      console.warn("localStorage quota exceeded, stripping image data to save space:", e);
+      // Strip heavy base64 strings from local storage cache to keep payload small and prevent QuotaExceededError
+      const cleaned = list.map((p) => {
+        const copy = { ...p };
+        if (copy.image && copy.image.startsWith("data:")) {
+          copy.image = "";
+        }
+        if (copy.pdf && copy.pdf.startsWith("data:")) {
+          copy.pdf = "";
+        }
+        return copy;
+      });
+      try {
+        localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(cleaned));
+      } catch (inner) {
+        console.error("Failed to write even stripped products to localStorage:", inner);
       }
-      if (copy.pdf && copy.pdf.startsWith("data:")) {
-        copy.pdf = "";
-      }
-      return copy;
-    });
-    localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(cleaned));
+    }
     if (notify) {
       window.dispatchEvent(new StorageEvent("storage", { key: PRODUCTS_LOCAL_KEY }));
     }
@@ -163,9 +172,7 @@ function writeLocalProducts(list: Product[], notify = false) {
 }
 
 export function useProducts() {
-  // Initialise from seed data (has real images) so cards are never blank while Firestore loads.
-  // readLocalProducts() has images stripped to avoid QuotaExceededError, so don't use it here.
-  const [products, setProducts] = useState<Product[]>(SEED_PRODUCTS);
+  const [products, setProducts] = useState<Product[]>(() => readLocalProducts());
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
