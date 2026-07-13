@@ -165,14 +165,14 @@ function writeLocalProducts(list: Product[], notify = false) {
       // Strip heavy base64 strings from local storage cache to keep payload small and prevent QuotaExceededError
       const cleaned = list.map((p) => {
         const copy = { ...p };
-        if (copy.image && copy.image.startsWith("data:")) {
+        if (copy.image && typeof copy.image === "string" && copy.image.startsWith("data:")) {
           copy.image = "";
         }
-        if (copy.pdf && copy.pdf.startsWith("data:")) {
+        if (copy.pdf && typeof copy.pdf === "string" && copy.pdf.startsWith("data:")) {
           copy.pdf = "";
         }
-        if (copy.images) {
-          copy.images = copy.images.map((img) => img.startsWith("data:") ? "" : img);
+        if (copy.images && Array.isArray(copy.images)) {
+          copy.images = copy.images.map((img) => (img && typeof img === "string" && img.startsWith("data:")) ? "" : img);
         }
         return copy;
       });
