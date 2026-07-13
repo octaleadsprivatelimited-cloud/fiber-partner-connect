@@ -58,6 +58,7 @@ export interface Product {
   pdf?: string;
   /** Optional filename for the PDF (used when downloading). */
   pdfName?: string;
+  images?: string[];
 }
 
 export const PRODUCTS: Product[] = [

@@ -149,7 +149,7 @@ function Home() {
         <div className="mx-auto max-w-[1920px] px-6 md:px-16">
           <div className="grid md:grid-cols-3 gap-6 mb-8 md:gap-10 md:mb-12 items-end">
             <div className="md:col-span-2">
-              <div className="text-sm font-normal text-muted-foreground mb-3">Featured products</div>
+              <div className="text-sm font-normal text-muted-foreground mb-3">Our top products</div>
               <h2 className="text-2xl md:text-5xl font-light text-foreground leading-[1.15]">Top picks from our catalogue</h2>
             </div>
             <div className="flex md:justify-end items-center gap-3 md:gap-4">

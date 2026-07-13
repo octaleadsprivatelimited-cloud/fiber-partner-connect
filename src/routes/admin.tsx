@@ -262,7 +262,7 @@ function DashboardOverview({ products, inquiries, onTab }: { products: Product[]
       delta: unread > 0 ? "new" : "0", up: unread > 0, tab: "inquiries" as const,
     },
     {
-      label: "Featured", value: products.filter((p) => p.featured).length, icon: Users,
+      label: "Top Products", value: products.filter((p) => p.featured).length, icon: Users,
       iconBg: "bg-emerald-50", iconColor: "text-emerald-600",
       delta: "live", up: true, tab: "products" as const,
     },
@@ -329,7 +329,7 @@ function DashboardOverview({ products, inquiries, onTab }: { products: Product[]
             </div>
             <div className="flex items-center gap-3 text-xs text-slate-500">
               <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-brand-red" /> Products</span>
-              <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-slate-300" /> Featured</span>
+              <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-sm bg-slate-300" /> Top Products</span>
             </div>
           </div>
           <div className="h-64 sm:h-72 mt-4">
@@ -438,7 +438,7 @@ function ProductsManager({ products, save, remove, uploadImage }: {
               <div className="text-xs text-slate-500 mt-0.5 truncate">{p.category}</div>
               <div className="flex items-center gap-2 mt-2">
                 <span className="text-[10px] font-bold bg-slate-900 text-white px-1.5 py-0.5 rounded">{p.brand}</span>
-                {p.featured && <span className="text-[10px] font-bold bg-red-50 text-brand-red px-1.5 py-0.5 rounded">FEATURED</span>}
+                {p.featured && <span className="text-[10px] font-bold bg-red-50 text-brand-red px-1.5 py-0.5 rounded">TOP PRODUCT</span>}
               </div>
             </div>
             <div className="flex flex-col gap-1 shrink-0">
@@ -459,7 +459,7 @@ function ProductsManager({ products, save, remove, uploadImage }: {
                 <th className="text-left p-3 font-semibold">Name</th>
                 <th className="text-left p-3 font-semibold">Category</th>
                 <th className="text-left p-3 font-semibold">Brand</th>
-                <th className="text-left p-3 font-semibold">Featured</th>
+                <th className="text-left p-3 font-semibold">Top Product</th>
                 <th className="text-right p-3 font-semibold">Actions</th>
               </tr>
             </thead>
@@ -496,10 +496,38 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
   uploadImage: (f: File) => Promise<string>;
 }) {
   const { categories } = useCategories();
-  const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<Product>({ defaultValues: product });
-  const image = watch("image");
-  const [uploading, setUploading] = useState(false);
+
+  // Ensure images array is initialized from the product image if images is empty
+  const productWithImages = useMemo(() => {
+    const list = product.images && product.images.length > 0
+      ? [...product.images]
+      : product.image ? [product.image] : [];
+    return { ...product, images: list };
+  }, [product]);
+
+  const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<Product>({
+    defaultValues: productWithImages
+  });
+
+  const images = watch("images") || [];
+  const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
   const isNew = !product.id;
+
+  const handleUploadSuccess = (index: number, url: string) => {
+    const next = [...images];
+    next[index] = url;
+    setValue("images", next, { shouldValidate: true });
+    if (index === 0) {
+      setValue("image", url, { shouldValidate: true });
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    const next = [...images];
+    next.splice(index, 1);
+    setValue("images", next, { shouldValidate: true });
+    setValue("image", next[0] || "", { shouldValidate: true });
+  };
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
@@ -515,7 +543,16 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
           }
           // Convert to a clean URL slug (lowercase, alphanumeric, dashes) replacing any slashes or special chars.
           id = id.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 50);
-          await onSave({ ...d, id });
+          
+          const cleanedImages = (d.images || []).filter(Boolean);
+          const primaryImage = cleanedImages[0] || "";
+
+          await onSave({
+            ...d,
+            id,
+            image: primaryImage,
+            images: cleanedImages
+          });
         })} className="p-5 space-y-4">
           {isNew && (
             <Field label="ID (optional, slug)">
@@ -541,21 +578,62 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
             <textarea rows={5} {...register("description", { required: "Required", maxLength: 10000 })} className="w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10" />
           </Field>
 
-          <Field label="Image">
-            <div className="flex flex-wrap items-center gap-3">
-              {image && <img src={image} alt="" className="h-20 w-20 object-cover rounded-lg border border-slate-200" />}
-              <label className="inline-flex items-center gap-2 border border-slate-200 rounded-lg px-4 py-2.5 font-semibold text-sm cursor-pointer hover:border-brand-red hover:text-brand-red transition">
-                <Upload className="h-4 w-4" /> {uploading ? "Compressing…" : image ? "Replace image" : "Upload image"}
-                <input type="file" accept="image/*" className="hidden" onChange={async (e) => {
-                  const f = e.target.files?.[0]; if (!f) return;
-                  setUploading(true);
-                  try { const url = await uploadImage(f); setValue("image", url, { shouldValidate: true }); } finally { setUploading(false); }
-                }} />
-              </label>
-              <span className="text-xs text-slate-500">Auto-compressed to ~1200px / 80% JPEG quality.</span>
-              <input type="hidden" {...register("image", { required: "Image required" })} />
+          <Field label="Product Images (Upload 2 to 5 images)" error={errors.image?.message}>
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mt-1.5">
+              {[0, 1, 2, 3, 4].map((index) => {
+                const imgUrl = images[index];
+                const isUploading = uploadingIndex === index;
+                const isPrimary = index === 0;
+                
+                return (
+                  <div key={index} className="relative aspect-square border border-slate-200 rounded-lg flex flex-col items-center justify-center bg-slate-50 overflow-hidden group">
+                    {imgUrl ? (
+                      <>
+                        <img src={imgUrl} alt="" className="w-full h-full object-contain p-1 bg-white" />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImage(index)}
+                          className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow cursor-pointer"
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
+                        <div className="absolute bottom-0 inset-x-0 bg-slate-900/60 text-white text-[9px] text-center py-0.5">
+                          {isPrimary ? "Primary" : `Image ${index + 1}`}
+                        </div>
+                      </>
+                    ) : (
+                      <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer hover:bg-slate-100 transition p-2 text-center">
+                        <Upload className="h-5 w-5 text-slate-400 mb-1" />
+                        <span className="text-[10px] text-slate-500 font-medium">
+                          {isUploading ? "Compressing…" : isPrimary ? "Upload Primary" : `Add Image ${index + 1}`}
+                        </span>
+                        <input
+                          type="file"
+                          disabled={uploadingIndex !== null}
+                          accept="image/*"
+                          className="hidden"
+                          onChange={async (e) => {
+                            const f = e.target.files?.[0];
+                            if (!f) return;
+                            setUploadingIndex(index);
+                            try {
+                              const url = await uploadImage(f);
+                              handleUploadSuccess(index, url);
+                            } finally {
+                              setUploadingIndex(null);
+                            }
+                          }}
+                        />
+                      </label>
+                    )}
+                  </div>
+                );
+              })}
             </div>
-            {errors.image && <span className="text-xs text-brand-red mt-1 block">{errors.image.message}</span>}
+            <p className="text-[11px] text-slate-400 mt-2">
+              Primary image is required. Upload 1 to 4 additional images to enable product photo gallery. All images are compressed automatically.
+            </p>
+            <input type="hidden" {...register("image", { required: "Primary image is required" })} />
           </Field>
 
           <PdfField
@@ -570,7 +648,7 @@ function ProductEditor({ product, onClose, onSave, uploadImage }: {
 
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" {...register("featured")} className="h-4 w-4 accent-brand-red" />
-            <span className="text-sm font-semibold text-slate-700">Show on homepage (featured)</span>
+            <span className="text-sm font-semibold text-slate-700">Show on homepage (Top Product)</span>
           </label>
 
 

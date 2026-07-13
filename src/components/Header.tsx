@@ -1,4 +1,4 @@
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { Headphones, Menu, X, Search, ChevronDown, UserRound, Globe2, Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -37,6 +37,29 @@ const nav = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const [lang, setLang] = useState<LangCode>("en");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Sync search input with URL search param when on products page
+  useEffect(() => {
+    if (location.pathname === "/products") {
+      setSearchQuery(searchParams.get("search") || "");
+    } else {
+      setSearchQuery("");
+    }
+  }, [location.pathname, searchParams]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const query = searchQuery.trim();
+    if (query) {
+      navigate(`/products?search=${encodeURIComponent(query)}`);
+    } else {
+      navigate("/products");
+    }
+  };
 
   useEffect(() => {
     const stored = (typeof window !== "undefined" && localStorage.getItem(LANG_KEY)) as LangCode | null;
@@ -117,12 +140,18 @@ export function Header() {
       <div className="border-b border-border">
         <div className="mx-auto max-w-[1920px] px-4 md:px-8 flex h-[52px] items-center gap-6">
           <Link to="/" className="shrink-0 flex items-center"><Logo className="h-14 md:h-16" /></Link>
-          <div className="hidden md:flex flex-1 items-center max-w-xl border border-input h-9 bg-card">
-            <input aria-label="Search" placeholder="Search Satya Power" className="min-w-0 flex-1 px-3 text-sm outline-none bg-transparent" />
-            <button aria-label="Search" className="h-full w-10 grid place-items-center hover:bg-muted transition">
+          <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 items-center max-w-xl border border-input h-9 bg-card">
+            <input
+              aria-label="Search"
+              placeholder="Search Satya Power"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="min-w-0 flex-1 px-3 text-sm outline-none bg-transparent"
+            />
+            <button type="submit" aria-label="Search" className="h-full w-10 grid place-items-center hover:bg-muted transition cursor-pointer">
               <Search className="h-4 w-4 text-muted-foreground" />
             </button>
-          </div>
+          </form>
           <div className="ml-auto flex items-center gap-2.5 sm:gap-4 md:gap-5 text-[11px] sm:text-xs md:text-[13px] text-muted-foreground">
             <Link to="/contact" className="hidden md:inline-flex items-center gap-1.5 hover:text-primary">
               <UserRound className="h-4 w-4" /> Sign In

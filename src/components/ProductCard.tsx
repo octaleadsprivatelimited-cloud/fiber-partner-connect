@@ -11,10 +11,12 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
   const [activeProduct, setActiveProduct] = useState<Product>(p);
   const [activeTab, setActiveTab] = useState<"details" | "pdf">("details");
   const [history, setHistory] = useState<Product[]>([]);
+  const [selectedImage, setSelectedImage] = useState("");
   const { products } = useProducts();
 
   const handleOpen = () => {
     setActiveProduct(p);
+    setSelectedImage(p.images && p.images.length > 0 ? p.images[0] : p.image);
     setActiveTab("details");
     setHistory([]);
     setIsOpen(true);
@@ -25,12 +27,14 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
     if (!open) {
       setActiveTab("details");
       setHistory([]);
+      setSelectedImage("");
     }
   };
 
   const handleSelectRelated = (r: Product) => {
     setHistory((prev) => [...prev, activeProduct]);
     setActiveProduct(r);
+    setSelectedImage(r.images && r.images.length > 0 ? r.images[0] : r.image);
     setActiveTab("details");
   };
 
@@ -39,6 +43,7 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
     const prev = history[history.length - 1];
     setHistory((prevStack) => prevStack.slice(0, -1));
     setActiveProduct(prev);
+    setSelectedImage(prev.images && prev.images.length > 0 ? prev.images[0] : prev.image);
     setActiveTab("details");
   };
 
@@ -73,7 +78,7 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
             src={p.image}
             alt={`${p.name} — ${p.brand} ${p.category} | SATYA POWER TECHNOLOGYS`}
             loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+            className="h-full w-full object-contain bg-white p-2 transition-transform duration-500 ease-out group-hover:scale-[1.02]"
           />
           {p.featured && (
             <span className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 bg-primary text-primary-foreground text-[11px] font-normal px-2.5 py-1">
@@ -119,169 +124,193 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
         </div>
       </motion.div>
 
-      {/* Product Detail Popup */}
       <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="max-w-4xl p-6 md:p-8">
+        <DialogContent className="max-w-4xl p-0 overflow-hidden bg-background">
           <DialogHeader className="sr-only">
             <DialogTitle>{activeProduct.name}</DialogTitle>
           </DialogHeader>
 
-          {history.length > 0 && (
-            <button
-              type="button"
-              onClick={handleBack}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-brand-red hover:underline mb-4 transition-colors cursor-pointer"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" /> Back to {history[history.length - 1].name}
-            </button>
-          )}
-
-          {activeProduct.pdf && (
-            <div className="flex border-b border-border mb-4">
+          <div className="max-h-[90vh] overflow-y-auto p-6 md:p-8">
+            {history.length > 0 && (
               <button
                 type="button"
-                onClick={() => setActiveTab("details")}
-                className={`pb-2 px-4 text-sm font-semibold border-b-2 transition-colors -mb-[2px] ${
-                  activeTab === "details"
-                    ? "border-yellow-500 text-yellow-600"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
-                }`}
+                onClick={handleBack}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-brand-red hover:underline mb-4 transition-colors cursor-pointer"
               >
-                Overview
+                <ArrowLeft className="h-3.5 w-3.5" /> Back to {history[history.length - 1].name}
               </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab("pdf")}
-                className={`pb-2 px-4 text-sm font-semibold border-b-2 transition-colors -mb-[2px] ${
-                  activeTab === "pdf"
-                    ? "border-yellow-500 text-yellow-600"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                Brochure PDF
-              </button>
-            </div>
-          )}
+            )}
 
-          {activeTab === "details" ? (
-            <div className="grid md:grid-cols-2 gap-6 md:gap-8 items-start mt-4 md:mt-0">
-              {/* Product Image */}
-              <div className="bg-muted border border-border overflow-hidden aspect-[4/3] flex items-center justify-center">
-                <img
-                  src={activeProduct.image}
-                  alt={`${activeProduct.name} — ${activeProduct.brand}`}
-                  className="w-full h-full object-cover"
-                />
+            {activeProduct.pdf && (
+              <div className="flex border-b border-border mb-4">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("details")}
+                  className={`pb-2 px-4 text-sm font-semibold border-b-2 transition-colors -mb-[2px] ${
+                    activeTab === "details"
+                      ? "border-yellow-500 text-yellow-600"
+                      : "border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Overview
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("pdf")}
+                  className={`pb-2 px-4 text-sm font-semibold border-b-2 transition-colors -mb-[2px] ${
+                    activeTab === "pdf"
+                      ? "border-yellow-500 text-yellow-600"
+                      : "border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Brochure
+                </button>
               </div>
+            )}
 
-              {/* Product Meta & Description */}
-              <div className="flex flex-col h-full justify-between min-h-[400px]">
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    {activeProduct.brand}
-                  </div>
-                  <h2 className="mt-2 text-2xl md:text-3xl font-light text-foreground leading-tight">
-                    {activeProduct.name}
-                  </h2>
-                  <div className="mt-1 text-xs md:text-sm text-primary font-medium">
-                    {activeProduct.category}
-                  </div>
-
-                  {activeProduct.featured && (
-                    <span className="inline-block mt-3 bg-primary text-primary-foreground text-[10px] font-medium px-2 py-0.5">
-                      Featured
-                    </span>
-                  )}
-
-                  <div className="mt-4 border-t border-border pt-4">
-                    <h4 className="text-xs font-medium text-foreground uppercase tracking-wider mb-2">Description</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed max-h-[140px] overflow-y-auto whitespace-pre-line pr-2 scrollbar-thin">
-                      {activeProduct.description}
-                    </p>
-                  </div>
-                </div>
-
-                <div>
-                  {/* Action Buttons */}
-                  <div className="mt-4 pt-4 border-t border-border flex flex-wrap gap-3">
-                    <QuoteDialog
-                      productName={activeProduct.name}
-                      trigger={
-                        <button
-                          type="button"
-                          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 text-sm font-normal hover:bg-brand-red-dark transition cursor-pointer"
-                        >
-                          Get a quote <ArrowRight className="h-4 w-4" />
-                        </button>
-                      }
+            {activeTab === "details" ? (
+              <div className="grid md:grid-cols-2 gap-6 md:gap-8 items-start mt-4 md:mt-0">
+                <div className="flex flex-col gap-4">
+                  <div className="bg-white border border-border overflow-hidden aspect-[4/3] flex items-center justify-center p-2">
+                    <img
+                      src={selectedImage || activeProduct.image}
+                      alt={`${activeProduct.name} — ${activeProduct.brand}`}
+                      className="w-full h-full object-contain bg-white"
                     />
-
-                    {activeProduct.pdf && (
-                      <button
-                        type="button"
-                        onClick={() => setActiveTab("pdf")}
-                        className="inline-flex items-center gap-2 bg-yellow-500 text-black px-5 py-2.5 text-sm font-medium hover:bg-yellow-400 transition"
-                      >
-                        <ExternalLink className="h-4 w-4" /> View Brochure
-                      </button>
-                    )}
                   </div>
-
-                  {/* Related Products Suggestions */}
-                  {related.length > 0 && (
-                    <div className="mt-6 pt-4 border-t border-border">
-                      <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-3">
-                        Suggested Products
-                      </h4>
-                      <div className="grid grid-cols-3 gap-2">
-                        {related.map((r) => (
+                  {activeProduct.images && activeProduct.images.length > 1 && (
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {activeProduct.images.map((imgUrl, index) => {
+                        const isActive = selectedImage === imgUrl;
+                        return (
                           <button
-                            key={r.id}
+                            key={index}
+                            onClick={() => setSelectedImage(imgUrl)}
                             type="button"
-                            onClick={() => handleSelectRelated(r)}
-                            className="group text-left border border-border bg-card hover:border-primary p-2 transition cursor-pointer flex flex-col h-full focus:outline-none"
+                            className={`w-16 h-16 border rounded overflow-hidden p-1 transition bg-white cursor-pointer ${
+                              isActive
+                                ? "border-yellow-500 ring-2 ring-yellow-500/20"
+                                : "border-border hover:border-yellow-500"
+                            }`}
                           >
-                            <div className="aspect-[4/3] bg-muted overflow-hidden mb-1.5 w-full">
-                              <img
-                                src={r.image}
-                                alt={r.name}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                              />
-                            </div>
-                            <div className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">{r.brand}</div>
-                            <div className="text-[10px] font-light text-foreground line-clamp-1 group-hover:text-primary transition-colors mt-0.5">
-                              {r.name}
-                            </div>
+                            <img
+                              src={imgUrl}
+                              alt=""
+                              className="w-full h-full object-contain"
+                            />
                           </button>
-                        ))}
-                      </div>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
+
+                <div className="flex flex-col h-full justify-between min-h-[400px]">
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      {activeProduct.brand}
+                    </div>
+                    <h2 className="mt-2 text-2xl md:text-3xl font-light text-foreground leading-tight">
+                      {activeProduct.name}
+                    </h2>
+                    <div className="mt-1 text-xs md:text-sm text-primary font-medium">
+                      {activeProduct.category}
+                    </div>
+
+                    {activeProduct.featured && (
+                      <span className="inline-block mt-3 bg-primary text-primary-foreground text-[10px] font-medium px-2 py-0.5">
+                        Featured
+                      </span>
+                    )}
+
+                    <div className="mt-4 border-t border-border pt-4">
+                      <h4 className="text-xs font-medium text-foreground uppercase tracking-wider mb-2">Description</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed max-h-[140px] overflow-y-auto whitespace-pre-line pr-2 scrollbar-thin">
+                        {activeProduct.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="mt-4 pt-4 border-t border-border flex flex-wrap gap-3">
+                      <QuoteDialog
+                        productName={activeProduct.name}
+                        trigger={
+                          <button
+                            type="button"
+                            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 text-sm font-normal hover:bg-brand-red-dark transition cursor-pointer"
+                          >
+                            Get a quote <ArrowRight className="h-4 w-4" />
+                          </button>
+                        }
+                      />
+
+                      {activeProduct.pdf && (
+                        <button
+                          type="button"
+                          onClick={() => setActiveTab("pdf")}
+                          className="inline-flex items-center gap-2 bg-yellow-500 text-black px-5 py-2.5 text-sm font-medium hover:bg-yellow-400 transition"
+                        >
+                          <ExternalLink className="h-4 w-4" /> View Brochure
+                        </button>
+                      )}
+                    </div>
+
+                    {related.length > 0 && (
+                      <div className="mt-6 pt-4 border-t border-border">
+                        <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-3">
+                          Suggested Products
+                        </h4>
+                        <div className="grid grid-cols-3 gap-2">
+                          {related.map((r) => (
+                            <button
+                              key={r.id}
+                              type="button"
+                              onClick={() => handleSelectRelated(r)}
+                              className="group text-left border border-border bg-card hover:border-primary p-2 transition cursor-pointer flex flex-col h-full focus:outline-none"
+                            >
+                              <div className="aspect-[4/3] bg-muted overflow-hidden mb-1.5 w-full">
+                                <img
+                                  src={r.image}
+                                  alt={r.name}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                              </div>
+                              <div className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">{r.brand}</div>
+                              <div className="text-[10px] font-light text-foreground line-clamp-1 group-hover:text-primary transition-colors mt-0.5">
+                                {r.name}
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <div className="w-full h-[500px] sm:h-[600px] border border-border bg-muted overflow-hidden">
-                <iframe
-                  src={getEmbedUrl(activeProduct.pdf)}
-                  className="w-full h-full border-0"
-                  title={`${activeProduct.name} Brochure`}
-                  allow="autoplay"
-                ></iframe>
+            ) : (
+              <div className="space-y-4">
+                <div className="w-full h-[500px] sm:h-[600px] border border-border bg-muted overflow-hidden">
+                  <iframe
+                    src={getEmbedUrl(activeProduct.pdf)}
+                    className="w-full h-full border-0"
+                    title={`${activeProduct.name} Brochure`}
+                    allow="autoplay"
+                  ></iframe>
+                </div>
+                <div className="flex justify-end">
+                  <a
+                    href={activeProduct.pdf}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 text-sm font-semibold hover:bg-slate-800 transition"
+                  >
+                    <ExternalLink className="h-4 w-4" /> Open in New Tab
+                  </a>
+                </div>
               </div>
-              <div className="flex justify-end">
-                <a
-                  href={activeProduct.pdf}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 text-sm font-semibold hover:bg-slate-800 transition"
-                >
-                  <ExternalLink className="h-4 w-4" /> Open in New Tab
-                </a>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </>

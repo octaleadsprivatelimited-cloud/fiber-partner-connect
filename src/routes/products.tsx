@@ -16,16 +16,57 @@ function ProductsPage() {
   const { categories } = useCategories();
   const [cat, setCatState] = useState<string>(searchParams.get("category") || "All");
   const [brand, setBrand] = useState<string>("All");
+  const searchQuery = searchParams.get("search") || "";
+
   useEffect(() => {
     setCatState(searchParams.get("category") || "All");
   }, [searchParams]);
+
+  // Clear search on page refresh
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.performance) {
+      const navEntries = window.performance.getEntriesByType("navigation");
+      const isReload = navEntries.length > 0 && (navEntries[0] as PerformanceNavigationTiming).type === "reload";
+      if (isReload) {
+        setSearchParams((prev) => {
+          const next = new URLSearchParams(prev);
+          next.delete("search");
+          return next;
+        });
+      }
+    }
+  }, []);
+
   const setCat = (value: string) => {
     setCatState(value);
-    setSearchParams(value === "All" ? {} : { category: value });
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (value === "All") {
+        next.delete("category");
+      } else {
+        next.set("category", value);
+      }
+      return next;
+    });
   };
-  const filtered = products.filter((p) =>
-    (cat === "All" || p.category === cat) && (brand === "All" || p.brand === brand)
-  );
+
+  const filtered = products.filter((p) => {
+    const matchesCategory = cat === "All" || p.category === cat;
+    const matchesBrand = brand === "All" || p.brand === brand;
+    
+    // Split search query into individual keywords
+    const keywords = searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
+    
+    // Every keyword must be found in either name, description, brand, or category
+    const matchesSearch = keywords.every((kw) =>
+      p.name.toLowerCase().includes(kw) ||
+      p.description.toLowerCase().includes(kw) ||
+      (p.brand && p.brand.toLowerCase().includes(kw)) ||
+      (p.category && p.category.toLowerCase().includes(kw))
+    );
+    
+    return matchesCategory && matchesBrand && matchesSearch;
+  });
   return (
     <>
       <SEO
@@ -60,7 +101,29 @@ function ProductsPage() {
           </aside>
 
           <div>
-            <div className="text-sm text-muted-foreground mb-4">{filtered.length} products</div>
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+              <div className="text-sm text-muted-foreground">
+                {searchQuery ? (
+                  <span>
+                    Found {filtered.length} {filtered.length === 1 ? "product" : "products"} for "<strong>{searchQuery}</strong>"
+                  </span>
+                ) : (
+                  <span>{filtered.length} {filtered.length === 1 ? "product" : "products"}</span>
+                )}
+              </div>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchParams((prev) => {
+                    const next = new URLSearchParams(prev);
+                    next.delete("search");
+                    return next;
+                  })}
+                  className="text-xs text-yellow-500 hover:text-yellow-600 font-medium hover:underline cursor-pointer"
+                >
+                  Clear search
+                </button>
+              )}
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-5">
               {filtered.map((p, i) => <ProductCard key={p.id} p={p} idx={i} />)}
             </div>
