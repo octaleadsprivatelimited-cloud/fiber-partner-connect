@@ -82,7 +82,7 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
           />
           {p.featured && (
             <span className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 bg-primary text-primary-foreground text-[11px] font-normal px-2.5 py-1">
-              Featured
+              Top Product
             </span>
           )}
         </button>
@@ -219,7 +219,7 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
 
                     {activeProduct.featured && (
                       <span className="inline-block mt-3 bg-primary text-primary-foreground text-[10px] font-medium px-2 py-0.5">
-                        Featured
+                        Top Product
                       </span>
                     )}
 
