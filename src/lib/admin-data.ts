@@ -81,6 +81,7 @@ export function useAuth() {
 
 /* ------------- Products ------------- */
 const PRODUCTS_LOCAL_KEY = "admin-products-v3";
+const OBSOLETE_KEYS = ["admin-products", "admin-products-v1", "admin-products-v2"];
 
 function resolveLegacyImage(imagePath: string): string {
   if (!imagePath) return "";
@@ -93,6 +94,17 @@ function resolveLegacyImage(imagePath: string): string {
   return SEED_PRODUCTS[0]?.image || "";
 }
 
+// Automatically clean up obsolete cache keys to free up space
+if (typeof window !== "undefined" && typeof localStorage !== "undefined") {
+  OBSOLETE_KEYS.forEach((key) => {
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {
+      console.warn(`Failed to clean up obsolete localStorage key "${key}":`, e);
+    }
+  });
+}
+
 function readLocalProducts(): Product[] {
   if (typeof localStorage === "undefined") return SEED_PRODUCTS;
   try {
@@ -101,12 +113,10 @@ function readLocalProducts(): Product[] {
       const parsed = JSON.parse(raw) as Product[];
       if (Array.isArray(parsed) && parsed.length) {
         return parsed.map((p) => {
-          const isLegacyPath = p.image && 
-            (p.image.startsWith("/src/assets/") || p.image.startsWith("/assets/") || 
-             (p.image.includes("product-") && !p.image.startsWith("data:")));
-             
-          if (!p.image || isLegacyPath) {
-            const seed = SEED_PRODUCTS.find((s) => s.id === p.id);
+          // Restore images from local SEED template files to keep storage footprint negligible
+          const seed = SEED_PRODUCTS.find((s) => s.id === p.id);
+          
+          if (!p.image || p.image.startsWith("data:") || p.image.startsWith("/src/assets/") || p.image.startsWith("/assets/") || (p.image.includes("product-") && !p.image.startsWith("data:"))) {
             if (seed) {
               p.image = seed.image;
             } else if (p.image) {
@@ -116,13 +126,11 @@ function readLocalProducts(): Product[] {
             }
           }
           
-          if (!p.images || p.images.length === 0 || p.images.every(img => !img)) {
-            const seed = SEED_PRODUCTS.find((s) => s.id === p.id);
+          if (!p.images || p.images.length === 0 || p.images.every(img => !img || img.startsWith("data:"))) {
             p.images = seed?.images && seed.images.length > 0 ? [...seed.images] : [p.image || ""];
           } else {
             p.images = p.images.map((img) => {
-              if (!img) {
-                const seed = SEED_PRODUCTS.find((s) => s.id === p.id);
+              if (!img || img.startsWith("data:")) {
                 return seed?.image || p.image || "";
               }
               return img;
@@ -154,37 +162,86 @@ async function imageUrlToBase64(url: string): Promise<string> {
   }
 }
 
-// notify=false when called from Firestore listener to prevent the storage
-// event from triggering sync() and overwriting React state with stripped images.
+// Strips heavy base64 strings completely from cached lists to protect storage quota
+function stripCacheData(list: Product[], level: "heavy" | "all" | "meta-only"): Product[] {
+  return list.map((p) => {
+    const copy = { ...p };
+    
+    // Level 1: Remove all heavy base64 and data URLs
+    if (copy.image && typeof copy.image === "string" && copy.image.startsWith("data:")) {
+      copy.image = "";
+    }
+    if (copy.pdf && typeof copy.pdf === "string" && copy.pdf.startsWith("data:")) {
+      copy.pdf = "";
+    }
+    if (copy.images && Array.isArray(copy.images)) {
+      copy.images = copy.images.map((img) => (img && typeof img === "string" && img.startsWith("data:")) ? "" : img);
+    }
+    
+    // Level 2: Remove all image paths entirely (rely purely on memory restores from seed)
+    if (level === "all" || level === "meta-only") {
+      copy.image = "";
+      copy.pdf = "";
+      copy.images = [];
+    }
+    
+    // Level 3: Keep only structural identity metadata
+    if (level === "meta-only") {
+      return {
+        id: copy.id,
+        name: copy.name,
+        category: copy.category,
+        brand: copy.brand,
+        featured: copy.featured
+      } as any;
+    }
+    
+    return copy;
+  });
+}
+
 function writeLocalProducts(list: Product[], notify = false) {
-  if (typeof localStorage !== "undefined") {
+  if (typeof localStorage === "undefined") return;
+
+  // Level 1: Strip heavy base64 strings right away. We do not store base64 in local cache.
+  let cleaned = stripCacheData(list, "heavy");
+  let payloadStr = JSON.stringify(cleaned);
+  
+  // Quota guard checking the byte size
+  let byteSize = new Blob([payloadStr]).size;
+  console.log(`Current cache size: ${(byteSize / (1024 * 1024)).toFixed(3)} MB`);
+
+  // Level 2: If payload size is greater than 3.5 MB, strip all image URL references
+  if (byteSize > 3.5 * 1024 * 1024) {
+    cleaned = stripCacheData(list, "all");
+    payloadStr = JSON.stringify(cleaned);
+    byteSize = new Blob([payloadStr]).size;
+    console.log(`Payload exceeded 3.5MB. Stripped images. New size: ${(byteSize / (1024 * 1024)).toFixed(3)} MB`);
+  }
+
+  // Level 3: If payload size is still greater than 3.5 MB, keep metadata only
+  if (byteSize > 3.5 * 1024 * 1024) {
+    cleaned = stripCacheData(list, "meta-only");
+    payloadStr = JSON.stringify(cleaned);
+    byteSize = new Blob([payloadStr]).size;
+    console.log(`Payload exceeded quota limits. Stripped non-essential metadata. Final size: ${(byteSize / (1024 * 1024)).toFixed(3)} MB`);
+  }
+
+  try {
+    localStorage.setItem(PRODUCTS_LOCAL_KEY, payloadStr);
+  } catch (e) {
+    console.warn("localStorage quota exceeded on initial try. Attempting compression backup...", e);
     try {
-      localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(list));
-    } catch (e) {
-      console.warn("localStorage quota exceeded, stripping image data to save space:", e);
-      // Strip heavy base64 strings from local storage cache to keep payload small and prevent QuotaExceededError
-      const cleaned = list.map((p) => {
-        const copy = { ...p };
-        if (copy.image && typeof copy.image === "string" && copy.image.startsWith("data:")) {
-          copy.image = "";
-        }
-        if (copy.pdf && typeof copy.pdf === "string" && copy.pdf.startsWith("data:")) {
-          copy.pdf = "";
-        }
-        if (copy.images && Array.isArray(copy.images)) {
-          copy.images = copy.images.map((img) => (img && typeof img === "string" && img.startsWith("data:")) ? "" : img);
-        }
-        return copy;
-      });
-      try {
-        localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(cleaned));
-      } catch (inner) {
-        console.error("Failed to write even stripped products to localStorage:", inner);
-      }
+      // Fall back directly to metadata mapping to keep UI running
+      const metaOnly = stripCacheData(list, "meta-only");
+      localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(metaOnly));
+    } catch (inner) {
+      console.error("Critical: Failed to save metadata cache to localStorage.", inner);
     }
-    if (notify) {
-      window.dispatchEvent(new StorageEvent("storage", { key: PRODUCTS_LOCAL_KEY }));
-    }
+  }
+
+  if (notify) {
+    window.dispatchEvent(new StorageEvent("storage", { key: PRODUCTS_LOCAL_KEY }));
   }
 }
 
