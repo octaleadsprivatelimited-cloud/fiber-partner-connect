@@ -203,20 +203,26 @@ function stripCacheData(list: Product[], level: "heavy" | "all" | "meta-only"): 
 function writeLocalProducts(list: Product[], notify = false) {
   if (typeof localStorage === "undefined") return;
 
-  // Level 1: Strip heavy base64 strings right away. We do not store base64 in local cache.
-  let cleaned = stripCacheData(list, "heavy");
+  // Try to write the full list first (with base64 images intact for Demo Mode)
+  let cleaned = [...list];
   let payloadStr = JSON.stringify(cleaned);
-  
-  // Quota guard checking the byte size
   let byteSize = new Blob([payloadStr]).size;
   console.log(`Current cache size: ${(byteSize / (1024 * 1024)).toFixed(3)} MB`);
 
-  // Level 2: If payload size is greater than 3.5 MB, strip all image URL references
+  // Level 1: If payload exceeds 3.5 MB, strip heavy base64 strings
+  if (byteSize > 3.5 * 1024 * 1024) {
+    cleaned = stripCacheData(list, "heavy");
+    payloadStr = JSON.stringify(cleaned);
+    byteSize = new Blob([payloadStr]).size;
+    console.log(`Payload exceeded 3.5MB. Stripped base64 images. New size: ${(byteSize / (1024 * 1024)).toFixed(3)} MB`);
+  }
+
+  // Level 2: If payload size is still greater than 3.5 MB, strip all image URL references
   if (byteSize > 3.5 * 1024 * 1024) {
     cleaned = stripCacheData(list, "all");
     payloadStr = JSON.stringify(cleaned);
     byteSize = new Blob([payloadStr]).size;
-    console.log(`Payload exceeded 3.5MB. Stripped images. New size: ${(byteSize / (1024 * 1024)).toFixed(3)} MB`);
+    console.log(`Payload still exceeded 3.5MB. Stripped all image links. New size: ${(byteSize / (1024 * 1024)).toFixed(3)} MB`);
   }
 
   // Level 3: If payload size is still greater than 3.5 MB, keep metadata only
@@ -232,11 +238,17 @@ function writeLocalProducts(list: Product[], notify = false) {
   } catch (e) {
     console.warn("localStorage quota exceeded on initial try. Attempting compression backup...", e);
     try {
-      // Fall back directly to metadata mapping to keep UI running
-      const metaOnly = stripCacheData(list, "meta-only");
-      localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(metaOnly));
+      // Fall back directly to stripped heavy data
+      const baseClean = stripCacheData(list, "heavy");
+      localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(baseClean));
     } catch (inner) {
-      console.error("Critical: Failed to save metadata cache to localStorage.", inner);
+      try {
+        // Fall back directly to metadata mapping to keep UI running
+        const metaOnly = stripCacheData(list, "meta-only");
+        localStorage.setItem(PRODUCTS_LOCAL_KEY, JSON.stringify(metaOnly));
+      } catch (last) {
+        console.error("Critical: Failed to save metadata cache to localStorage.", last);
+      }
     }
   }
 
