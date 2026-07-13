@@ -80,7 +80,7 @@ export function useAuth() {
 }
 
 /* ------------- Products ------------- */
-const PRODUCTS_LOCAL_KEY = "admin-products-v2";
+const PRODUCTS_LOCAL_KEY = "admin-products-v3";
 
 function resolveLegacyImage(imagePath: string): string {
   if (!imagePath) return "";
@@ -286,7 +286,8 @@ export function useProducts() {
       // notify=false: don't dispatch storage event or we'll overwrite state with stripped images
       writeLocalProducts(list, false);
       setLoading(false);
-    }, () => {
+    }, (err) => {
+      console.error("Firestore products subscribe failed:", err);
       // Read failed (rules/offline) — keep seed data visible.
       setProducts(readLocalProducts());
       setLoading(false);
