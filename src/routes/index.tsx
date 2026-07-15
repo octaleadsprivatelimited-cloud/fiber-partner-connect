@@ -133,7 +133,7 @@ function TestimonialsSection() {
 
 function Home() {
   const { products } = useProducts();
-  const featured = products.filter((p) => p.featured).slice(0, 8);
+  const featured = products.filter((p) => p.featured).slice(0, 36);
   return (
     <>
       <SEO
@@ -161,7 +161,7 @@ function Home() {
               </Link>
             </div>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
             {featured.map((p, i) => <ProductCard key={p.id} p={p} idx={i} />)}
           </div>
         </div>
