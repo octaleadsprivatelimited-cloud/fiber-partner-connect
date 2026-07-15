@@ -258,18 +258,33 @@ function writeLocalProducts(list: Product[], notify = false) {
 }
 
 export function useProducts() {
-  const [products, setProducts] = useState<Product[]>(() => readLocalProducts());
-  const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState<Product[]>(() => {
+    // When Firebase is active, don't pre-populate from localStorage cache.
+    // The cache has stripped images (base64 removed to fit 3.5MB limit),
+    // which causes old/seed images to flash before onSnapshot delivers real data.
+    const fb = getFirebase();
+    if (fb && isFirebaseConfigured()) return [];
+    return readLocalProducts();
+  });
+  const [loading, setLoading] = useState(() => {
+    const fb = getFirebase();
+    return !!(fb && isFirebaseConfigured());
+  });
 
   useEffect(() => {
-    const sync = () => setProducts(readLocalProducts());
-    if (typeof window !== "undefined") window.addEventListener("storage", sync);
     const fb = getFirebase();
+    
+    // Only use localStorage for cross-tab sync if Firebase is NOT configured.
+    // If Firebase is active, onSnapshot provides the real-time full data (including base64 images),
+    // and syncing from localStorage would overwrite it with the stripped 3.5MB-limited cache.
     if (!fb || !isFirebaseConfigured()) {
+      const sync = () => setProducts(readLocalProducts());
+      if (typeof window !== "undefined") window.addEventListener("storage", sync);
       return () => {
         if (typeof window !== "undefined") window.removeEventListener("storage", sync);
       };
     }
+
     setLoading(true);
 
     const globalRef = doc(fb.db, "settings", "global");
@@ -295,36 +310,25 @@ export function useProducts() {
     const unsub = onSnapshot(q, (snap) => {
       const list = snap.docs.map((d) => {
         const data = d.data() as Omit<Product, "id">;
-        // Check if image is missing, empty, or a legacy relative path that is broken in production
+
+        // Only fall back to seed images for truly legacy paths (old /src/assets/ references).
+        // If Firestore has a valid image (data: URL, https:, etc.), trust it completely.
         const isLegacyPath = data.image && 
           (data.image.startsWith("/src/assets/") || data.image.startsWith("/assets/") || 
            (data.image.includes("product-") && !data.image.startsWith("data:")));
 
-        // If Firestore has an empty/missing or legacy image for a seed product,
-        // immediately fall back to the bundled asset so the card is never blank.
         if (!data.image || isLegacyPath) {
           const seed = SEED_PRODUCTS.find((s) => s.id === d.id);
           if (seed) {
             data.image = seed.image;
           } else if (data.image) {
             data.image = resolveLegacyImage(data.image);
-          } else {
-            data.image = SEED_PRODUCTS[0]?.image || "";
           }
         }
 
-        // Ensure images is always populated in the list
+        // For images array: trust Firestore data. Only populate from image if array is empty.
         if (!data.images || data.images.length === 0 || data.images.every(img => !img)) {
-          const seed = SEED_PRODUCTS.find((s) => s.id === d.id);
-          data.images = seed?.images && seed.images.length > 0 ? [...seed.images] : [data.image || ""];
-        } else {
-          data.images = data.images.map((img) => {
-            if (!img) {
-              const seed = SEED_PRODUCTS.find((s) => s.id === d.id);
-              return seed?.image || data.image || "";
-            }
-            return img;
-          });
+          data.images = data.image ? [data.image] : [];
         }
 
         return { id: d.id, ...data };
@@ -352,7 +356,7 @@ export function useProducts() {
       });
 
       setProducts(list);
-      // notify=false: don't dispatch storage event or we'll overwrite state with stripped images
+      // Write to localStorage for offline fallback, but don't dispatch storage event
       writeLocalProducts(list, false);
       setLoading(false);
     }, (err) => {
@@ -362,7 +366,6 @@ export function useProducts() {
       setLoading(false);
     });
     return () => {
-      if (typeof window !== "undefined") window.removeEventListener("storage", sync);
       unsub();
     };
   }, []);
