@@ -56,7 +56,7 @@ export function ProductCard({ p, idx = 0 }: { p: Product; idx?: number }) {
   };
 
   const related = products
-    .filter((item) => item.category === activeProduct.category && item.id !== activeProduct.id)
+    .filter((item) => item.brand === activeProduct.brand && item.category === activeProduct.category && item.id !== activeProduct.id)
     .slice(0, 3);
 
   return (
